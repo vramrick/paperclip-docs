@@ -1,40 +1,33 @@
-# paperclip-docs
+# Paperclip Docs
 
-Lean source repo for the Paperclip documentation site.
+Source for the [Paperclip](https://github.com/paperclipai/paperclip) documentation site — user guides, API and CLI reference, adapter docs, and deployment notes.
 
-## Commands
+**Read the docs:** https://aronprins.github.io/paperclip-docs/
 
-Build the static site into `.site/`:
+## What's inside
 
-```sh
-npm run docs:build
-```
+- **Guides** — Getting started, core concepts, and day-to-day usage.
+- **API reference** — Control-plane endpoints and payload schemas.
+- **CLI reference** — `paperclip` command surface.
+- **Adapters** — Plugin authoring and the integrations catalogue.
+- **Deploy** — Self-hosting, upgrades, and operational guidance.
 
-Preview the built site locally:
+The site is a single static shell that renders the Markdown files in `docs/` directly — no framework, no build step required to read the raw pages.
 
-```sh
-npm run docs:serve
-```
+## Contributing
 
-Publish the current site to `gh-pages`:
+Spotted a typo, a broken link, or something that could be clearer? There are two easy paths, both linked from the footer of every docs page:
 
-```sh
-npm run docs:publish
-```
+- **Suggest an edit** — opens the underlying Markdown file in GitHub's web editor. Make the change and submit a PR without leaving the browser.
+- **Report an issue** — opens a prefilled [Docs feedback](.github/ISSUE_TEMPLATE/03-docs-feedback.yml) issue with the page URL already attached.
 
-## Repo Layout
+For larger changes, fork the repo and open a PR against `main`. Screenshots live under `docs/user-guides/screenshots/{light,dark}/` and should be provided in both themes when replacing UI captures.
 
-- `docs/docs-website/`
-  Static site shell, navigation manifest, and release builder.
-- `docs/user-guides/`
-  User-facing guide pages and screenshots.
-- `docs/adapters/`
-  Adapter documentation.
-- `docs/api/`
-  API reference pages.
-- `docs/deploy/`
-  Deployment documentation.
-- `docs/cli/`
-  CLI reference pages.
-- `scripts/publish-gh-pages.sh`
-  Local publish script for GitHub Pages.
+## Community
+
+- [Discord](https://discord.gg/m4HZY7xNG3)
+- [GitHub Discussions](https://github.com/paperclipai/paperclip/discussions)
+
+## License
+
+Docs content is released under the same license as the Paperclip project. See the main [paperclip](https://github.com/paperclipai/paperclip) repository for details.
