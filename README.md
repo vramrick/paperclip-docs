@@ -1,68 +1,40 @@
 # paperclip-docs
 
-Community-maintained Paperclip docs and support site.
+Lean source repo for the Paperclip documentation site.
 
-This repository is not the upstream `paperclipai/paperclip` repository. It exists to host improved public-facing documentation, screenshots, and a lightweight support queue while keeping a live upstream checkout under `references/` for comparison.
+## Commands
 
-## Maintainer docs
-
-- repo maintenance workflow: [MAINTAINING.md](MAINTAINING.md)
-- docs tree overview: [docs/README.md](docs/README.md)
-- custom site shell details: [docs/docs-website/README.md](docs/docs-website/README.md)
-- reference checkout details: [references/README.md](references/README.md)
-- planning notes overview: [notes/README.md](notes/README.md)
-
-## Repo layout
-
-- `docs/` source docs, screenshots, and the custom docs viewer
-- `notes/` planning/reference docs copied from the original documentation work
-- `references/upstream-paperclip/` local reference checkout of upstream Paperclip
-- `references/tools/` helper files copied from the Paperclip repo for screenshot and docs maintenance
-- `scripts/` local-first maintenance scripts
-
-## Local workflow
-
-Build the static site bundle locally:
+Build the static site into `.site/`:
 
 ```sh
 npm run docs:build
 ```
 
-Preview the built bundle locally:
+Preview the built site locally:
 
 ```sh
 npm run docs:serve
 ```
 
-Publish the built bundle to the `gh-pages` branch locally:
+Publish the current site to `gh-pages`:
 
 ```sh
 npm run docs:publish
 ```
 
-Refresh the upstream reference checkout locally:
+## Repo Layout
 
-```sh
-npm run references:sync
-```
-
-## GitHub Pages
-
-This repo is set up for hash routing so GitHub Pages does not need rewrite rules. The intended published URL shape is:
-
-```text
-https://aronprins.github.io/paperclip-docs/#/installation
-```
-
-The local publish script writes the built site to the `gh-pages` branch and adds `.nojekyll` so GitHub Pages can serve the static bundle directly.
-
-## Support
-
-GitHub Issues in this repo are intended for:
-
-- docs feedback
-- install/setup help
-- support questions
-- bugs reproducible from the documented experience
-
-Upstream product bugs may still need to be forwarded to `paperclipai/paperclip`.
+- `docs/docs-website/`
+  Static site shell, navigation manifest, and release builder.
+- `docs/user-guides/`
+  User-facing guide pages and screenshots.
+- `docs/adapters/`
+  Adapter documentation.
+- `docs/api/`
+  API reference pages.
+- `docs/deploy/`
+  Deployment documentation.
+- `docs/cli/`
+  CLI reference pages.
+- `scripts/publish-gh-pages.sh`
+  Local publish script for GitHub Pages.

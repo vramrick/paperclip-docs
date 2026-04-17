@@ -1,6 +1,3 @@
 .site/
-.tmp/
-references/upstream-paperclip/
 node_modules/
 .DS_Store
-
