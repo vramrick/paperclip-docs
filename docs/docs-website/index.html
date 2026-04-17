@@ -456,7 +456,7 @@
       border: 1px solid var(--stone);
       border-radius: var(--radius-sm);
       box-shadow: 0 12px 32px rgba(12,12,12,0.12), 0 2px 6px rgba(12,12,12,0.06);
-      padding: 12px 14px;
+      padding: 8px;
       opacity: 0; transform: translateY(-4px) scale(0.98);
       pointer-events: none;
       transform-origin: top right;
@@ -465,23 +465,29 @@
     }
     [data-theme="dark"] .toc-panel { box-shadow: 0 12px 32px rgba(0,0,0,0.6), 0 2px 6px rgba(0,0,0,0.4); }
     .toc-panel.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
-    .toc-panel-label {
-      font-size: 10px; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.1em; color: var(--ash);
-      margin-bottom: 8px; padding-left: 10px;
-    }
+    .toc-panel-label { display: none; }
     .toc-panel .toc-link {
-      display: block; padding: 5px 0 5px 10px;
-      font-size: 12.5px; color: var(--graphite);
+      display: block;
+      padding: 6px 10px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--graphite);
       text-decoration: none;
-      border-left: 1.5px solid var(--stone);
-      line-height: 1.5; cursor: pointer;
-      transition: color var(--transition), border-color var(--transition), background var(--transition);
-      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: color var(--transition), background var(--transition);
     }
-    .toc-panel .toc-link:hover { color: var(--ink); background: var(--linen); border-left-color: var(--stone-dark); }
-    .toc-panel .toc-link.active { color: var(--ink); border-left-color: var(--green); font-weight: 500; }
-    .toc-panel .toc-link.level-3 { padding-left: 22px; font-size: 12px; }
+    .toc-panel .toc-link.level-3 {
+      padding-left: 22px;
+      font-size: 12.5px;
+      color: var(--ash);
+    }
+    .toc-panel .toc-link:hover,
+    .toc-panel .toc-link.active {
+      color: var(--ink);
+      background: var(--linen);
+      font-weight: 500;
+    }
 
     #article h2 {
       font-family: var(--font-serif);
@@ -544,10 +550,9 @@
     #article p { margin-bottom: 16px; }
     #article a {
       color: var(--ink); text-decoration: none;
-      border-bottom: 1px solid var(--stone-dark);
-      transition: border-color var(--transition);
+      transition: color var(--transition);
     }
-    #article a:hover { border-bottom-color: var(--ink); }
+    #article a:hover { color: var(--graphite); }
     #article strong { color: var(--ink); font-weight: 600; }
     #article em { font-style: italic; }
     #article ul, #article ol { padding-left: 22px; margin-bottom: 16px; }
