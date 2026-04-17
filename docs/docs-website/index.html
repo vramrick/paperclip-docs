@@ -56,7 +56,6 @@
       --mint:       rgba(34,197,94,0.12);
     }
     [data-theme="dark"] #article pre { background: #07080c; color: #d4d4d4; }
-    [data-theme="dark"] .sb-link.active { background: var(--parchment); }
     [data-theme="dark"] #header { background: rgba(15,17,23,0.85); }
     [data-theme="dark"] .icon-sun { display: block !important; }
     [data-theme="dark"] .icon-moon { display: none !important; }
@@ -360,16 +359,16 @@
 
     .sb-link {
       display: block; padding: 5px 10px;
+      margin-bottom: 2px;
       font-size: 12.5px; color: var(--graphite);
       text-decoration: none; border-radius: 6px;
       line-height: 1.45; cursor: pointer;
       transition: background var(--transition), color var(--transition);
     }
-    .sb-link:hover { color: var(--ink); background: var(--parchment); }
+    .sb-link:hover,
     .sb-link.active {
       color: var(--ink); font-weight: 500;
-      background: var(--white);
-      box-shadow: inset 0 0 0 1px var(--stone);
+      background: var(--parchment);
     }
 
     /* Content */
@@ -469,6 +468,7 @@
     .toc-panel .toc-link {
       display: block;
       padding: 6px 10px;
+      margin-bottom: 2px;
       font-size: 13px;
       line-height: 1.45;
       color: var(--graphite);
