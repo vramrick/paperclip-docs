@@ -331,6 +331,19 @@
 
     .sb-section { margin-bottom: 4px; }
 
+    .sb-group-label {
+      display: flex; align-items: center; gap: 10px;
+      padding: 18px 10px 6px;
+      font-size: 10.5px; font-weight: 600;
+      color: var(--ash);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .sb-group-label:first-child { padding-top: 6px; }
+    .sb-group-label::after {
+      content: ""; flex: 1; height: 1px; background: var(--stone);
+    }
+
     .sb-section-btn {
       width: 100%;
       display: flex; align-items: center; gap: 8px;
@@ -1604,7 +1617,15 @@ function buildLanding() {
 
 /* ─── Sidebar (accordion) — used for desktop sidebar AND mobile drawer ──── */
 function sidebarSectionsHTML() {
-  return navData.sections.map((section, si) => `
+  let lastKind = null;
+  return navData.sections.map((section, si) => {
+    const kind = getSectionKind(section.title);
+    let label = '';
+    if (kind !== lastKind) {
+      label = `<div class="sb-group-label">${escapeHtml(kind === 'Reference' ? 'Reference' : 'Guides')}</div>`;
+      lastKind = kind;
+    }
+    return `${label}
     <div class="sb-section" data-section-idx="${si}" data-section-title="${escapeAttr(section.title)}" data-open="false">
       <button class="sb-section-btn" type="button">
         <span class="sb-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${getSectionIconSvg(section.title)}</svg></span>
@@ -1615,8 +1636,8 @@ function sidebarSectionsHTML() {
       <div class="sb-pages">
         ${section.pages.map(page => `<a class="sb-link" data-file="${escapeAttr(page.file)}" href="${escapeAttr(getPageUrl(page))}">${escapeHtml(page.title)}</a>`).join('')}
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 function wireSidebarContainer(container) {
