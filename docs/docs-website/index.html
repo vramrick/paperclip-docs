@@ -671,13 +671,14 @@
       color: var(--graphite);
     }
     #article td {
+      background: var(--linen);
       border-bottom: 1px solid var(--stone);
       border-right: 1px solid var(--stone);
       padding: 8px 14px; color: var(--graphite); vertical-align: top;
     }
     #article tr:last-child td { border-bottom: none; }
     #article th:last-child, #article td:last-child { border-right: none; }
-    #article tr:nth-child(even) td { background: var(--linen); }
+    #article tbody tr:hover td { background: var(--white); }
 
     /* Images */
     #article img {
