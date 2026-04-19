@@ -669,7 +669,7 @@
     #article li { margin-bottom: 6px; }
     #article li > p { margin-bottom: 8px; }
     #article ol > li { margin-bottom: 20px; }
-    #article hr { border: none; border-top: 1px solid var(--stone); margin: 36px 0; }
+    #article hr { border: none; border-top: 1px solid transparent; margin: 36px 0; }
 
     #article code {
       font-family: var(--font-mono); font-size: 0.87rem;
