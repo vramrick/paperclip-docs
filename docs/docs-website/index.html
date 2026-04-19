@@ -1967,7 +1967,8 @@ function renderTabsBlock(labels, body) {
   });
   out += `</div>`;
   const re = /<!-- tab: (.+?) -->([\s\S]*?)(?=<!-- tab:|$)/g;
-  let m, idx = 0;
+  let m;
+  let idx = 0;
   while ((m = re.exec(body)) !== null) {
     out += `<div class="tab-panel${idx === 0 ? ' active' : ''}" data-panel="${escapeAttr(m[1].trim())}">`;
     out += marked.parse(m[2].trim());
