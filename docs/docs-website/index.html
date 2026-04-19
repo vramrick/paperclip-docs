@@ -442,6 +442,62 @@
     }
     .meta-row .spacer { flex: 1; }
 
+    .page-actions { position: relative; display: inline-flex; align-items: stretch; }
+    .page-actions .pa-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 10px;
+      background: var(--white);
+      border: 1px solid var(--stone);
+      font-family: var(--font-body);
+      font-size: 11.5px; font-weight: 500;
+      color: var(--graphite); cursor: pointer;
+      transition: border-color var(--transition), color var(--transition), background var(--transition);
+    }
+    .page-actions .pa-btn:hover { border-color: var(--stone-dark); color: var(--ink); }
+    .page-actions .pa-copy { border-radius: 99px 0 0 99px; padding-left: 12px; }
+    .page-actions .pa-caret {
+      border-radius: 0 99px 99px 0;
+      border-left: none;
+      padding: 5px 8px;
+    }
+    .page-actions .pa-caret svg { width: 12px; height: 12px; color: var(--ash); transition: transform var(--transition); }
+    .page-actions .pa-caret[aria-expanded="true"] { color: var(--ink); background: var(--parchment); border-color: var(--stone-dark); }
+    .page-actions .pa-caret[aria-expanded="true"] svg { transform: rotate(180deg); color: var(--ink); }
+    .page-actions .pa-copy svg { width: 13px; height: 13px; color: var(--ash); }
+    .page-actions .pa-copy.is-copied { color: var(--green); border-color: var(--green); }
+    .page-actions .pa-copy.is-copied svg { color: var(--green); }
+
+    .pa-menu {
+      position: absolute; top: calc(100% + 8px); right: 0;
+      min-width: 220px;
+      background: var(--white);
+      border: 1px solid var(--stone);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 12px 32px rgba(12,12,12,0.12), 0 2px 6px rgba(12,12,12,0.06);
+      padding: 6px;
+      opacity: 0; transform: translateY(-4px) scale(0.98);
+      pointer-events: none;
+      transform-origin: top right;
+      transition: opacity 0.16s ease, transform 0.16s ease;
+      z-index: 60;
+    }
+    [data-theme="dark"] .pa-menu { box-shadow: 0 12px 32px rgba(0,0,0,0.6), 0 2px 6px rgba(0,0,0,0.4); }
+    .pa-menu.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+    .pa-menu button {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%;
+      padding: 7px 10px;
+      background: none; border: none;
+      font-family: var(--font-body);
+      font-size: 13px; color: var(--graphite);
+      text-align: left; cursor: pointer;
+      border-radius: 5px;
+      transition: color var(--transition), background var(--transition);
+    }
+    .pa-menu button:hover { color: var(--ink); background: var(--linen); }
+    .pa-menu button svg { width: 14px; height: 14px; color: var(--ash); flex-shrink: 0; }
+    .pa-menu button:hover svg { color: var(--ink); }
+
     .page-feedback {
       margin-top: 64px;
       padding: 20px 22px;
@@ -1055,6 +1111,7 @@ function getSectionKind(title) {
 let navData     = null;
 let allPages    = [];
 let currentFile = null;
+let currentMarkdown = '';
 let tocObserver = null;
 const APP_DIR_NAME = 'docs-website';
 const APP_BASE_PATH = (() => {
@@ -1697,6 +1754,7 @@ async function loadPage(file, targetHeading = null, historyMode = 'push') {
     const res = await fetch(resolveContentUrl(file));
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     md = await res.text();
+    currentMarkdown = md;
   } catch (e) {
     showError(`Could not load: ${file}`, e.message);
     return;
@@ -1781,8 +1839,88 @@ function insertMetaRow(article, page) {
   if (article.querySelector('.meta-row')) return;
   const row = document.createElement('div');
   row.className = 'meta-row';
-  row.innerHTML = `<span class="chip">${escapeHtml(page.sectionTitle)}</span>`;
+  row.innerHTML = `<span class="chip">${escapeHtml(page.sectionTitle)}</span><span class="spacer"></span>`;
   h1.after(row);
+  row.appendChild(buildPageActions(page));
+}
+
+function buildPageActions(page) {
+  const COPY_SVG   = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-5A1.5 1.5 0 0 0 3 3.5v5A1.5 1.5 0 0 0 4.5 10H6"/></svg>';
+  const CHECK_SVG  = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 8.5 3 3 6-7"/></svg>';
+  const CARET_SVG  = '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 4.5 3 3 3-3"/></svg>';
+  const MD_SVG     = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M4.5 10V6l1.5 2L7.5 6v4M10 6v4M10 10l1.5-1.5L13 10"/></svg>';
+  const EXT_SVG    = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h4v4M13 3 7.5 8.5M12 9v3.5A1.5 1.5 0 0 1 10.5 14h-7A1.5 1.5 0 0 1 2 12.5v-7A1.5 1.5 0 0 1 3.5 4H7"/></svg>';
+
+  const wrap = document.createElement('div');
+  wrap.className = 'page-actions';
+  wrap.innerHTML = `
+    <button type="button" class="pa-btn pa-copy" aria-label="Copy page as Markdown">
+      ${COPY_SVG}<span class="pa-copy-label">Copy Page</span>
+    </button>
+    <button type="button" class="pa-btn pa-caret" aria-expanded="false" aria-label="More page actions">
+      ${CARET_SVG}
+    </button>
+    <div class="pa-menu" role="menu">
+      <button type="button" data-action="copy" role="menuitem">${COPY_SVG}<span>Copy Page</span></button>
+      <button type="button" data-action="view-md" role="menuitem">${MD_SVG}<span>View as Markdown</span></button>
+      <button type="button" data-action="open-claude" role="menuitem">${EXT_SVG}<span>Open in Claude</span></button>
+      <button type="button" data-action="open-chatgpt" role="menuitem">${EXT_SVG}<span>Open in ChatGPT</span></button>
+    </div>
+  `;
+
+  const copyBtn  = wrap.querySelector('.pa-copy');
+  const caret    = wrap.querySelector('.pa-caret');
+  const menu     = wrap.querySelector('.pa-menu');
+  const label    = copyBtn.querySelector('.pa-copy-label');
+
+  const closeMenu = () => { menu.classList.remove('is-open'); caret.setAttribute('aria-expanded', 'false'); };
+  const openMenu  = () => { menu.classList.add('is-open'); caret.setAttribute('aria-expanded', 'true'); };
+
+  const flashCopied = () => {
+    copyBtn.classList.add('is-copied');
+    copyBtn.innerHTML = `${CHECK_SVG}<span class="pa-copy-label">Copied</span>`;
+    setTimeout(() => {
+      copyBtn.classList.remove('is-copied');
+      copyBtn.innerHTML = `${COPY_SVG}<span class="pa-copy-label">Copy Page</span>`;
+    }, 1600);
+  };
+
+  const copyMarkdown = async () => {
+    try {
+      await navigator.clipboard.writeText(currentMarkdown || '');
+      flashCopied();
+    } catch (e) {
+      console.error('Copy failed', e);
+    }
+  };
+
+  const mdUrl = () => new URL(resolveContentUrl(page.file), location.href).href;
+  const llmPrompt = () => `Read ${location.href} so I can ask questions about it.`;
+
+  copyBtn.addEventListener('click', copyMarkdown);
+  caret.addEventListener('click', e => {
+    e.stopPropagation();
+    menu.classList.contains('is-open') ? closeMenu() : openMenu();
+  });
+  menu.addEventListener('click', e => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    closeMenu();
+    switch (btn.dataset.action) {
+      case 'copy':         copyMarkdown(); break;
+      case 'view-md':      window.open(mdUrl(), '_blank', 'noopener'); break;
+      case 'open-claude':  window.open(`https://claude.ai/new?q=${encodeURIComponent(llmPrompt())}`, '_blank', 'noopener'); break;
+      case 'open-chatgpt': window.open(`https://chatgpt.com/?hints=search&q=${encodeURIComponent(llmPrompt())}`, '_blank', 'noopener'); break;
+    }
+  });
+  document.addEventListener('click', e => {
+    if (menu.classList.contains('is-open') && !wrap.contains(e.target)) closeMenu();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && menu.classList.contains('is-open')) closeMenu();
+  });
+
+  return wrap;
 }
 
 function updateBreadcrumb(page) {
@@ -1992,17 +2130,12 @@ function buildToc(article, file) {
   if (!metaRow) return;
 
   // Clear previous (defensive)
-  metaRow.querySelector('.spacer')?.remove();
   metaRow.querySelector('.toc-wrap')?.remove();
 
   const headings = [...article.querySelectorAll('h2, h3')];
   if (headings.length < 2) return;
 
   const page = allPages.find(candidate => candidate.file === file);
-
-  const spacer = document.createElement('span');
-  spacer.className = 'spacer';
-  metaRow.appendChild(spacer);
 
   const CHEVRON_SVG = '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 4.5 3 3 3-3"/></svg>';
 
