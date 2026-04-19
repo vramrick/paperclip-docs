@@ -14,7 +14,7 @@ trap cleanup EXIT
 
 cd "$repo_root"
 
-node docs/docs-website/build-release.mjs --base-path /paperclip-docs/ --out-dir "$site_dir"
+node site/build-release.mjs --base-path /paperclip-docs/ --out-dir "$site_dir"
 touch "$site_dir/.nojekyll"
 
 git clone "$origin_url" "$publish_clone" >/dev/null 2>&1

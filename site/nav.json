@@ -1,0 +1,109 @@
+{
+  "sections": [
+    {
+      "title": "Welcome",
+      "pages": [
+        { "title": "What is Paperclip?", "file": "../docs/user-guides/guides/what-is-paperclip.md" },
+        { "title": "Key Concepts",       "file": "../docs/user-guides/guides/key-concepts.md" },
+        { "title": "Glossary",           "file": "../docs/user-guides/guides/glossary.md" }
+      ]
+    },
+    {
+      "title": "Get Started",
+      "pages": [
+        { "title": "Installation",              "file": "../docs/user-guides/guides/installation.md" },
+        { "title": "Create Your First Company", "file": "../docs/user-guides/guides/your-first-company.md" },
+        { "title": "Hire Your First Agent",     "file": "../docs/user-guides/guides/your-first-agent.md" },
+        { "title": "Watching Agents Work",      "file": "../docs/user-guides/guides/watching-agents-work.md" }
+      ]
+    },
+    {
+      "title": "Running Your Company",
+      "pages": [
+        { "title": "The Dashboard",   "file": "../docs/user-guides/guides/dashboard.md" },
+        { "title": "Managing Tasks",  "file": "../docs/user-guides/guides/managing-tasks.md" },
+        { "title": "Approvals",       "file": "../docs/user-guides/guides/approvals.md" },
+        { "title": "Costs & Budgets", "file": "../docs/user-guides/guides/costs-and-budgets.md" },
+        { "title": "Activity Log",    "file": "../docs/user-guides/guides/activity-log.md" },
+        { "title": "Feedback & Voting", "file": "../docs/user-guides/guides/feedback-voting.md" }
+      ]
+    },
+    {
+      "title": "Building Your Org",
+      "pages": [
+        { "title": "Org Structure", "file": "../docs/user-guides/guides/org-structure.md" },
+        { "title": "Delegation",    "file": "../docs/user-guides/guides/delegation.md" },
+        { "title": "Adapters",      "file": "../docs/user-guides/guides/agent-adapters.md" }
+      ]
+    },
+    {
+      "title": "Advanced",
+      "pages": [
+        { "title": "Execution Workspaces",  "file": "../docs/user-guides/guides/execution-workspaces.md" },
+        { "title": "Execution Policy",      "file": "../docs/user-guides/guides/execution-policy.md" },
+        { "title": "Heartbeats & Routines", "file": "../docs/user-guides/guides/heartbeats-and-routines.md" },
+        { "title": "Skills",                "file": "../docs/user-guides/guides/skills.md" },
+        { "title": "Export & Import",       "file": "../docs/user-guides/guides/export-import.md" },
+        { "title": "Terminal Setup",        "file": "../docs/user-guides/guides/terminal-setup.md" }
+      ]
+    },
+    {
+      "title": "CLI",
+      "pages": [
+        { "title": "Overview",                "file": "../docs/cli/overview.md" },
+        { "title": "Setup Commands",          "file": "../docs/cli/setup-commands.md" },
+        { "title": "Control-Plane Commands",  "file": "../docs/cli/control-plane-commands.md" }
+      ]
+    },
+    {
+      "title": "Adapters",
+      "pages": [
+        { "title": "Overview",               "file": "../docs/adapters/overview.md" },
+        { "title": "Claude Local",           "file": "../docs/adapters/claude-local.md" },
+        { "title": "Codex Local",            "file": "../docs/adapters/codex-local.md" },
+        { "title": "Gemini Local",           "file": "../docs/adapters/gemini-local.md" },
+        { "title": "Cursor Local",           "file": "../docs/adapters/cursor-local.md" },
+        { "title": "OpenCode Local",         "file": "../docs/adapters/opencode-local.md" },
+        { "title": "Pi Local",               "file": "../docs/adapters/pi-local.md" },
+        { "title": "Hermes Local",           "file": "../docs/adapters/hermes-local.md" },
+        { "title": "OpenClaw Gateway",       "file": "../docs/adapters/openclaw-gateway.md" },
+        { "title": "Process",                "file": "../docs/adapters/process.md" },
+        { "title": "HTTP",                   "file": "../docs/adapters/http.md" },
+        { "title": "External Adapters",      "file": "../docs/adapters/external-adapters.md" },
+        { "title": "Creating an Adapter",    "file": "../docs/adapters/creating-an-adapter.md" },
+        { "title": "UI Parser Contract",     "file": "../docs/adapters/adapter-ui-parser.md" }
+      ]
+    },
+    {
+      "title": "Deployment",
+      "pages": [
+        { "title": "Overview",                  "file": "../docs/deploy/overview.md" },
+        { "title": "Deployment Modes",          "file": "../docs/deploy/deployment-modes.md" },
+        { "title": "Local Development",         "file": "../docs/deploy/local-development.md" },
+        { "title": "Docker",                    "file": "../docs/deploy/docker.md" },
+        { "title": "Database",                  "file": "../docs/deploy/database.md" },
+        { "title": "Storage",                   "file": "../docs/deploy/storage.md" },
+        { "title": "Secrets",                   "file": "../docs/deploy/secrets.md" },
+        { "title": "Environment Variables",     "file": "../docs/deploy/environment-variables.md" },
+        { "title": "Tailscale Private Access",  "file": "../docs/deploy/tailscale-private-access.md" }
+      ]
+    },
+    {
+      "title": "API Reference",
+      "pages": [
+        { "title": "Overview",         "file": "../docs/api/overview.md" },
+        { "title": "Authentication",   "file": "../docs/api/authentication.md" },
+        { "title": "Companies",        "file": "../docs/api/companies.md" },
+        { "title": "Agents",           "file": "../docs/api/agents.md" },
+        { "title": "Issues",           "file": "../docs/api/issues.md" },
+        { "title": "Approvals",        "file": "../docs/api/approvals.md" },
+        { "title": "Goals & Projects", "file": "../docs/api/goals-and-projects.md" },
+        { "title": "Costs",            "file": "../docs/api/costs.md" },
+        { "title": "Secrets",          "file": "../docs/api/secrets.md" },
+        { "title": "Activity",         "file": "../docs/api/activity.md" },
+        { "title": "Dashboard",        "file": "../docs/api/dashboard.md" },
+        { "title": "Routines",         "file": "../docs/api/routines.md" }
+      ]
+    }
+  ]
+}

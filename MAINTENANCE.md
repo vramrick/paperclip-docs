@@ -5,13 +5,11 @@ Operational notes for maintainers of the Paperclip docs site. Reader-facing inst
 ## Repo layout
 
 ```
-docs/
-├── docs-website/        # Static site shell + release builder
-│   ├── index.html       # Main SPA (routing, rendering, TOC, search)
-│   ├── nav.json         # Section/page manifest — source of truth for sidebar & landing
-│   ├── build-release.mjs  # Produces a standalone bundle in .site/
-│   ├── preview.html     # Legacy preview entry (kept for compatibility)
-│   └── v1.html          # Archived v1 snapshot
+site/                    # Static site shell + release builder
+├── index.html           # Main SPA (routing, rendering, TOC, search)
+├── nav.json             # Section/page manifest — source of truth for sidebar & landing
+└── build-release.mjs    # Produces a standalone bundle in .site/
+docs/                    # Markdown content only
 ├── user-guides/         # Guide pages + screenshots/{light,dark}
 ├── api/                 # API reference Markdown
 ├── cli/                 # CLI reference Markdown
@@ -52,7 +50,7 @@ Mismatched base paths are the most common cause of 404s after a build — if ass
 ## Adding or moving pages
 
 1. Create the Markdown file in the appropriate `docs/<section>/` folder.
-2. Register it in `docs/docs-website/nav.json` under the correct section. The `file` field is relative to `docs/docs-website/` (typically `"../<section>/<page>.md"`).
+2. Register it in `site/nav.json` under the correct section. The `file` field is relative to `site/` (typically `"../docs/<section>/<page>.md"`).
 3. Page titles, section grouping, and sidebar order all derive from `nav.json`. There is no filesystem-based auto-discovery.
 4. Slugs are derived from the file path — `user-guides/guides/foo.md` becomes `/#/foo`, other sections keep their path.
 
@@ -62,7 +60,7 @@ Store UI captures under `docs/user-guides/screenshots/{light,dark}/<name>.png`. 
 
 ## Per-article feedback links
 
-Every article ends with "Suggest an edit" and "Report an issue" links. These are generated in `loadPage()` in `docs/docs-website/index.html` and point at:
+Every article ends with "Suggest an edit" and "Report an issue" links. These are generated in `loadPage()` in `site/index.html` and point at:
 
 - `github.com/aronprins/paperclip-docs/edit/main/<path>` — GitHub web editor.
 - `github.com/aronprins/paperclip-docs/issues/new?template=03-docs-feedback.yml&...` — prefilled docs-feedback issue.

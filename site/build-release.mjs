@@ -6,20 +6,22 @@ import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const docsRoot = path.resolve(__dirname, "..");
+const docsRoot = path.resolve(__dirname, "..", "docs");
 const sourceIndexPath = path.join(__dirname, "index.html");
+const sourceStylesPath = path.join(__dirname, "styles.css");
+const sourceAppJsPath = path.join(__dirname, "app.js");
 const sourceNavPath = path.join(__dirname, "nav.json");
 const screenshotsSourceDir = path.join(docsRoot, "user-guides", "screenshots");
 
 function printUsage() {
-  console.log(`Usage: node docs/docs-website/build-release.mjs [options]
+  console.log(`Usage: node site/build-release.mjs [options]
 
 Options:
   --base-path <path>  Public URL base path for the uploaded docs bundle.
                       Examples: /, /docs/, /random/paperclip-docs/, auto
                       Default: auto (explicit paths are recommended for deployment)
   --out-dir <path>    Output directory for the release bundle.
-                      Default: docs/docs-website/release
+                      Default: site/release
   --help              Show this help text.`);
 }
 
@@ -110,8 +112,8 @@ async function copyDirRecursive(sourceDir, targetDir) {
   }
 }
 
-function rewriteIndexHtml(source, basePath) {
-  const appBaseBlock = `const APP_DIR_NAME = 'docs-website';
+function rewriteAppJs(source, basePath) {
+  const appBaseBlock = `const APP_DIR_NAME = 'site';
 const APP_BASE_PATH = (() => {
   const marker = \`/\${APP_DIR_NAME}\`;
   const pathname = window.location.pathname;
@@ -248,9 +250,9 @@ async function detectAppBasePath() {
     }
   } catch (e) {`,
   );
-  output = output.replace("../user-guides/screenshots/", "user-guides/screenshots/");
+  output = output.replace("../docs/user-guides/screenshots/", "user-guides/screenshots/");
   output = output.replace(
-    "Could not load nav.json. Check docs-website hosting and rewrite configuration.",
+    "Could not load nav.json. Check site hosting and rewrite configuration.",
     "Could not load nav.json. Check that the release bundle was uploaded intact and the base path is correct.",
   );
   return output;
@@ -375,7 +377,7 @@ function buildDeployGuide(basePath) {
 That mode is a fallback. For GitHub Pages or any subdirectory deployment, rebuild with an explicit path, for example:
 
 \`\`\`sh
-node docs/docs-website/build-release.mjs --base-path ${deploymentBasePath}
+node site/build-release.mjs --base-path ${deploymentBasePath}
 \`\`\``
     : `This bundle was built for the public base path \`${basePath}\`.`;
 
@@ -414,8 +416,12 @@ async function main() {
   await ensureDir(options.outDir);
 
   const sourceIndex = await fs.readFile(sourceIndexPath, "utf8");
-  const releaseIndex = rewriteIndexHtml(sourceIndex, options.basePath);
-  await fs.writeFile(path.join(options.outDir, "index.html"), releaseIndex);
+  const sourceStyles = await fs.readFile(sourceStylesPath, "utf8");
+  const sourceAppJs = await fs.readFile(sourceAppJsPath, "utf8");
+  const releaseAppJs = rewriteAppJs(sourceAppJs, options.basePath);
+  await fs.writeFile(path.join(options.outDir, "index.html"), sourceIndex);
+  await fs.writeFile(path.join(options.outDir, "styles.css"), sourceStyles);
+  await fs.writeFile(path.join(options.outDir, "app.js"), releaseAppJs);
   await fs.writeFile(path.join(options.outDir, "nav.json"), `${JSON.stringify(releaseNav, null, 2)}\n`);
   await fs.writeFile(path.join(options.outDir, ".htaccess"), buildHtaccess(options.basePath));
   await fs.writeFile(path.join(options.outDir, "nginx.conf.example"), buildNginxConfig(options.basePath));
