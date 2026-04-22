@@ -41,11 +41,14 @@ const APP_SHELL_URL = new URL('index.html', APP_BASE_URL);
 
 /* ─── Screenshot src resolver ───────────────────────────────────────────── */
 function resolveScreenshotSrc(src) {
-  // src may be like "../images/dashboard/foo.png" or "images/dashboard/foo.png"
-  const match = src.match(/images\/([^/]+\/[^/]+\.png)$/);
-  if (!match) return src;
   const theme = document.documentElement.dataset.theme || 'light';
-  return resolveContentUrl(`../docs/user-guides/screenshots/${theme}/${match[1]}`);
+  // New-style: screenshots/light/group/file.png or screenshots/dark/group/file.png
+  const newMatch = src.match(/screenshots\/(?:light|dark)\/([^/]+\/[^/]+\.png)$/);
+  if (newMatch) return resolveContentUrl(`../docs/user-guides/screenshots/${theme}/${newMatch[1]}`);
+  // Legacy-style: images/group/file.png
+  const legacyMatch = src.match(/images\/([^/]+\/[^/]+\.png)$/);
+  if (legacyMatch) return resolveContentUrl(`../docs/user-guides/screenshots/${theme}/${legacyMatch[1]}`);
+  return src;
 }
 
 function normalizeDocPath(path) {
