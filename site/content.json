@@ -69,6 +69,15 @@
     },
     {
       "tier": "Learn",
+      "title": "How-to Guides",
+      "icon": "wrench",
+      "desc": "Field-tested recipes for specific problems — short, copy-pasteable, current.",
+      "pages": [
+        { "title": "Debug a Stuck Heartbeat", "file": "../docs/how-to/debug-stuck-heartbeat.md" }
+      ]
+    },
+    {
+      "tier": "Learn",
       "title": "Administration",
       "icon": "shield",
       "desc": "Company settings, instance configuration, plugins, and CLI auth — for operators and admins.",
@@ -109,6 +118,15 @@
         { "title": "Setup Commands",         "file": "../docs/reference/cli/setup-commands.md" },
         { "title": "Control-Plane Commands", "file": "../docs/reference/cli/control-plane-commands.md" },
         { "title": "Command Reference",      "file": "../docs/reference/cli/commands.md" }
+      ]
+    },
+    {
+      "tier": "Reference",
+      "title": "Skills",
+      "icon": "book-open",
+      "desc": "Skill file shape, install pipeline, scoping, versioning, and troubleshooting.",
+      "pages": [
+        { "title": "Skills Reference", "file": "../docs/reference/skills.md" }
       ]
     },
     {
