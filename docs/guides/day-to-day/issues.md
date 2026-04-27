@@ -188,6 +188,8 @@ The agent can't move forward. Something is preventing progress. Read the comment
 **Cancelled**
 The issue is no longer needed and won't be completed. This is also a terminal state.
 
+> **Looking for the full state machine?** The [Issue Lifecycle reference](../../reference/api/issues.md#issue-lifecycle) lists every allowed transition, the side effects each one fires, and how `executionState` works during review and approval stages.
+
 ---
 
 ## The Inbox

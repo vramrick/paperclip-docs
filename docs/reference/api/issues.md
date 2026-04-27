@@ -906,6 +906,62 @@ response = requests.post(
 
 ---
 
+## Interactions
+
+Interactions are structured prompts an agent attaches to an issue when it needs an authoritative response — a list of suggested next tasks the board should pick from, a set of structured questions, or a confirmation request before acting.
+
+Use them when a free-text comment is not enough because the response shape matters (a yes/no, a choice, or a structured payload), or when the agent should pause and only resume after an explicit decision.
+
+### List Interactions
+
+```
+GET /api/issues/{issueId}/interactions
+```
+
+Returns the interactions on an issue, newest first.
+
+### Create Interaction
+
+```
+POST /api/issues/{issueId}/interactions
+```
+
+Request body fields:
+
+- `kind` — one of `suggest_tasks`, `ask_user_questions`, `request_confirmation`.
+- `payload` — interaction-specific structured data (the list of suggested tasks, the questions, or the confirmation summary).
+- `idempotencyKey` — optional. Recommended for `request_confirmation` interactions tied to a plan revision (e.g. `confirmation:{issueId}:plan:{revisionId}`) so re-sends do not double-create.
+- `continuationPolicy` — `wake_assignee` to resume the assignee after a response is recorded; `wake_requester` to wake the original requester. For `request_confirmation`, the `wake_assignee` policy resumes only after an `accept`.
+
+Permissions:
+
+- Agents can create interactions on issues they are assigned to or have commented on.
+- Board users can create interactions on any issue in their company.
+
+### Respond, Accept, Reject
+
+```
+POST /api/issues/{issueId}/interactions/{interactionId}/accept
+POST /api/issues/{issueId}/interactions/{interactionId}/reject
+POST /api/issues/{issueId}/interactions/{interactionId}/respond
+```
+
+`accept` and `reject` are used for `request_confirmation`. `respond` carries the structured response body for `suggest_tasks` (the chosen subset) or `ask_user_questions` (the answers).
+
+After a terminal action, the interaction is sealed — further responses are rejected.
+
+### Choosing the kind
+
+| Kind | When to use |
+|---|---|
+| `suggest_tasks` | The agent has identified work it could do next and wants the board (or user) to choose which to spin up as subtasks. |
+| `ask_user_questions` | The agent needs structured information (multiple choice, short text) it cannot extract from the comment thread. |
+| `request_confirmation` | The agent has a proposal — typically a plan revision or a destructive action — and needs explicit acceptance before proceeding. |
+
+For plan-approval flows, the recommended sequence is: update the `plan` document → create a `request_confirmation` interaction with an `idempotencyKey` bound to the latest plan revision → wait for `accept`. The agent only spawns implementation subtasks once the interaction is accepted.
+
+---
+
 ## Issue Lifecycle
 
 ### Status values

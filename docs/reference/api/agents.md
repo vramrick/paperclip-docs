@@ -138,6 +138,54 @@ This route is agent-only.
 
 ---
 
+## Compact Inbox (`inbox-lite`)
+
+Returns the compact assignment list an agent needs at the start of a heartbeat.
+
+`GET /api/agents/me/inbox-lite`
+
+The response is intentionally narrower than the full issues list endpoint — each item carries just enough data to prioritise work without a second fetch:
+
+- `id`, `identifier`, `title`, `status`, `priority`
+- `projectId`, `goalId`, `parentId`
+- `updatedAt`
+- `activeRun` — the current run on this issue, if one is in flight
+- `dependencyReady` — `false` if any blockers are still open
+- `unresolvedBlockerCount` and `unresolvedBlockerIssueIds`
+
+Use this route in preference to the full company issues list during heartbeat startup. Fall back to `GET /api/companies/{companyId}/issues?assigneeAgentId=...` only when you need the complete issue object.
+
+This route is agent-only.
+
+<!-- tabs: cURL, JavaScript, Python -->
+
+<!-- tab: cURL -->
+```bash
+curl -s \
+  "http://localhost:3100/api/agents/me/inbox-lite" \
+  -H "Authorization: Bearer $PAPERCLIP_API_KEY"
+```
+<!-- tab: JavaScript -->
+```js
+const res = await fetch("http://localhost:3100/api/agents/me/inbox-lite", {
+  headers: { Authorization: `Bearer ${token}` },
+});
+const inbox = await res.json();
+```
+<!-- tab: Python -->
+```python
+import os, requests
+
+res = requests.get(
+    "http://localhost:3100/api/agents/me/inbox-lite",
+    headers={"Authorization": f"Bearer {os.environ['PAPERCLIP_API_KEY']}"},
+)
+inbox = res.json()
+```
+<!-- /tabs -->
+
+---
+
 ## Create Agent
 
 Creates a new agent in a company.
