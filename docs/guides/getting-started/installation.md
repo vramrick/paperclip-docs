@@ -145,6 +145,8 @@ corepack prepare pnpm@latest --activate
 
 ## Step 3 — Run the onboarding command
 
+> **Warning:** Do not run this command with `sudo` or from a root/admin shell. The default setup starts embedded PostgreSQL, and PostgreSQL refuses to run as an administrative user. Run it as your normal user on a local machine. On a server, first switch to the dedicated `paperclip` user with `sudo -iu paperclip`, then run the command.
+
 ```bash
 npx paperclipai onboard --yes
 ```
@@ -463,6 +465,7 @@ Useful diagnostic commands if anything goes wrong:
 
 Common errors:
 
+- **`Embedded PostgreSQL failed` with `Execution of PostgreSQL by a user with administrative permissions is not permitted`** — Paperclip was started as root or with elevated privileges. Stop it, switch to a normal non-root user, and run `npx paperclipai run` again. On a VPS, make sure you have run `sudo -iu paperclip` before onboarding or starting Paperclip. If you accidentally created files under the wrong account, remove the root-owned instance or fix ownership before retrying.
 - **`auth.publicBaseUrl is required when deploymentMode=authenticated and exposure=public`** — you didn't export `PAPERCLIP_AUTH_PUBLIC_BASE_URL` before running `onboard`. Re-export it and run `paperclipai configure --section server` (or re-run `paperclipai onboard --yes`).
 - **Requests rejected with a host mismatch** — the hostname you're accessing isn't in `server.allowedHostnames`. Add it via `paperclipai allowed-hostname <host>` or by editing `PAPERCLIP_ALLOWED_HOSTNAMES` in `~/paperclip.env` and restarting the service.
 - **Invite link 404s** — the invite was already consumed, or the base URL on the printed link doesn't match what the browser is hitting. Re-run `paperclipai auth bootstrap-ceo --force --base-url https://paperclip.example.com`.
