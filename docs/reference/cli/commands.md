@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.427.0
+paperclip_version: v2026.512.0
 ---
 
 # Command Reference
@@ -967,6 +967,91 @@ paperclipai feedback export [options]
 ```
 
 Accepts the same filter flags as `feedback report` plus an output directory option. See `paperclipai feedback export --help` for the full list.
+
+---
+
+## `secrets`
+
+Secret declaration and provider operations against a live Paperclip instance.
+
+### `paperclipai secrets list`
+
+List secret metadata for a company.
+
+```
+paperclipai secrets list [options]
+```
+
+### `paperclipai secrets declarations`
+
+List portable env declarations emitted by company export.
+
+```
+paperclipai secrets declarations [options]
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--include <values>` | csv | `company,agents,projects` | Comma-separated include set: `company`, `agents`, `projects`, `issues`, `tasks`, `skills`. |
+| `--kind <kind>` | enum | `all` | Filter declarations: `all`, `secret`, `plain`. |
+
+### `paperclipai secrets create`
+
+Create a Paperclip-managed secret.
+
+```
+paperclipai secrets create [options]
+```
+
+| Flag | Type | Description |
+|---|---|---|
+| `--key <key>` | string | Portable secret key. |
+| `--provider <provider>` | string | Secret provider id. |
+| `--value <value>` | string | Secret value (inline). |
+| `--value-env <name>` | string | Read the secret value from an environment variable. |
+| `--description <text>` | string | Description. |
+
+### `paperclipai secrets link`
+
+Link an external provider-owned secret without storing its value in Paperclip.
+
+```
+paperclipai secrets link [options]
+```
+
+| Flag | Type | Description |
+|---|---|---|
+| `--key <key>` | string | Portable secret key. |
+| `--provider-version-ref <ref>` | string | Provider version id or label. |
+| `--description <text>` | string | Description. |
+
+### `paperclipai secrets doctor`
+
+Run secret provider health checks through the Paperclip API.
+
+```
+paperclipai secrets doctor [options]
+```
+
+### `paperclipai secrets providers`
+
+List configured secret provider descriptors.
+
+```
+paperclipai secrets providers [options]
+```
+
+### `paperclipai secrets migrate-inline-env`
+
+Migrate inline sensitive agent env values into secret references.
+
+```
+paperclipai secrets migrate-inline-env [options]
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--apply` | flag | `false` | Persist changes. The default is a dry run. |
 
 ---
 
