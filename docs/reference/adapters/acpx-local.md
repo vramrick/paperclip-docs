@@ -49,6 +49,29 @@ The built-in `agent` options are `claude`, `codex`, and `custom`.
 
 ---
 
+---
+
+## Example
+
+Today's ACPX runtime is staged — see the callout at the top of this page. The configuration below is the shape Paperclip will accept once the runtime is enabled.
+
+```json
+{
+  "adapterType": "acpx_local",
+  "adapterConfig": {
+    "agent": "claude",
+    "mode": "persistent",
+    "cwd": "/Users/me/projects/paperclip-workspace",
+    "permissionMode": "approve-all",
+    "nonInteractivePermissions": "deny",
+    "timeoutSec": 0,
+    "warmHandleIdleMs": 0
+  }
+}
+```
+
+---
+
 ## Related
 
 - [Claude Local](./claude-local.md) — stable Claude Code CLI wrapper.

@@ -57,6 +57,35 @@ Paperclip reuses the durable Cursor agent across heartbeats when the repo and ru
 
 ---
 
+---
+
+## Example
+
+```json
+{
+  "adapterType": "cursor_cloud",
+  "adapterConfig": {
+    "repoUrl": "https://github.com/example-org/example-repo",
+    "repoStartingRef": "main",
+    "runtimeEnvType": "cloud",
+    "workOnCurrentBranch": false,
+    "autoCreatePR": true,
+    "skipReviewerRequest": false,
+    "promptTemplate": "You are the engineering lead. Work carefully and report progress.",
+    "bootstrapPromptTemplate": "Bootstrap the working environment, then await instructions.",
+    "env": {
+      "CURSOR_API_KEY": {
+        "type": "secret_ref",
+        "secretId": "secret-id",
+        "version": "latest"
+      }
+    }
+  }
+}
+```
+
+---
+
 ## Related
 
 - [Cursor Local](./cursor-local.md) — same agent vendor, local execution.
