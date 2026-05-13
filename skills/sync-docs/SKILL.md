@@ -9,6 +9,8 @@ This skill keeps **paperclip-docs** in lockstep with the parent code repo **pape
 
 > Our docs are not a translation of the parent's docs. The **parent's code** is the source of truth. The parent's release notes and inline docs are reference data for understanding intent.
 
+> For the visual model of the branch flow and per-run phases, see `MAINTENANCE.md` → Sync workflow → Architecture (two mermaid diagrams). This file is the operational playbook; that file is the picture.
+
 ## Mental model
 
 | | `nightly` mode | `release` mode |
