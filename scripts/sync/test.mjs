@@ -598,6 +598,114 @@ test("frontmatter: malformed (missing closing fence) falls back to full body", (
 });
 
 // ----------------------------------------------------------------------------
+// detect-renames (unit, fixture-driven)
+// ----------------------------------------------------------------------------
+
+const RENAMES_SCRIPT = join(SELF_DIR, "detect-renames.mjs");
+
+function runRenames(manifest) {
+  const fix = mkdtempSync(join(tmpdir(), "renames-test-"));
+  const inputPath = join(fix, "window.json");
+  writeFileSync(inputPath, JSON.stringify(manifest));
+  const r = spawnSync(process.execPath, [RENAMES_SCRIPT, inputPath, "--json"], {
+    encoding: "utf8",
+  });
+  rmSync(fix, { recursive: true, force: true });
+  return { code: r.status, stdout: r.stdout, stderr: r.stderr };
+}
+
+function dirFiles(dir, suffixes, status) {
+  return suffixes.map((s) => ({ filename: `${dir}/${s}`, status, additions: 1, deletions: 0 }));
+}
+
+test("detect-renames: pure rename via file-content-overlap", () => {
+  const suffixes = ["index.ts", "client.ts", "types.ts", "config.ts", "auth.ts",
+    "session.ts", "stream.ts", "errors.ts", "README.md", "package.json"];
+  const files = [
+    ...dirFiles("packages/adapters/old-name", suffixes, "removed"),
+    ...dirFiles("packages/adapters/new-name", suffixes, "added"),
+  ];
+  const r = runRenames({ files });
+  assert(r.code === 0, `exit ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  assert(out.renames.length === 1, `expected 1 rename, got ${out.renames.length}: ${JSON.stringify(out.renames)}`);
+  const ren = out.renames[0];
+  assert(ren.from === "packages/adapters/old-name", `from=${ren.from}`);
+  assert(ren.to === "packages/adapters/new-name", `to=${ren.to}`);
+  assert(ren.signal === "file-content-overlap", `signal=${ren.signal}`);
+  assert(ren.confidence === "high", `confidence=${ren.confidence}`);
+});
+
+test("detect-renames: shared-prefix rename without file overlap", () => {
+  const removedSuffixes = ["old-a.ts", "old-b.ts", "old-c.ts", "old-d.ts", "old-e.ts"];
+  const addedSuffixes = ["new-a.ts", "new-b.ts", "new-c.ts", "new-d.ts", "new-e.ts"];
+  const files = [
+    ...dirFiles("packages/adapters/cursor-local", removedSuffixes, "removed"),
+    ...dirFiles("packages/adapters/cursor-cloud", addedSuffixes, "added"),
+  ];
+  const r = runRenames({ files });
+  assert(r.code === 0, `exit ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  assert(out.renames.length === 1, `expected 1 rename, got ${out.renames.length}`);
+  const ren = out.renames[0];
+  assert(ren.from === "packages/adapters/cursor-local", `from=${ren.from}`);
+  assert(ren.to === "packages/adapters/cursor-cloud", `to=${ren.to}`);
+  assert(ren.signal === "shared-prefix", `signal=${ren.signal}`);
+  assert(ren.confidence === "high" || ren.confidence === "medium", `confidence=${ren.confidence}`);
+});
+
+test("detect-renames: genuinely new dir (no match)", () => {
+  const files = dirFiles("packages/adapters/acpx-local",
+    ["index.ts", "client.ts", "types.ts"], "added");
+  const r = runRenames({ files });
+  assert(r.code === 0, `exit ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  assert(out.renames.length === 0, `expected 0 renames, got ${out.renames.length}`);
+  assert(out.added_dirs_genuinely_new.length === 1, `expected 1 new dir, got ${JSON.stringify(out.added_dirs_genuinely_new)}`);
+  assert(out.added_dirs_genuinely_new[0] === "packages/adapters/acpx-local",
+    `entry=${out.added_dirs_genuinely_new[0]}`);
+});
+
+test("detect-renames: genuine removal (no match)", () => {
+  const files = dirFiles("packages/adapters/legacy-thing",
+    ["index.ts", "client.ts", "types.ts"], "removed");
+  const r = runRenames({ files });
+  assert(r.code === 0, `exit ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  assert(out.renames.length === 0, `expected 0 renames, got ${out.renames.length}`);
+  assert(out.removed_dirs_no_match.length === 1, `expected 1 orphan removal, got ${JSON.stringify(out.removed_dirs_no_match)}`);
+  assert(out.removed_dirs_no_match[0] === "packages/adapters/legacy-thing",
+    `entry=${out.removed_dirs_no_match[0]}`);
+});
+
+test("detect-renames: two candidates → file-overlap wins over shared-prefix", () => {
+  // The added dir 'packages/adapters/cursor-renamed' shares a prefix with
+  // 'cursor-local' (shared-prefix candidate) but its internal files are
+  // identical to 'completely-different' (file-overlap candidate).
+  const sharedSuffixes = ["index.ts", "client.ts", "types.ts", "auth.ts",
+    "stream.ts", "errors.ts", "config.ts", "README.md"];
+  const files = [
+    // shared-prefix candidate: same parent, similar leaf, different filenames
+    ...dirFiles("packages/adapters/cursor-local",
+      ["a.ts", "b.ts", "c.ts", "d.ts"], "removed"),
+    // file-overlap candidate: different leaf name, but matching internal files
+    ...dirFiles("packages/adapters/completely-different", sharedSuffixes, "removed"),
+    // the added dir
+    ...dirFiles("packages/adapters/cursor-renamed", sharedSuffixes, "added"),
+  ];
+  const r = runRenames({ files });
+  assert(r.code === 0, `exit ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  // The added dir should match the file-overlap candidate.
+  const renForAdded = out.renames.find((x) => x.to === "packages/adapters/cursor-renamed");
+  assert(renForAdded, `expected a rename for cursor-renamed, got: ${JSON.stringify(out.renames)}`);
+  assert(renForAdded.signal === "file-content-overlap",
+    `expected file-content-overlap, got ${renForAdded.signal}`);
+  assert(renForAdded.from === "packages/adapters/completely-different",
+    `from=${renForAdded.from}`);
+});
+
+// ----------------------------------------------------------------------------
 
 console.log("");
 console.log(`Results: ${pass} passed, ${fail} failed.`);
