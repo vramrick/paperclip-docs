@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.403.0
+paperclip_version: v2026.416.0
 ---
 
 # Environment Variables
@@ -20,6 +20,9 @@ Use it when you are wiring a deployment, debugging a startup issue, or checking 
 | `PAPERCLIP_HOME` | `~/.paperclip` | Base directory for all Paperclip data |
 | `PAPERCLIP_INSTANCE_ID` | `default` | Instance identifier for multiple local instances |
 | `PAPERCLIP_DEPLOYMENT_MODE` | `local_trusted` | Runtime mode override |
+| `PAPERCLIP_BIND` | inferred from `HOST` | Bind mode for the server socket. One of the values in `BIND_MODES` (see `packages/shared`); overrides `server.bind` in `config.json`. |
+| `PAPERCLIP_BIND_HOST` | inferred | Custom host when `PAPERCLIP_BIND` is set to a custom mode; overrides `server.customBindHost`. |
+| `PAPERCLIP_TAILNET_BIND_HOST` | auto-detected via `tailscale ip -4` | Tailnet IPv4 address the server binds to when bind mode is `tailnet`. Set explicitly to skip the `tailscale` CLI probe. |
 
 > **Note:** `DATABASE_URL` is the main switch between the embedded database and external PostgreSQL.
 
