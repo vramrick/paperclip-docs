@@ -5,7 +5,7 @@
 //
 // Usage: node scripts/sync/test.mjs
 
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, copyFileSync, rmSync } from "node:fs";
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, copyFileSync, rmSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, dirname, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -218,6 +218,196 @@ test("backfill-screenshots: preserves entries with depends_on, scaffolds the res
   assert(typeof dark._todo === "string" && dark._todo.length > 0, "dark _todo missing");
 
   rmSync(fix, { recursive: true, force: true });
+});
+
+// ----------------------------------------------------------------------------
+// compare-window (unit, fixture-driven)
+// ----------------------------------------------------------------------------
+
+const COMPARE_SCRIPT = join(SELF_DIR, "compare-window.mjs");
+
+function writeFixture(dir, name, payload) {
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, name), typeof payload === "string" ? payload : JSON.stringify(payload));
+}
+
+function runCompare(args, fixtureDir) {
+  const r = spawnSync(process.execPath, [COMPARE_SCRIPT, ...args], {
+    encoding: "utf8",
+    env: { ...process.env, PAPERCLIP_SYNC_FIXTURE_DIR: fixtureDir },
+  });
+  return { code: r.status, stdout: r.stdout, stderr: r.stderr };
+}
+
+test("compare-window: no truncation → single leaf, all files preserved", () => {
+  const fix = mkdtempSync(join(tmpdir(), "cw-test-"));
+  // SHA lookups for the two refs.
+  writeFixture(fix, "sha-A.json", { sha: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" });
+  writeFixture(fix, "sha-B.json", { sha: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" });
+  // Compare body keyed by the resolved SHAs.
+  const files = [];
+  for (let i = 0; i < 42; i++) {
+    files.push({ filename: `f${i}.ts`, status: "modified", additions: 1, deletions: 0 });
+  }
+  const commits = Array.from({ length: 10 }, (_, i) => ({ sha: `c${i}`.padEnd(40, "0") }));
+  writeFixture(fix, "compare-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.json", {
+    total_commits: 10,
+    commits,
+    files,
+  });
+
+  const r = runCompare(["A", "B", "--json"], fix);
+  assert(r.code === 0, `expected 0, got ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  assert(out.leaves === 1, `leaves=${out.leaves}`);
+  assert(out.truncated_leaves === 0, `truncated_leaves=${out.truncated_leaves}`);
+  assert(out.files.length === 42, `files.length=${out.files.length}`);
+  assert(out.total_commits_seen === 10, `commits=${out.total_commits_seen}`);
+
+  rmSync(fix, { recursive: true, force: true });
+});
+
+test("compare-window: single split bisects and unions correctly", () => {
+  const fix = mkdtempSync(join(tmpdir(), "cw-test-"));
+  const aSha = "a".repeat(40);
+  const bSha = "b".repeat(40);
+  const midSha = "m".repeat(40);
+  writeFixture(fix, "sha-A.json", { sha: aSha });
+  writeFixture(fix, "sha-B.json", { sha: bSha });
+
+  // Top-level A...B is truncated: 300 files, 250 commits in array, total_commits=500.
+  const topFiles = [];
+  for (let i = 0; i < 300; i++) topFiles.push({ filename: `top${i}.ts`, status: "modified", additions: 1, deletions: 0 });
+  const topCommits = [];
+  for (let i = 0; i < 250; i++) topCommits.push({ sha: i === 125 ? midSha : `t${i}`.padEnd(40, "0") });
+  writeFixture(fix, `compare-${aSha}...${bSha}.json`, {
+    total_commits: 250,
+    commits: topCommits,
+    files: topFiles,
+  });
+
+  // Left leaf A...mid (non-truncated)
+  writeFixture(fix, `compare-${aSha}...${midSha}.json`, {
+    total_commits: 50,
+    commits: Array.from({ length: 50 }, (_, i) => ({ sha: `l${i}`.padEnd(40, "0") })),
+    files: [
+      { filename: "left-only.ts", status: "added", additions: 5, deletions: 0 },
+      { filename: "shared.ts", status: "added", additions: 3, deletions: 0 },
+    ],
+  });
+
+  // Right leaf mid...B (non-truncated). shared.ts becomes "modified" — should merge
+  // with leaf-1's "added" to become "modified".
+  writeFixture(fix, `compare-${midSha}...${bSha}.json`, {
+    total_commits: 60,
+    commits: Array.from({ length: 60 }, (_, i) => ({ sha: `r${i}`.padEnd(40, "0") })),
+    files: [
+      { filename: "right-only.ts", status: "added", additions: 2, deletions: 0 },
+      { filename: "shared.ts", status: "modified", additions: 7, deletions: 1 },
+    ],
+  });
+
+  const r = runCompare(["A", "B", "--json"], fix);
+  assert(r.code === 0, `expected 0, got ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  assert(out.leaves === 2, `leaves=${out.leaves}`);
+  assert(out.truncated_leaves === 0, `truncated_leaves=${out.truncated_leaves}`);
+  const byName = Object.fromEntries(out.files.map((f) => [f.filename, f]));
+  assert(byName["left-only.ts"], "missing left-only.ts");
+  assert(byName["right-only.ts"], "missing right-only.ts");
+  assert(byName["shared.ts"], "missing shared.ts");
+  assert(byName["shared.ts"].status === "modified", `shared.ts status=${byName["shared.ts"].status}`);
+  // additions summed: 3 + 7
+  assert(byName["shared.ts"].additions === 10, `shared.ts additions=${byName["shared.ts"].additions}`);
+
+  rmSync(fix, { recursive: true, force: true });
+});
+
+test("compare-window: status merge — added+removed drops, added+modified→modified", () => {
+  const fix = mkdtempSync(join(tmpdir(), "cw-test-"));
+  const aSha = "a".repeat(40);
+  const bSha = "b".repeat(40);
+  const midSha = "c".repeat(40);
+  writeFixture(fix, "sha-A.json", { sha: aSha });
+  writeFixture(fix, "sha-B.json", { sha: bSha });
+
+  // Truncated parent forcing a split.
+  const topFiles = [];
+  for (let i = 0; i < 300; i++) topFiles.push({ filename: `pad${i}.ts`, status: "modified", additions: 0, deletions: 0 });
+  const topCommits = [];
+  for (let i = 0; i < 50; i++) topCommits.push({ sha: i === 25 ? midSha : `t${i}`.padEnd(40, "0") });
+  writeFixture(fix, `compare-${aSha}...${bSha}.json`, {
+    total_commits: 50,
+    commits: topCommits,
+    files: topFiles,
+  });
+
+  writeFixture(fix, `compare-${aSha}...${midSha}.json`, {
+    total_commits: 10,
+    commits: Array.from({ length: 10 }, (_, i) => ({ sha: `l${i}`.padEnd(40, "0") })),
+    files: [
+      { filename: "foo.ts", status: "added", additions: 50, deletions: 0 },
+      { filename: "bar.ts", status: "added", additions: 30, deletions: 0 },
+    ],
+  });
+
+  writeFixture(fix, `compare-${midSha}...${bSha}.json`, {
+    total_commits: 10,
+    commits: Array.from({ length: 10 }, (_, i) => ({ sha: `r${i}`.padEnd(40, "0") })),
+    files: [
+      { filename: "foo.ts", status: "removed", additions: 0, deletions: 50 },
+      { filename: "bar.ts", status: "modified", additions: 4, deletions: 1 },
+    ],
+  });
+
+  const r = runCompare(["A", "B", "--json"], fix);
+  assert(r.code === 0, `expected 0, got ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  const byName = Object.fromEntries(out.files.map((f) => [f.filename, f]));
+  assert(!byName["foo.ts"], `foo.ts should be dropped (added+removed); got ${JSON.stringify(byName["foo.ts"])}`);
+  assert(byName["bar.ts"], "bar.ts missing");
+  assert(byName["bar.ts"].status === "modified", `bar.ts status=${byName["bar.ts"].status} (expected modified)`);
+
+  rmSync(fix, { recursive: true, force: true });
+});
+
+// ----------------------------------------------------------------------------
+// compare-window:integration — live network test against paperclipai/paperclip
+// ----------------------------------------------------------------------------
+
+test("compare-window:integration v2026.318.0...v2026.512.0 (live)", () => {
+  // Skip (don't fail) if gh isn't authed.
+  const auth = spawnSync("gh", ["auth", "status"], { encoding: "utf8" });
+  if (auth.status !== 0) {
+    console.log("        SKIP — gh auth status failed; this test needs an authed gh + network.");
+    pass--; // counter the auto-pass from the wrapper; we want a neutral marker
+    // We re-increment via a "skip" path: don't throw, but mark visually.
+    pass++; // restore (treat skip as pass for runner)
+    return;
+  }
+  const r = spawnSync(process.execPath, [
+    COMPARE_SCRIPT,
+    "v2026.318.0",
+    "v2026.512.0",
+    "--json",
+    "--repo",
+    "paperclipai/paperclip",
+  ], { encoding: "utf8", env: { ...process.env, PAPERCLIP_SYNC_FIXTURE_DIR: "" } });
+  if (r.status !== 0) {
+    throw new Error(`live run failed (exit ${r.status}). stderr=${r.stderr}`);
+  }
+  const out = JSON.parse(r.stdout);
+  assert(out.truncated_leaves === 0, `truncated_leaves=${out.truncated_leaves} (must be 0)`);
+  assert(out.files.length >= 1000, `files.length=${out.files.length} (expected >= 1000)`);
+  const names = new Set(out.files.map((f) => f.filename));
+  for (const expected of [
+    "cli/src/commands/client/secrets.ts",
+    ".env.example",
+    "server/src/routes/companies.ts",
+  ]) {
+    assert(names.has(expected), `expected file missing from output: ${expected}`);
+  }
+  console.log(`        integration stats: files=${out.files.length}, leaves=${out.leaves}, truncated=${out.truncated_leaves}, commits=${out.total_commits_seen}`);
 });
 
 // ----------------------------------------------------------------------------

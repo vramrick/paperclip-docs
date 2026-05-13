@@ -80,18 +80,17 @@ gh api repos/paperclipai/paperclip/compare/$PREV...$NEXT \
 
 Cache result under `/tmp/paperclip-sync/<sha>/` so we don't refetch within a run.
 
-> **Pagination & truncation.** The GitHub `compare` endpoint caps responses at **300 changed files** and **250 commits** per call. For large gaps (many releases) the response will be truncated, and tag-to-tag splits are *not enough* on their own — the 318→512 dry-run had 5 of 6 tag-to-tag windows still hitting the file cap. Use **recursive midpoint bisection** instead:
+> **Pagination & truncation.** The GitHub `compare` endpoint caps responses at 300 files / 250 commits. Use the helper that handles recursive midpoint bisection by SHA:
 >
-> 1. Make a single `gh api repos/paperclipai/paperclip/compare/$A...$B` call.
-> 2. Detect truncation: the response is truncated if `files.length == 300` **OR** `total_commits > commits.length`.
-> 3. If truncated, split the window at the **midpoint commit** and recurse on each half (`A...mid`, `mid...B`). Continue recursing until every leaf window returns `files.length < 300` **AND** `commits.length == total_commits`.
-> 4. Choose the midpoint by enumerating commit SHAs: `gh api repos/paperclipai/paperclip/compare/$A...$B -q '.commits[].sha'` returns up to 250 SHAs — pick the median. If the gap itself exceeds 250 commits so the compare can't enumerate them in one call, fall back to enumerating commits independently via `gh api "repos/paperclipai/paperclip/commits?sha=$B&until=<date-of-A>&per_page=100" --paginate -q '.[].sha'` and walk backwards until you reach `$A`'s SHA; pick the median of that list.
-> 5. **Union and merge leaf file lists**, de-duplicating by `filename`. Merge statuses across leaves:
->    - `added` + `modified` → `modified`
->    - `added` + `removed` → drop (the file was added and then removed within the window — net zero)
->    - `modified` + `removed` → `removed`
->    - `renamed` wins over `modified` on the same filename (the rename is the more informative signal)
-> 6. Cache each leaf response under `/tmp/paperclip-sync/<sha-a>..<sha-b>/` so re-runs within the day don't refetch.
+> ```
+> node scripts/sync/compare-window.mjs $PREV $NEXT --json
+> ```
+>
+> Returns `{ from, to, total_commits_seen, leaves, truncated_leaves, files: [...] }`. `truncated_leaves` MUST be 0 in a successful run; non-zero means a leaf still hit the cap (should be impossible) and the run should abort with that fact in the summary.
+>
+> The script applies these status-merge rules when unioning leaf file lists: `added`+`removed` → drop; `added`+`modified` → `modified`; `modified`+`removed` → `removed`; `renamed` wins over `modified`. Latest-seen status wins otherwise.
+>
+> Leaf responses are cached under `/tmp/paperclip-sync/` so re-runs within a day are cheap.
 
 > **Why cumulative, not incremental?** If we diffed `yesterday → today`, a revert commit landing today would need to be processed to undo yesterday's doc edit — and filtering revert commits by message regex would lose that signal. With cumulative diffs from the last release, reverts simply aren't in the diff at all. The original commit and its revert cancel out before we ever see them.
 
