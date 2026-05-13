@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.416.0
+paperclip_version: v2026.427.0
 ---
 
 # Environment Variables
@@ -17,6 +17,7 @@ Use it when you are wiring a deployment, debugging a startup issue, or checking 
 | `PORT` | `3100` | Server port |
 | `HOST` | `127.0.0.1` | Server host binding |
 | `DATABASE_URL` | embedded PostgreSQL | PostgreSQL connection string |
+| `DATABASE_MIGRATION_URL` | falls back to `DATABASE_URL` | Optional PostgreSQL URL used only when running migrations — useful when your runtime user lacks DDL rights and a separate role applies schema changes. |
 | `PAPERCLIP_HOME` | `~/.paperclip` | Base directory for all Paperclip data |
 | `PAPERCLIP_INSTANCE_ID` | `default` | Instance identifier for multiple local instances |
 | `PAPERCLIP_DEPLOYMENT_MODE` | `local_trusted` | Runtime mode override |

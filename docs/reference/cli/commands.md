@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.403.0
+paperclip_version: v2026.427.0
 ---
 
 # Command Reference
@@ -967,6 +967,55 @@ paperclipai feedback export [options]
 ```
 
 Accepts the same filter flags as `feedback report` plus an output directory option. See `paperclipai feedback export --help` for the full list.
+
+---
+
+## `env-lab`
+
+Manage deterministic local environment fixtures used for adapter and runtime experiments.
+
+### `paperclipai env-lab up`
+
+Start the default SSH env-lab fixture.
+
+```
+paperclipai env-lab up [options]
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `-i, --instance <id>` | string | current / `default` | Paperclip instance id. |
+| `--json` | flag | `false` | Print machine-readable fixture details. |
+
+### `paperclipai env-lab status`
+
+Show the current SSH env-lab fixture state.
+
+```
+paperclipai env-lab status [options]
+```
+
+Accepts the same `-i, --instance <id>` and `--json` flags as `env-lab up`.
+
+### `paperclipai env-lab down`
+
+Stop the default SSH env-lab fixture.
+
+```
+paperclipai env-lab down [options]
+```
+
+Accepts the same `-i, --instance <id>` and `--json` flags as `env-lab up`.
+
+### `paperclipai env-lab doctor`
+
+Check SSH fixture prerequisites and current status.
+
+```
+paperclipai env-lab doctor [options]
+```
+
+Accepts the same `-i, --instance <id>` and `--json` flags as `env-lab up`.
 
 ---
 
