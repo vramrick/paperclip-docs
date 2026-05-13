@@ -25,9 +25,10 @@ The branch model is non-negotiable: end users on the latest *released* paperclip
 ## Files this skill reads / writes
 
 - `scripts/sync/anchor-map.json` — read-only config: which parent paths to watch, which docs paths they map to, which tier (auto-merge vs PR).
-- `.sync-state.json` — read/write: where this branch last left off.
+- `.sync-state.json` — read/write: where this branch last left off and what was last applied. Schema: `branch_mode`, `base_release_tag`, `base_release_sha`, `last_seen_parent_sha`, `last_applied_manifest_hash`, `last_run_at`, `last_run_outcome`.
 - `docs/user-guides/screenshots/registry.json` — read/write: screenshot dependency tracking.
-- `PENDING.md` (on `nightly` branch only) — write: human-readable change manifest accumulating since last release.
+- `PENDING.md` (on `nightly` branch only) — **regenerated** from scratch each run (not appended) so it always reflects the current cumulative manifest. Stale entries from reverted commits never linger.
+- `SCREENSHOTS_PENDING.md` (committed) — regenerated each run, lists screenshots whose `depends_on` paths changed in the diff window.
 
 ## Invocation
 
@@ -51,20 +52,22 @@ The branch model is non-negotiable: end users on the latest *released* paperclip
 
 ### Phase 1 — Decide mode and target branch
 
-1. Read `.sync-state.json`. Note `mode` and `synced_to`.
+1. Read `.sync-state.json`. Note `branch_mode` and `base_release_tag`.
 2. Fetch parent's latest release: `gh api repos/paperclipai/paperclip/releases/latest -q '.tag_name'`.
 3. Auto-detect mode (unless overridden):
-   - If a new release tag exists AND `synced_to` is older → **release mode**.
+   - If a new release tag exists AND `base_release_tag` is older → **release mode**.
    - Otherwise → **nightly mode**.
 4. Check out the right branch:
-   - Release mode: ensure on `main`. If `nightly` branch doesn't exist yet, the release is a no-op until nightly has produced drafts; tell the user and exit.
+   - Release mode: ensure on `main`. Release mode is **self-sufficient** — it does not require the `nightly` branch to exist or to have drafts. If `nightly` exists with relevant drafts, they're used as a starting point; if not, the release run computes everything from scratch.
    - Nightly mode: ensure on `nightly`. If `nightly` doesn't exist, create it from `main`.
 5. Nightly mode only: **merge `main` into `nightly` first** to absorb any hot-fix typos that landed on released docs. Resolve trivially or abort if conflicts need human attention.
 
-### Phase 2 — Resolve the diff window
+### Phase 2 — Resolve the diff window (cumulative)
 
-- Release mode: `prev_tag = synced_to`, `next_tag = latest release tag`. Build a list of tags between them (chronological) so we can produce one PR per tag if `--batched`.
-- Nightly mode: `prev_sha = synced_sha`, `next_sha = parent main HEAD`. Apply quarantine: subtract any commits younger than `quarantine_hours` from the window.
+Both modes use **cumulative diffs** — always from a stable base, never incrementally from yesterday. This makes reverts auto-cancel (they're net-zero in the cumulative diff) and lets `nightly` be safely regenerated.
+
+- **Release mode**: `prev = state.base_release_tag`, `next = latest release tag`. Build a list of intermediate tags so `--batched` can produce one PR per tag.
+- **Nightly mode**: `prev = state.base_release_tag` (NOT yesterday's SHA), `next = parent main HEAD`. Then apply **quarantine**: ignore any commits younger than `quarantine_hours` (default 24) so reverts have time to land before we process the original.
 
 For each window:
 
@@ -74,6 +77,8 @@ gh api repos/paperclipai/paperclip/compare/$PREV...$NEXT \
 ```
 
 Cache result under `/tmp/paperclip-sync/<sha>/` so we don't refetch within a run.
+
+> **Why cumulative, not incremental?** If we diffed `yesterday → today`, a revert commit landing today would need to be processed to undo yesterday's doc edit — and filtering revert commits by message regex would lose that signal. With cumulative diffs from the last release, reverts simply aren't in the diff at all. The original commit and its revert cancel out before we ever see them.
 
 ### Phase 3 — Surface diff (the change manifest)
 
@@ -97,11 +102,24 @@ For each watcher in `anchor-map.json`:
 
 Filter the change manifest:
 
-- Drop commits matching any `skip_patterns` regex.
 - Drop watcher-`context-only` entries (they only feed framing into other entries).
 - Sort by tier (auto-merge first, then PR).
 
-Write the manifest to `/tmp/paperclip-sync/manifest.yaml` and, in nightly mode, append a human-readable rollup to `PENDING.md` at repo root.
+> **We do not filter commits by message regex.** No `skip_patterns`. The cumulative diff already filters by *outcome* (a reverted commit's net change is zero, so it's not in the diff). Filtering by commit-message regex would dangerously hide undo signals — see the warning in Phase 2.
+
+Write the manifest to `/tmp/paperclip-sync/manifest.yaml` and, in nightly mode, **regenerate** `PENDING.md` at repo root from this manifest (overwrite — do not append). Compute `manifest_hash = sha256(canonical manifest yaml)` for use in the reconciliation step below.
+
+### Phase 3.5 — Reconciliation (catches reverts of previously-applied changes)
+
+Cumulative diffs prevent us from making *new* wrong edits, but they don't automatically undo edits we already committed in a prior run for a feature that has since been reverted.
+
+1. Compare `manifest_hash` to `state.last_applied_manifest_hash`. If equal → nothing changed since last run, skip to Phase 6.
+2. Compute the **manifest delta**:
+   - New entries (in current, not in last) → normal apply in Phase 5.
+   - Disappeared entries (in last, not in current) → **reconciliation candidates**. A doc edit was made previously for something that's no longer in the cumulative diff. Most likely cause: the parent commit was reverted.
+3. For each disappeared entry, emit a reconciliation flag with the original watcher, target docs path, and the now-vanished parent commits. Do **not** auto-undo the doc edit — surface it to the user in the run summary and (if writing a PR) in the PR body under a "⚠ Reconcile" section. Manual review decides whether the doc edit should be reverted.
+
+This is the fail-safe: even if a revert lands between runs, the user gets a clear "the feature you documented yesterday no longer exists upstream" alert at the next run.
 
 ### Phase 4 — Dry-run gate
 
@@ -111,6 +129,7 @@ If `--dry-run`: print the manifest summary, no further action. Always show:
 - Manifest entries by tier.
 - Auto-merge candidates (count + bullet list).
 - PR candidates (count + bullet list).
+- Reconciliation candidates from Phase 3.5 (disappeared entries).
 - Screenshot staleness flags (from Phase 6).
 
 Stop here.
@@ -119,10 +138,15 @@ Stop here.
 
 For each manifest entry, top-down:
 
-**Auto-merge tier** (only if it passes `auto_merge_safety` thresholds in anchor-map.json):
-- Make the mechanical edit directly. Examples: append a row to `environment-variables.md`, add an adapter name to a list.
-- Do NOT auto-merge if the entry: removes/renames anything, changes more than `max_files_changed`, or exceeds `max_lines_changed`.
-- Failed safety check → demote to PR tier.
+**Auto-merge tier** (only if it passes `auto_merge_safety` in anchor-map.json):
+
+Safety gates, checked in order — failing ANY demotes the entry to PR tier:
+
+1. `change_kind` must NOT be in `auto_merge_safety.forbid_kinds` (default: `removed`, `renamed`). A 1-line rename is still a breaking change.
+2. Files touched ≤ `auto_merge_safety.max_files_changed`.
+3. Lines changed ≤ `auto_merge_safety.max_lines_changed`.
+
+If all pass: make the mechanical edit directly. Examples: append a row to `environment-variables.md`, add an adapter name to an enumerated list. Never rewrite prose under this tier — that's PR tier by definition.
 
 **PR tier** (judgment calls):
 - Spawn a subagent per entry, in parallel where possible. Give each:
@@ -166,14 +190,16 @@ Output stale entries to `SCREENSHOTS_PENDING.md` (committed) and to the PR/commi
 5. Update `.sync-state.json`:
    ```json
    {
-     "mode": "<nightly|release>",
-     "synced_to": "<tag-or-main>",
-     "synced_sha": "<parent-sha>",
-     "synced_at": "<ISO timestamp>",
+     "branch_mode": "<nightly|release>",
+     "base_release_tag": "<unchanged in nightly mode; bumped to new tag on successful release merge>",
+     "base_release_sha": "<parent sha at base_release_tag>",
+     "last_seen_parent_sha": "<parent main HEAD at this run — informational only>",
+     "last_applied_manifest_hash": "<sha256 of the manifest just applied>",
      "last_run_at": "<ISO timestamp>",
-     "last_run_outcome": "<applied|dry-run|no-changes|error>"
+     "last_run_outcome": "<applied|dry-run|no-changes|error|reconcile-needed>"
    }
    ```
+   `base_release_tag` only changes on a successful release merge to `main`. Nightly never bumps it — that's the invariant that makes cumulative diffs stable.
 6. Commit the state update on top.
 
 ### Phase 8 — Hand off
@@ -187,16 +213,25 @@ Output stale entries to `SCREENSHOTS_PENDING.md` (committed) and to the PR/commi
 ## Special cases
 
 ### First-ever run / large gap
-Use `--batched` in release mode if more than 2 release tags are between `synced_to` and latest. Produces one PR per tag. Easier to review, easier to revert a single bad release.
+Use `--batched` in release mode if more than 2 release tags are between `base_release_tag` and latest. Produces one PR per tag. Easier to review, easier to revert a single bad release.
 
-### Reverts mid-window
-The 24h quarantine catches most. If a revert lands inside an already-processed window, the next run's diff against the new SHA will naturally undo the doc edit. Don't try to roll back — let the next cycle correct.
+### Reverts of unprocessed commits
+The cumulative diff window means a feature commit and its revert cancel out before they reach the manifest. Combined with the 24h quarantine, most reverts never produce churn.
+
+### Reverts of already-applied commits
+Handled by Phase 3.5 reconciliation. If we previously committed a doc edit and the parent feature has since been reverted, the disappeared entry surfaces as a "⚠ Reconcile" flag in the run summary / PR body. The skill does NOT auto-undo doc edits — manual review is required, because the "undo" may itself be a friendly-tutorial rewrite that's hard to invert mechanically.
 
 ### Half-built features on parent main
-By design, nightly drafts in PR tier so half-built features don't auto-land on live docs. Auto-merge tier is restricted to schema-bound edits which by definition can't be "half-built" (the env var either exists or it doesn't).
+By design, nightly drafts in PR tier so half-built features don't auto-land on live docs. Auto-merge tier is restricted to schema-bound additions which by definition can't be "half-built" (the env var either exists in `.env.example` or it doesn't).
 
 ### Hot-fix on released docs (e.g. typo on main)
 Fix directly on `main` of this repo. The skill's "merge main into nightly at start of each run" rule keeps the branches aligned automatically.
+
+### Renames on parent (e.g. `cli/src/commands` → `apps/cli/src/cmds`)
+Anchor-map watchers will report "no changes detected" for many runs even though parent is clearly active. Fix `anchor-map.json` to the new paths. The next run will pick up the cumulative diff against the new paths correctly.
+
+### Nightly branch has open PRs against it when a release ships
+The release PR merges `nightly` → `main`. If there are open nightly-draft PRs, they get included in the release if merged into `nightly` first, or remain on `nightly` for the next release cycle if not. The skill should list open `nightly-draft/*` PRs in the release-PR body so the human reviewer can decide.
 
 ## What this skill does NOT do
 
@@ -218,6 +253,8 @@ Fix directly on `main` of this repo. The skill's "merge main into nightly at sta
 | Subagent produces something that doesn't match voice rules | Show diff to user, ask before committing. |
 | Conflict merging `main` into `nightly` | Abort with clear conflict report, ask user to resolve. |
 | Anchor-map watcher pattern matches nothing for many runs | Note in run summary — likely a parent refactor moved files; suggest user updates `anchor-map.json`. |
+| Reconciliation flags pending (Phase 3.5) | Surface in run summary and PR body. Do not auto-resolve. The next run still proceeds for non-reconciliation entries. |
+| `base_release_tag` is older than the parent's oldest available release | Parent may have deleted ancient tags. Abort with instructions to manually update `.sync-state.json` to the oldest available tag. |
 
 ## Maintenance of this skill
 

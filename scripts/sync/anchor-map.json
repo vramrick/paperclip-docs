@@ -88,19 +88,16 @@
     }
   ],
   "screenshot_registry": "docs/user-guides/screenshots/registry.json",
-  "skip_patterns": [
-    "^revert",
-    "^chore\\(deps\\)",
-    "^chore\\(deps-dev\\)",
-    "^\\[codex\\]",
-    "^wip(:|\\s|$)",
-    "\\[draft\\]",
-    "^Bump release changelog"
-  ],
   "quarantine_hours": 24,
   "auto_merge_safety": {
     "max_files_changed": 1,
     "max_lines_changed": 20,
-    "require_tier": "auto-merge"
+    "require_tier": "auto-merge",
+    "forbid_kinds": ["removed", "renamed"],
+    "$comment": "forbid_kinds blocks auto-merge for destructive changes regardless of size. A 1-line rename is still a breaking change and demands human review."
+  },
+  "$notes": {
+    "no_skip_patterns": "We deliberately do NOT filter commits by message regex (e.g. ^revert, ^[codex]). The diff window is cumulative (last_release_tag → HEAD) so reverts are already net-zero in the manifest. Filtering by message would HIDE the undo signal — if we processed an original commit and then skipped its revert, docs would stay wrong forever. The proper filter is surface impact via watcher path globs.",
+    "quarantine_still_needed": "Quarantine handles the race where a feature lands but its revert hasn't yet. Without it, we'd churn doc edits that get undone the next day."
   }
 }
