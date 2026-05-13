@@ -9,7 +9,7 @@ This skill keeps **paperclip-docs** in lockstep with the parent code repo **pape
 
 > Our docs are not a translation of the parent's docs. The **parent's code** is the source of truth. The parent's release notes and inline docs are reference data for understanding intent.
 
-> For the visual model of the branch flow and per-run phases, see `MAINTENANCE.md` → Sync workflow → Architecture (two mermaid diagrams). This file is the operational playbook; that file is the picture.
+> For the visual model of the branch flow and per-run phases, see [`maintenance/maintenance.md`](../../maintenance/maintenance.md) → Sync workflow → Architecture (two mermaid diagrams). This file is the operational playbook; that file is the picture.
 
 ## Mental model
 
@@ -265,7 +265,7 @@ Read `docs/user-guides/screenshots/registry.json`. For each entry:
 - Compare its `captured_sha` against the current parent ref.
 - If any of the entry's `depends_on` parent paths changed in the window → mark stale.
 
-Output stale entries to `SCREENSHOTS_PENDING.md` (committed) and to the PR/commit body. Do NOT attempt to capture — capture is a manual step for now (see MAINTENANCE.md → Screenshots).
+Output stale entries to `SCREENSHOTS_PENDING.md` (committed) and to the PR/commit body. Do NOT attempt to capture — capture is a manual step for now (see [`maintenance/maintenance.md`](../../maintenance/maintenance.md) → Screenshots).
 
 ### Phase 7 — Verify & commit
 
