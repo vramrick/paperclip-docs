@@ -42,14 +42,14 @@
     {
       "name": "adapters",
       "parent_paths": [
-        "packages/adapters/*",
-        "packages/plugins/sandbox-providers/*"
+        "packages/adapters/**",
+        "packages/plugins/sandbox-providers/**"
       ],
       "docs_paths": [
         "docs/reference/adapters/**"
       ],
       "tier": "pr",
-      "detect": "New top-level directory under either path = new adapter; create a new doc page mirroring the neighbour pattern. Manifest (`package.json`, `adapter.json`) changes = update existing page. When a new top-level dir appears, before treating it as a new adapter, check whether a comparably-named dir was removed in the same window (rename heuristic). Use git's rename detection signal in the compare response (`status: 'renamed'` on individual files, or correlated add/remove of similar paths — especially common within the `*-local` adapter family). If rename: update the existing doc page in place, do not create a new page."
+      "detect": "Files under packages/adapters/<name>/** or packages/plugins/sandbox-providers/<name>/** signal adapter changes; the <name> at depth 1 identifies the adapter. New top-level <name> dir = new adapter; create a new doc page mirroring the neighbour pattern. Manifest (`package.json`, `adapter.json`) changes = update existing page. When a new top-level dir appears, before treating it as a new adapter, check whether a comparably-named dir was removed in the same window (rename heuristic). Use git's rename detection signal in the compare response (`status: 'renamed'` on individual files, or correlated add/remove of similar paths — especially common within the `*-local` adapter family). If rename: update the existing doc page in place, do not create a new page."
     },
     {
       "name": "plugin-sdk",
@@ -67,15 +67,14 @@
     {
       "name": "agent-skills",
       "parent_paths": [
-        "skills/paperclip/**",
-        "skills/**/SKILL.md"
+        "skills/**"
       ],
       "docs_paths": [
         "docs/reference/skills.md",
         "docs/how-to/write-a-company-skill.md"
       ],
       "tier": "pr",
-      "detect": "Changes to canonical skill bundles in the parent's skills/ directory. New skill = mention in the skills reference; changed skill = update the tutorial. The plugin SDK is a separate concern — see the plugin-sdk watcher."
+      "detect": "Any file under skills/** in parent — these are canonical skill bundles. New top-level dir under skills/ = new skill bundle; mention in the skills reference. Changes inside an existing bundle = update the tutorial or reference as appropriate. The plugin SDK is a separate concern — see the plugin-sdk watcher."
     },
     {
       "name": "schemas",
