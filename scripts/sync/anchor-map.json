@@ -58,11 +58,24 @@
         "packages/plugins/sdk/src/**/*.ts"
       ],
       "docs_paths": [
-        "docs/how-to/write-a-company-skill.md",
-        "docs/reference/skills.md"
+        "docs/reference/plugins/sdk.md",
+        "docs/administration/plugins.md"
       ],
       "tier": "pr",
-      "detect": "Changes to exported types/functions from `src/index.ts` (public API surface). Internal-only changes ignored."
+      "detect": "Public API surface of the plugin SDK — exported types/functions from src/index.ts. The reference page (docs/reference/plugins/sdk.md) is the canonical home; docs/administration/plugins.md may need touch-ups when the operator-facing usage flow changes."
+    },
+    {
+      "name": "agent-skills",
+      "parent_paths": [
+        "skills/paperclip/**",
+        "skills/**/SKILL.md"
+      ],
+      "docs_paths": [
+        "docs/reference/skills.md",
+        "docs/how-to/write-a-company-skill.md"
+      ],
+      "tier": "pr",
+      "detect": "Changes to canonical skill bundles in the parent's skills/ directory. New skill = mention in the skills reference; changed skill = update the tutorial. The plugin SDK is a separate concern — see the plugin-sdk watcher."
     },
     {
       "name": "schemas",
