@@ -798,6 +798,16 @@ function appendPageFeedback(article, page, file) {
     </span>
   `;
   article.appendChild(block);
+
+  // If the build pipeline parsed a `paperclip_version` from the page's YAML
+  // frontmatter, surface it as a small sibling line under the feedback row.
+  const version = page.frontmatter?.paperclip_version;
+  if (version) {
+    const versionBlock = document.createElement('div');
+    versionBlock.className = 'page-version';
+    versionBlock.textContent = `Documenting Paperclip ${version}`;
+    article.appendChild(versionBlock);
+  }
 }
 
 function insertMetaRow(article, page) {
@@ -920,7 +930,23 @@ function setActiveState(file) {
 }
 
 /* ─── Markdown ──────────────────────────────────────────────────────────── */
+function stripFrontmatter(md) {
+  // Strip a leading YAML frontmatter block (---\n...\n---\n). The release
+  // build strips this server-side, but in dev mode markdown is fetched
+  // directly from disk and a leftover `---` would render as a horizontal
+  // rule. Keep this tolerant: a malformed block (no closing fence) is left
+  // alone so the author can see the broken markdown.
+  if (typeof md !== 'string') return md;
+  if (!md.startsWith('---\n') && !md.startsWith('---\r\n')) return md;
+  const afterOpen = md.indexOf('\n') + 1;
+  const rest = md.slice(afterOpen);
+  const closeMatch = rest.match(/\r?\n---[ \t]*(\r?\n|$)/);
+  if (!closeMatch) return md;
+  return rest.slice(closeMatch.index + closeMatch[0].length).replace(/^\r?\n/, '');
+}
+
 function renderMarkdown(md) {
+  md = stripFrontmatter(md);
   md = preprocessTabs(md);
   marked.setOptions({ gfm: true, breaks: false });
   return marked.parse(md);

@@ -10,6 +10,7 @@ import { tmpdir } from "node:os";
 import { join, dirname, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { parseFrontmatter } from "../../site/build-release.mjs";
 
 const SELF_DIR = dirname(fileURLToPath(import.meta.url));
 const SCRIPTS = {
@@ -557,6 +558,43 @@ test("check-drift: no false positive when doc uses {id} but parent uses :id", ()
   assert(rr.length === 0, `expected 0 rest-route-missing (normalization failed), got ${rr.length}: ${JSON.stringify(rr)}`);
 
   rmSync(root, { recursive: true, force: true });
+});
+
+// ----------------------------------------------------------------------------
+// frontmatter (unit, in-process — imports parseFrontmatter directly)
+// ----------------------------------------------------------------------------
+
+test("frontmatter: parses a well-formed YAML head and strips it from the body", () => {
+  const md = [
+    "---",
+    "paperclip_version: v2026.512.0",
+    "foo: bar",
+    "---",
+    "",
+    "# Real content",
+    "",
+    "Body text.",
+    "",
+  ].join("\n");
+  const { body, frontmatter } = parseFrontmatter(md);
+  assert(body.startsWith("# Real content"), `body should start with heading, got: ${JSON.stringify(body.slice(0, 40))}`);
+  assert(!body.includes("---"), `body should not leak frontmatter fence: ${JSON.stringify(body.slice(0, 40))}`);
+  assert(frontmatter.paperclip_version === "v2026.512.0", `paperclip_version=${frontmatter.paperclip_version}`);
+  assert(frontmatter.foo === "bar", `foo=${frontmatter.foo}`);
+});
+
+test("frontmatter: file with no frontmatter is returned unchanged", () => {
+  const md = "# Heading\n\nJust a body.\n";
+  const { body, frontmatter } = parseFrontmatter(md);
+  assert(body === md, `body should equal input, got: ${JSON.stringify(body)}`);
+  assert(Object.keys(frontmatter).length === 0, `frontmatter should be empty, got: ${JSON.stringify(frontmatter)}`);
+});
+
+test("frontmatter: malformed (missing closing fence) falls back to full body", () => {
+  const md = "---\npaperclip_version: v2026.512.0\nfoo: bar\n\n# No closing fence\n\nBody.\n";
+  const { body, frontmatter } = parseFrontmatter(md);
+  assert(body === md, `malformed input should be returned unchanged, got: ${JSON.stringify(body.slice(0, 40))}`);
+  assert(Object.keys(frontmatter).length === 0, `frontmatter should be empty on malformed input, got: ${JSON.stringify(frontmatter)}`);
 });
 
 // ----------------------------------------------------------------------------
