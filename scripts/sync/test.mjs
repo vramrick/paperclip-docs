@@ -411,6 +411,155 @@ test("compare-window:integration v2026.318.0...v2026.512.0 (live)", () => {
 });
 
 // ----------------------------------------------------------------------------
+// check-drift (unit, fixture-driven)
+// ----------------------------------------------------------------------------
+
+const DRIFT_SCRIPT = join(SELF_DIR, "check-drift.mjs");
+
+function runDrift(args, fixtureDir, cwd) {
+  const r = spawnSync(process.execPath, [DRIFT_SCRIPT, ...args], {
+    cwd,
+    encoding: "utf8",
+    env: { ...process.env, PAPERCLIP_SYNC_FIXTURE_DIR: fixtureDir },
+  });
+  return { code: r.status, stdout: r.stdout, stderr: r.stderr };
+}
+
+function makeDriftFixture() {
+  // The check-drift script computes ROOT from its own location: ../.. relative
+  // to the script. So we replicate that layout: put the real script under
+  // scripts/sync/ in a tmpdir, plus a sibling anchor-map.json (needed for
+  // env-var sources), plus the docs/ tree we want to scan.
+  const dir = mkdtempSync(join(tmpdir(), "drift-test-"));
+  mkdirSync(join(dir, "scripts/sync"), { recursive: true });
+  // Copy the script.
+  copyFileSync(DRIFT_SCRIPT, join(dir, "scripts/sync/check-drift.mjs"));
+  // Copy real anchor-map.json so envVarSourcesToCheck() resolves consistently.
+  copyFileSync(join(SELF_DIR, "anchor-map.json"), join(dir, "scripts/sync/anchor-map.json"));
+  // Fixture dir for gh stubs.
+  const fixDir = join(dir, "_fixtures");
+  mkdirSync(fixDir, { recursive: true });
+  // Tell the script the repo's default branch is "master".
+  writeFile(dir, "_fixtures/repo.json", JSON.stringify({ default_branch: "master" }));
+  return { root: dir, fixtures: fixDir, scriptInRoot: join(dir, "scripts/sync/check-drift.mjs") };
+}
+
+function writeFixtureContents(fixDir, parentPath, ref, body) {
+  const slug = parentPath.replace(/\//g, "__");
+  writeFileSync(join(fixDir, `contents-${slug}-${ref}.json`), JSON.stringify(body));
+}
+
+test("check-drift: parent path drift caught (high confidence)", () => {
+  const { root, fixtures, scriptInRoot } = makeDriftFixture();
+  // Doc that references a now-deleted parent file.
+  writeFile(root, "docs/reference/sample.md", "See [foo](../../cli/src/commands/foo.ts) for details.\n");
+  // Fixture says the path 404s.
+  writeFixtureContents(fixtures, "cli/src/commands/foo.ts", "master", { status: 404 });
+
+  const r = spawnSync(process.execPath, [scriptInRoot, "--json", "--against", "master"], {
+    encoding: "utf8",
+    env: { ...process.env, PAPERCLIP_SYNC_FIXTURE_DIR: fixtures },
+  });
+  assert(r.status === 0, `expected exit 0, got ${r.status}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  const pp = out.drift.filter((d) => d.kind === "parent-path-missing");
+  assert(pp.length === 1, `expected 1 parent-path-missing, got ${pp.length}: ${JSON.stringify(out.drift)}`);
+  assert(pp[0].confidence === "high", `expected high confidence, got ${pp[0].confidence}`);
+  assert(pp[0].documented === "cli/src/commands/foo.ts", `documented=${pp[0].documented}`);
+
+  rmSync(root, { recursive: true, force: true });
+});
+
+test("check-drift: env var drift caught (high confidence)", () => {
+  const { root, fixtures, scriptInRoot } = makeDriftFixture();
+  // env-vars doc with one row referencing OLD_VAR.
+  const envDoc = [
+    "# Environment variables",
+    "",
+    "| Variable | Default | Meaning |",
+    "|---|---|---|",
+    "| `OLD_VAR` | none | removed thing |",
+    "",
+  ].join("\n");
+  writeFile(root, "docs/reference/deploy/environment-variables.md", envDoc);
+  // .env.example and config.ts don't mention OLD_VAR.
+  writeFixtureContents(fixtures, ".env.example", "master", {
+    status: 200,
+    content_base64: Buffer.from("PORT=3100\nHOST=127.0.0.1\n").toString("base64"),
+  });
+  writeFixtureContents(fixtures, "server/src/config.ts", "master", {
+    status: 200,
+    content_base64: Buffer.from('export const config = { port: process.env.PORT };\n').toString("base64"),
+  });
+
+  const r = spawnSync(process.execPath, [scriptInRoot, "--json", "--against", "master"], {
+    encoding: "utf8",
+    env: { ...process.env, PAPERCLIP_SYNC_FIXTURE_DIR: fixtures },
+  });
+  assert(r.status === 0, `expected exit 0, got ${r.status}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  const ev = out.drift.filter((d) => d.kind === "env-var-missing");
+  assert(ev.length === 1, `expected 1 env-var-missing, got ${ev.length}: ${JSON.stringify(out.drift)}`);
+  assert(ev[0].documented === "OLD_VAR", `documented=${ev[0].documented}`);
+  assert(ev[0].confidence === "high", `expected high, got ${ev[0].confidence}`);
+
+  rmSync(root, { recursive: true, force: true });
+});
+
+test("check-drift: REST route drift caught (medium confidence)", () => {
+  const { root, fixtures, scriptInRoot } = makeDriftFixture();
+  const apiDoc = [
+    "# Foo API",
+    "",
+    "## POST /api/foo/{id}/bar",
+    "",
+    "Does the thing.",
+    "",
+  ].join("\n");
+  writeFile(root, "docs/reference/api/foo.md", apiDoc);
+  // Parent routes/foo.ts exists but does NOT contain /foo/:id/bar or /foo/{id}/bar.
+  writeFixtureContents(fixtures, "server/src/routes/foo.ts", "master", {
+    status: 200,
+    content_base64: Buffer.from('app.get("/foo", listFoos);\napp.get("/foo/:id", getFoo);\n').toString("base64"),
+  });
+
+  const r = spawnSync(process.execPath, [scriptInRoot, "--json", "--against", "master"], {
+    encoding: "utf8",
+    env: { ...process.env, PAPERCLIP_SYNC_FIXTURE_DIR: fixtures },
+  });
+  assert(r.status === 0, `expected exit 0, got ${r.status}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  const rr = out.drift.filter((d) => d.kind === "rest-route-missing");
+  assert(rr.length === 1, `expected 1 rest-route-missing, got ${rr.length}: ${JSON.stringify(out.drift)}`);
+  assert(rr[0].confidence === "medium", `expected medium, got ${rr[0].confidence}`);
+  assert(rr[0].documented.includes("POST"), `documented=${rr[0].documented}`);
+  assert(rr[0].documented.includes("/api/foo/{id}/bar"), `documented=${rr[0].documented}`);
+
+  rmSync(root, { recursive: true, force: true });
+});
+
+test("check-drift: no false positive when doc uses {id} but parent uses :id", () => {
+  const { root, fixtures, scriptInRoot } = makeDriftFixture();
+  const apiDoc = "# Foo API\n\n## GET /api/foo/{id}\n\nReads one.\n";
+  writeFile(root, "docs/reference/api/foo.md", apiDoc);
+  writeFixtureContents(fixtures, "server/src/routes/foo.ts", "master", {
+    status: 200,
+    content_base64: Buffer.from('app.get("/foo/:id", (req, res) => res.json({}));\n').toString("base64"),
+  });
+
+  const r = spawnSync(process.execPath, [scriptInRoot, "--json", "--against", "master"], {
+    encoding: "utf8",
+    env: { ...process.env, PAPERCLIP_SYNC_FIXTURE_DIR: fixtures },
+  });
+  assert(r.status === 0, `expected exit 0, got ${r.status}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  const rr = out.drift.filter((d) => d.kind === "rest-route-missing");
+  assert(rr.length === 0, `expected 0 rest-route-missing (normalization failed), got ${rr.length}: ${JSON.stringify(rr)}`);
+
+  rmSync(root, { recursive: true, force: true });
+});
+
+// ----------------------------------------------------------------------------
 
 console.log("");
 console.log(`Results: ${pass} passed, ${fail} failed.`);

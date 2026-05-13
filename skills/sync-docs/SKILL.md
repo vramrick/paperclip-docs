@@ -94,6 +94,39 @@ Cache result under `/tmp/paperclip-sync/<sha>/` so we don't refetch within a run
 
 > **Why cumulative, not incremental?** If we diffed `yesterday → today`, a revert commit landing today would need to be processed to undo yesterday's doc edit — and filtering revert commits by message regex would lose that signal. With cumulative diffs from the last release, reverts simply aren't in the diff at all. The original commit and its revert cancel out before we ever see them.
 
+### Phase 1.5 — Drift check (independent of diff window)
+
+Drift is the inverse of the cumulative diff: it's the set of things **we already document** that have since vanished or moved upstream. It exists regardless of when the last sync happened — a parent surface can disappear between two sync runs even if our diff window is empty. The wet-run that motivated this phase found `POST /api/companies/{companyId}/logo` documented but absent from current `server/src/routes/companies.ts`, with no sign of it in any diff window the sync had ever processed.
+
+Run the drift checker against parent HEAD:
+
+```
+node scripts/sync/check-drift.mjs --json --against <parent-default>
+```
+
+The script scans `docs/**` for four reference classes and verifies each one still exists in parent:
+
+| Class | What we scan | Confidence |
+|---|---|---|
+| parent-path-missing | `cli/src/...`, `server/src/...`, `packages/<name>/...`, `skills/paperclip/...` references with `.ts`/`.mjs`/`.js` extensions | high |
+| cli-command-missing | `paperclipai <subcommand>` invocations under `docs/reference/cli/**` | high |
+| env-var-missing | Rows in `docs/reference/deploy/environment-variables.md` | high |
+| rest-route-missing | `GET/POST/PUT/PATCH/DELETE /api/...` headers under `docs/reference/api/**` | medium |
+
+Output is structured JSON with a `drift` array of records: `kind`, `doc` (file:line), `documented`, `parent_searched`, `confidence`, `suggest`. The script always exits 0 — drift is a warning, never a hard failure. Results are cached under `/tmp/paperclip-sync/drift-<ref>/` so re-runs within a day are cheap.
+
+**Where drift records go.** They join the change manifest as a separate **drift tier** — not `auto-merge`, not `pr`, not `context-only`. They have their own category because they're driven by what's missing from parent, not by what changed in a window.
+
+**Never auto-resolve drift.** Even high-confidence drift requires human judgement: a missing route may have been moved (update the doc) or removed (delete the section). Always surface drift to the human:
+
+- In the run summary (Phase 4 / Phase 8).
+- In `PENDING.md` under a "⚠ Drift" section (nightly mode).
+- In the PR body under a "⚠ Drift" heading (release mode).
+
+**Confidence handling in the summary.** High-confidence findings (parent paths, CLI commands, env vars) get prominent placement at the top of the drift section. Medium-confidence findings (REST routes — route prefixing and dynamic registration can hide real matches) are prefixed with `Verify:` so reviewers know to spot-check before acting. The medium tier is intentionally noisy on the side of caution.
+
+If `--dry-run` is set, drift candidates are printed alongside the rest of the manifest summary and the run stops there.
+
 ### Phase 3 — Surface diff (the change manifest)
 
 For each watcher in `anchor-map.json`:
@@ -144,6 +177,7 @@ If `--dry-run`: print the manifest summary, no further action. Always show:
 - Auto-merge candidates (count + bullet list).
 - PR candidates (count + bullet list).
 - Reconciliation candidates from Phase 3.5 (disappeared entries).
+- **Drift candidates from Phase 1.5** — grouped by kind, high-confidence first, medium-confidence prefixed with `Verify:`.
 - Screenshot staleness flags (from Phase 6).
 
 Stop here.
@@ -200,7 +234,9 @@ Output stale entries to `SCREENSHOTS_PENDING.md` (committed) and to the PR/commi
 4. Commit strategy:
    - Nightly auto-merge edits → single commit titled `nightly: <surface name> (paperclip <short-sha>)`.
    - Nightly PR-tier edits → branch `nightly-draft/<short-sha>-<surface>` off `nightly`, open PR against `nightly`.
-   - Release mode → branch `release/v2026.X.Y` off `nightly`, open PR against `main` titled `Release docs for paperclip v2026.X.Y`. PR body = manifest + screenshot staleness + checklist.
+   - Release mode → branch `release/v2026.X.Y` off `nightly`, open PR against `main` titled `Release docs for paperclip v2026.X.Y`. PR body = manifest + screenshot staleness + **⚠ Drift section (from Phase 1.5)** + checklist.
+
+   The drift section in the PR body lists every drift candidate from Phase 1.5 grouped by `kind`, with high-confidence findings listed first and medium-confidence findings prefixed with `Verify:`. Drift is never auto-resolved — the PR explicitly asks the reviewer to act on each entry (update path, delete section, or confirm false positive).
 5. Update `.sync-state.json`:
    ```json
    {
