@@ -115,7 +115,10 @@
         { "title": "Secrets",          "file": "../docs/reference/api/secrets.md" },
         { "title": "Activity",         "file": "../docs/reference/api/activity.md" },
         { "title": "Dashboard",        "file": "../docs/reference/api/dashboard.md" },
-        { "title": "Routines",         "file": "../docs/reference/api/routines.md" }
+        { "title": "Routines",         "file": "../docs/reference/api/routines.md" },
+        { "title": "Adapters",         "file": "../docs/reference/api/adapters.md" },
+        { "title": "Plugins",          "file": "../docs/reference/api/plugins.md" },
+        { "title": "Instance Admin",   "file": "../docs/reference/api/instance-admin.md" }
       ]
     },
     {
@@ -150,15 +153,27 @@
         { "title": "Codex Local",         "file": "../docs/reference/adapters/codex-local.md" },
         { "title": "Gemini Local",        "file": "../docs/reference/adapters/gemini-local.md" },
         { "title": "Cursor Local",        "file": "../docs/reference/adapters/cursor-local.md" },
+        { "title": "Cursor Cloud",        "file": "../docs/reference/adapters/cursor-cloud.md" },
+        { "title": "ACPX Local",          "file": "../docs/reference/adapters/acpx-local.md" },
         { "title": "OpenCode Local",      "file": "../docs/reference/adapters/opencode-local.md" },
         { "title": "Pi Local",            "file": "../docs/reference/adapters/pi-local.md" },
         { "title": "Hermes Local",        "file": "../docs/reference/adapters/hermes-local.md" },
         { "title": "OpenClaw Gateway",    "file": "../docs/reference/adapters/openclaw-gateway.md" },
         { "title": "Process",             "file": "../docs/reference/adapters/process.md" },
         { "title": "HTTP",                "file": "../docs/reference/adapters/http.md" },
+        { "title": "Sandbox Providers",   "file": "../docs/reference/adapters/sandbox-providers.md" },
         { "title": "External Adapters",   "file": "../docs/reference/adapters/external-adapters.md" },
         { "title": "Creating an Adapter", "file": "../docs/reference/adapters/creating-an-adapter.md" },
         { "title": "UI Parser Contract",  "file": "../docs/reference/adapters/adapter-ui-parser.md" }
+      ]
+    },
+    {
+      "tier": "Reference",
+      "title": "Plugins",
+      "icon": "puzzle",
+      "desc": "Plugin SDK reference for authors building Paperclip plugins.",
+      "pages": [
+        { "title": "Plugin SDK", "file": "../docs/reference/plugins/sdk.md" }
       ]
     },
     {

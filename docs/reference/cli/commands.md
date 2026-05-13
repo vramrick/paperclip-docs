@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.512.0
+---
+
 # Command Reference
 
 Every `paperclipai` subcommand, every flag, every environment variable the CLI reads. This page is for lookup, not learning — if you want a guided tour, start with [Setup Commands](./setup-commands.md) or [Control-Plane Commands](./control-plane-commands.md).
@@ -344,7 +348,7 @@ paperclipai company export <company-id> --out ./exports/acme --include company,a
 
 ### `paperclipai company import <fromPathOrUrl>`
 
-Import a portable markdown company package from a local path, URL, or GitHub repo.
+Import a portable markdown company package from a local path, URL, GitHub repo, or `.zip` archive.
 
 ```
 paperclipai company import [options] <fromPathOrUrl>
@@ -352,7 +356,7 @@ paperclipai company import [options] <fromPathOrUrl>
 
 | Argument | Description |
 |---|---|
-| `fromPathOrUrl` | Source path or URL. |
+| `fromPathOrUrl` | Source path or URL. Local paths may point at a directory or a `.zip` archive; URLs may resolve to a GitHub repo or a downloadable `.zip`. |
 
 | Flag | Type | Default | Description |
 |---|---|---|---|
@@ -926,6 +930,198 @@ Show the current board-user identity for the current API base.
 ```
 paperclipai auth whoami [options]
 ```
+
+---
+
+## `feedback`
+
+Inspect and export local feedback traces collected from the board UI.
+
+### `paperclipai feedback report`
+
+Render a terminal report for a company's feedback traces.
+
+```
+paperclipai feedback report [options]
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `-C, --company-id <id>` | string | — | Company ID (overrides context default). |
+| `--target-type <type>` | string | — | Filter by target type. |
+| `--vote <vote>` | string | — | Filter by vote value. |
+| `--status <status>` | string | — | Filter by trace status. |
+| `--project-id <id>` | string | — | Filter by project ID. |
+| `--issue-id <id>` | string | — | Filter by issue ID. |
+| `--from <iso8601>` | string | — | Only include traces created at or after this timestamp. |
+| `--to <iso8601>` | string | — | Only include traces created at or before this timestamp. |
+| `--shared-only` | flag | `false` | Only include traces eligible for sharing or export. |
+| `--payloads` | flag | `false` | Include raw payload dumps in the terminal report. |
+
+### `paperclipai feedback export`
+
+Export feedback votes and raw trace bundles into a folder plus a `.zip` archive.
+
+```
+paperclipai feedback export [options]
+```
+
+Accepts the same filter flags as `feedback report` plus an output directory option. See `paperclipai feedback export --help` for the full list.
+
+---
+
+## `secrets`
+
+Secret declaration and provider operations against a live Paperclip instance.
+
+### `paperclipai secrets list`
+
+List secret metadata for a company.
+
+```
+paperclipai secrets list [options]
+```
+
+### `paperclipai secrets declarations`
+
+List portable env declarations emitted by company export.
+
+```
+paperclipai secrets declarations [options]
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--include <values>` | csv | `company,agents,projects` | Comma-separated include set: `company`, `agents`, `projects`, `issues`, `tasks`, `skills`. |
+| `--kind <kind>` | enum | `all` | Filter declarations: `all`, `secret`, `plain`. |
+
+### `paperclipai secrets create`
+
+Create a Paperclip-managed secret.
+
+```
+paperclipai secrets create [options]
+```
+
+| Flag | Type | Description |
+|---|---|---|
+| `--key <key>` | string | Portable secret key. |
+| `--provider <provider>` | string | Secret provider id. |
+| `--value <value>` | string | Secret value (inline). |
+| `--value-env <name>` | string | Read the secret value from an environment variable. |
+| `--description <text>` | string | Description. |
+
+### `paperclipai secrets link`
+
+Link an external provider-owned secret without storing its value in Paperclip.
+
+```
+paperclipai secrets link [options]
+```
+
+| Flag | Type | Description |
+|---|---|---|
+| `--key <key>` | string | Portable secret key. |
+| `--provider-version-ref <ref>` | string | Provider version id or label. |
+| `--description <text>` | string | Description. |
+
+### `paperclipai secrets doctor`
+
+Run secret provider health checks through the Paperclip API.
+
+```
+paperclipai secrets doctor [options]
+```
+
+### `paperclipai secrets providers`
+
+List configured secret provider descriptors.
+
+```
+paperclipai secrets providers [options]
+```
+
+### `paperclipai secrets migrate-inline-env`
+
+Migrate inline sensitive agent env values into secret references.
+
+```
+paperclipai secrets migrate-inline-env [options]
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--apply` | flag | `false` | Persist changes. The default is a dry run. |
+
+---
+
+## `env-lab`
+
+Manage deterministic local environment fixtures used for adapter and runtime experiments.
+
+### `paperclipai env-lab up`
+
+Start the default SSH env-lab fixture.
+
+```
+paperclipai env-lab up [options]
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `-i, --instance <id>` | string | current / `default` | Paperclip instance id. |
+| `--json` | flag | `false` | Print machine-readable fixture details. |
+
+### `paperclipai env-lab status`
+
+Show the current SSH env-lab fixture state.
+
+```
+paperclipai env-lab status [options]
+```
+
+Accepts the same `-i, --instance <id>` and `--json` flags as `env-lab up`.
+
+### `paperclipai env-lab down`
+
+Stop the default SSH env-lab fixture.
+
+```
+paperclipai env-lab down [options]
+```
+
+Accepts the same `-i, --instance <id>` and `--json` flags as `env-lab up`.
+
+### `paperclipai env-lab doctor`
+
+Check SSH fixture prerequisites and current status.
+
+```
+paperclipai env-lab doctor [options]
+```
+
+Accepts the same `-i, --instance <id>` and `--json` flags as `env-lab up`.
+
+---
+
+## `routines`
+
+Local routine maintenance commands.
+
+### `paperclipai routines disable-all`
+
+Pause all non-archived routines in the configured local instance for one company.
+
+```
+paperclipai routines disable-all [options]
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `-c, --config <path>` | string | — | Path to config file. |
+| `-d, --data-dir <path>` | string | — | Paperclip data directory root (isolates state from `~/.paperclip`). |
+| `-C, --company-id <id>` | string | — | Company ID. |
+| `--json` | flag | `false` | Output raw JSON. |
 
 ---
 

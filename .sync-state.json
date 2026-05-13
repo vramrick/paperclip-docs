@@ -1,0 +1,9 @@
+{
+  "branch_mode": "release",
+  "base_release_tag": "v2026.512.0",
+  "base_release_sha": "c445e5925628d11bf59d52604b8aa63a6e9aa800",
+  "last_seen_parent_sha": "c445e5925628d11bf59d52604b8aa63a6e9aa800",
+  "last_applied_manifest_hash": "64cd2b2c66b5de6936f39c93b77408aead199b35b951d20167c422cb9efa3753",
+  "last_run_at": "2026-05-13T12:09:34Z",
+  "last_run_outcome": "applied"
+}
