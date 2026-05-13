@@ -32,6 +32,13 @@ The branch model is non-negotiable: end users on the latest *released* paperclip
 - `PENDING.md` (on `nightly` branch only) — **regenerated** from scratch each run (not appended) so it always reflects the current cumulative manifest. Stale entries from reverted commits never linger.
 - `SCREENSHOTS_PENDING.md` (committed) — regenerated each run, lists screenshots whose `depends_on` paths changed in the diff window.
 
+**Helper scripts called during the run:**
+
+- `scripts/sync/compare-window.mjs` — Phase 2 cumulative diff (handles GitHub compare API truncation via midpoint bisection).
+- `scripts/sync/check-drift.mjs` — Phase 1.5 drift detection (finds documented surfaces missing from parent).
+- `scripts/sync/detect-renames.mjs` — Phase 3 directory rename detection (distinguishes a renamed surface from a brand-new one).
+- `scripts/sync/verify-edit.mjs` — Phase 5.5 post-edit verification (checks that authored claims still match parent code).
+
 ## Invocation
 
 ```
@@ -135,7 +142,17 @@ For each watcher in `anchor-map.json`:
 
 1. Intersect the changed-files list with the watcher's `parent_paths` globs.
 2. For matching files, apply the watcher's detection rule (descriptions in `anchor-map.json`'s `detect` field — interpret semantically, you're not running grep blindly).
-3. Output a structured entry:
+3. **Rename pass.** Before finalising entries that look like "new doc page for a brand-new top-level dir" (especially under the `adapters`, `agent-skills`, `server-adapters`, `plugin-sdk` watchers), run:
+
+   ```
+   node scripts/sync/detect-renames.mjs /tmp/diff.json --json
+   ```
+
+   Apply the result:
+   - **Detected rename** (`renamed_from → renamed_to`): do NOT emit a "new doc page" entry for the `renamed_to` dir. Instead route the entry to the **existing** doc page for the `renamed_from` dir with `change_kind: renamed` and an `evidence` line that includes the helper's `confidence` and `signal` fields.
+   - **`added_dirs_genuinely_new`**: proceed as the existing rules say — emit a "new page" entry mirroring a neighbour.
+   - **`removed_dirs_no_match`**: surface as a ⚠ Reconcile-style flag (a documented surface vanished upstream with no rename target — the human decides whether to remove or archive the doc page).
+4. Output a structured entry:
 
 ```yaml
 - watcher: cli-commands
@@ -198,6 +215,10 @@ Safety gates, checked in order — failing ANY demotes the entry to PR tier:
 
 If all pass: make the mechanical edit directly. Examples: append a row to `environment-variables.md`, add an adapter name to an enumerated list. Never rewrite prose under this tier — that's PR tier by definition.
 
+**Batched-release mode is exhaustive.** In `--batched` release mode, every doc-relevant manifest entry in EACH window must be processed — no subsampling. This is the equivalent of how nightly mode handles every entry of its cumulative manifest. Wet-run subsampling (e.g. "pick 2 representative entries") was scope-control for testing, not skill design. Skipping entries in real catchup runs leaves docs incomplete. Per-window tier classification still applies — auto-merge and PR entries both get processed; the only thing that varies is how many entries each window contains (some releases are small).
+
+> **Builder note.** `site/build-release.mjs` strips and surfaces YAML frontmatter into `content.json` (the SPA renders `paperclip_version` as a "Documenting Paperclip <version>" footer). Authored pages SHOULD include `paperclip_version` in release mode — the voice rule below is live, not aspirational.
+
 **PR tier** (judgment calls):
 - Spawn a subagent per entry, in parallel where possible. Give each:
   - The manifest entry.
@@ -215,9 +236,27 @@ If all pass: make the mechanical edit directly. Examples: append a row to `envir
 > - Preserve existing page structure unless the change demands new sections. Keep cross-references intact.
 > - If a new page is needed, mirror the structure of the neighbour page you were given. Do **NOT** edit `site/content.json` directly — return a `nav_addition` structured object alongside the page content (see below). The orchestrator will merge it.
 > - Add `paperclip_version: <tag>` to the frontmatter of touched pages in release mode; leave alone in nightly mode (nightly pages are versionless until they merge to main).
+> - Every concrete claim you write (CLI flag names, env var names, REST route paths, config field names, file paths) must come from the parent code you were given. Do not infer or paraphrase identifiers; copy them verbatim. The next phase verifies these claims against parent code.
 > Return: `{ "files": { "<path>": "<new content>" }, "nav_addition": { "section_title": "How-to Guides", "entry": { "title": "...", "file": "../docs/how-to/foo.md" } } }` — `nav_addition` is null if no new page was created.
 
 - After all subagents return, the orchestrator (this skill, on the main thread) **serialises** the `site/content.json` merge: collect all `nav_addition` results, then make a single coordinated edit to `content.json`. **Subagents never write `content.json` directly** — this prevents the race where two parallel subagents clobber each other's nav entries.
+
+### Phase 5.5 — Verify edits against parent code
+
+For every file touched in Phase 5 (auto-merge or PR-tier):
+
+```
+node scripts/sync/verify-edit.mjs <doc-path> --against <parent-default-or-tag> --json
+```
+
+Collect all `unverified` and `suspicious` records into a **Verification Report** for the run.
+
+Routing rules:
+
+- **Auto-merge tier edits.** If any high-confidence unverified record fires (`kind ∈ {cli-command, env-var, file-path}`), **roll back** the edit — auto-merge is mechanical and should have been right. Surface the failed entry in the run summary.
+- **PR tier edits (nightly mode).** If any high-confidence unverified record fires, demote the entry from auto-commit to PR draft and add a `⚠ Verification Failed` callout in the PR body listing each unverified record. The human reviews and corrects.
+- **PR tier edits (batched-release mode).** Never auto-merge if any unverified records exist. They flow into the release PR with the failed claims listed under `⚠ Verification Failures`.
+- **Suspicious records.** Logged and surfaced in the run summary / PR body, but never block. They're informational.
 
 ### Phase 6 — Screenshot staleness check
 
@@ -236,9 +275,13 @@ Output stale entries to `SCREENSHOTS_PENDING.md` (committed) and to the PR/commi
 4. Commit strategy:
    - Nightly auto-merge edits → single commit titled `nightly: <surface name> (paperclip <short-sha>)`.
    - Nightly PR-tier edits → branch `nightly-draft/<short-sha>-<surface>` off `nightly`, open PR against `nightly`.
-   - Release mode → branch `release/v2026.X.Y` off `nightly`, open PR against `main` titled `Release docs for paperclip v2026.X.Y`. PR body = manifest + screenshot staleness + **⚠ Drift section (from Phase 1.5)** + checklist.
+   - Release mode → branch `release/v2026.X.Y` off `nightly`, open PR against `main` titled `Release docs for paperclip v2026.X.Y`. PR body = manifest + screenshot staleness + structured sections (below) + checklist.
 
-   The drift section in the PR body lists every drift candidate from Phase 1.5 grouped by `kind`, with high-confidence findings listed first and medium-confidence findings prefixed with `Verify:`. Drift is never auto-resolved — the PR explicitly asks the reviewer to act on each entry (update path, delete section, or confirm false positive).
+   PR body structured sections (each omitted if empty — never silently dropped):
+
+   - `### ⚠ Drift` — every drift candidate from Phase 1.5 grouped by `kind`, high-confidence first, medium-confidence prefixed with `Verify:`. Never auto-resolved — the PR explicitly asks the reviewer to act on each entry (update path, delete section, or confirm false positive).
+   - `### ⚠ Verification Failures` — every unverified record from Phase 5.5, with the doc location (file:line) and the helper's `suggest` field. Reviewer corrects before merge.
+   - `### ↻ Renames detected` — every directory rename from Phase 3, formatted `<from> → <to>` with the helper's `confidence` and `signal`. Confirms that no spurious new doc pages were created for a renamed surface.
 5. Update `.sync-state.json`:
    ```json
    {
