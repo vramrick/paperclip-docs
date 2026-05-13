@@ -1,6 +1,6 @@
 ---
 name: sync-docs
-description: Keep paperclip-docs in lockstep with the parent paperclipai/paperclip codebase. Detects code-surface changes (CLI, env vars, API routes, adapters, plugin SDK, schemas) and produces friendly-tutorial-voice doc updates. Two modes — `nightly` (tracks parent main, targets the `nightly` branch, preview deploy) and `release` (on parent tag, merges nightly → main, tags, ships live). Trigger phrases:  "sync docs", "update docs from paperclip", "/sync-docs", "check for paperclip changes", "is docs current".
+description: Keep paperclip-docs in lockstep with the parent paperclipai/paperclip codebase. Detects code-surface changes (CLI, env vars, API routes, adapters, plugin SDK, schemas) and produces friendly-tutorial-voice doc updates. Two modes — `nightly` (tracks parent's default branch (currently `master`), targets the `nightly` branch, preview deploy) and `release` (on parent tag, merges nightly → main, tags, ships live). Trigger phrases:  "sync docs", "update docs from paperclip", "/sync-docs", "check for paperclip changes", "is docs current".
 ---
 
 # /sync-docs — Paperclip docs sync skill
@@ -13,7 +13,7 @@ This skill keeps **paperclip-docs** in lockstep with the parent code repo **pape
 
 | | `nightly` mode | `release` mode |
 |---|---|---|
-| Tracks | parent `main` HEAD | parent's latest **release tag** |
+| Tracks | parent `<parent-default>` HEAD (currently `master`) | parent's latest **release tag** |
 | Targets | `nightly` branch of this repo | `main` branch of this repo (via PR from `nightly`) |
 | Deploys to | Cloudflare Pages branch preview | docs.paperclip.ing |
 | Audience | early adopters, contributors | everyone — end users to devs |
@@ -47,6 +47,8 @@ The branch model is non-negotiable: end users on the latest *released* paperclip
 2. Working tree is clean (`git status`). If dirty, abort and tell the user — never stash their work.
 3. `.sync-state.json` exists and parses. If missing, abort and tell the user to seed it from `scripts/sync/state.example.json`.
 4. `scripts/sync/anchor-map.json` exists and parses.
+5. **Resolve parent default branch.** Call `gh api repos/paperclipai/paperclip -q '.default_branch'` once at the start of the run and store the result in a local variable referenced below as `<parent-default>`. As of this writing it returns `master`, but capturing it dynamically means the skill keeps working if the parent ever renames to `main`. All subsequent references to "parent's main HEAD" / "parent main HEAD" in this skill resolve to `<parent-default>`.
+6. **Preflight watcher paths.** For every concrete (non-glob) path in `anchor-map.json` watchers' `parent_paths`, call `gh api repos/paperclipai/paperclip/contents/<path> --silent` and **warn** (do not fail) on 404. This catches stale path entries like the `server/src/env.ts` case found in the design dry-run — surface them in the run summary so the human can update `anchor-map.json`.
 
 ## Step-by-step
 
@@ -67,7 +69,7 @@ The branch model is non-negotiable: end users on the latest *released* paperclip
 Both modes use **cumulative diffs** — always from a stable base, never incrementally from yesterday. This makes reverts auto-cancel (they're net-zero in the cumulative diff) and lets `nightly` be safely regenerated.
 
 - **Release mode**: `prev = state.base_release_tag`, `next = latest release tag`. Build a list of intermediate tags so `--batched` can produce one PR per tag.
-- **Nightly mode**: `prev = state.base_release_tag` (NOT yesterday's SHA), `next = parent main HEAD`. Then apply **quarantine**: ignore any commits younger than `quarantine_hours` (default 24) so reverts have time to land before we process the original.
+- **Nightly mode**: `prev = state.base_release_tag` (NOT yesterday's SHA), `next = parent `<parent-default>` HEAD`. Then apply **quarantine**: ignore any commits younger than `quarantine_hours` (default 24) so reverts have time to land before we process the original.
 
 For each window:
 
@@ -78,7 +80,18 @@ gh api repos/paperclipai/paperclip/compare/$PREV...$NEXT \
 
 Cache result under `/tmp/paperclip-sync/<sha>/` so we don't refetch within a run.
 
-> **Pagination & truncation.** The GitHub `compare` endpoint caps responses at ~300 changed files and ~300 commits per call. For large gaps (many releases) the response will be **truncated** (check `total_commits` vs `commits.length` and the presence of `truncated_files` semantics). When truncation is detected, split the window by walking each intermediate release tag and doing tag-to-tag compares, then union the per-tag file lists. For nightly mode with no intermediate tags, split the commit list in halves until each half fits.
+> **Pagination & truncation.** The GitHub `compare` endpoint caps responses at **300 changed files** and **250 commits** per call. For large gaps (many releases) the response will be truncated, and tag-to-tag splits are *not enough* on their own — the 318→512 dry-run had 5 of 6 tag-to-tag windows still hitting the file cap. Use **recursive midpoint bisection** instead:
+>
+> 1. Make a single `gh api repos/paperclipai/paperclip/compare/$A...$B` call.
+> 2. Detect truncation: the response is truncated if `files.length == 300` **OR** `total_commits > commits.length`.
+> 3. If truncated, split the window at the **midpoint commit** and recurse on each half (`A...mid`, `mid...B`). Continue recursing until every leaf window returns `files.length < 300` **AND** `commits.length == total_commits`.
+> 4. Choose the midpoint by enumerating commit SHAs: `gh api repos/paperclipai/paperclip/compare/$A...$B -q '.commits[].sha'` returns up to 250 SHAs — pick the median. If the gap itself exceeds 250 commits so the compare can't enumerate them in one call, fall back to enumerating commits independently via `gh api "repos/paperclipai/paperclip/commits?sha=$B&until=<date-of-A>&per_page=100" --paginate -q '.[].sha'` and walk backwards until you reach `$A`'s SHA; pick the median of that list.
+> 5. **Union and merge leaf file lists**, de-duplicating by `filename`. Merge statuses across leaves:
+>    - `added` + `modified` → `modified`
+>    - `added` + `removed` → drop (the file was added and then removed within the window — net zero)
+>    - `modified` + `removed` → `removed`
+>    - `renamed` wins over `modified` on the same filename (the rename is the more informative signal)
+> 6. Cache each leaf response under `/tmp/paperclip-sync/<sha-a>..<sha-b>/` so re-runs within the day don't refetch.
 
 > **Why cumulative, not incremental?** If we diffed `yesterday → today`, a revert commit landing today would need to be processed to undo yesterday's doc edit — and filtering revert commits by message regex would lose that signal. With cumulative diffs from the last release, reverts simply aren't in the diff at all. The original commit and its revert cancel out before we ever see them.
 
@@ -195,7 +208,7 @@ Output stale entries to `SCREENSHOTS_PENDING.md` (committed) and to the PR/commi
      "branch_mode": "<nightly|release>",
      "base_release_tag": "<unchanged in nightly mode; bumped to new tag on successful release merge>",
      "base_release_sha": "<parent sha at base_release_tag>",
-     "last_seen_parent_sha": "<parent main HEAD at this run — informational only>",
+     "last_seen_parent_sha": "<parent `<parent-default>` HEAD at this run — informational only>",
      "last_applied_manifest_hash": "<sha256 of the manifest just applied>",
      "last_run_at": "<ISO timestamp>",
      "last_run_outcome": "<applied|dry-run|no-changes|error|reconcile-needed>"
