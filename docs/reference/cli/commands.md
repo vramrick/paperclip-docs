@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.325.0
+paperclip_version: v2026.403.0
 ---
 
 # Command Reference
@@ -930,6 +930,64 @@ Show the current board-user identity for the current API base.
 ```
 paperclipai auth whoami [options]
 ```
+
+---
+
+## `feedback`
+
+Inspect and export local feedback traces collected from the board UI.
+
+### `paperclipai feedback report`
+
+Render a terminal report for a company's feedback traces.
+
+```
+paperclipai feedback report [options]
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `-C, --company-id <id>` | string | — | Company ID (overrides context default). |
+| `--target-type <type>` | string | — | Filter by target type. |
+| `--vote <vote>` | string | — | Filter by vote value. |
+| `--status <status>` | string | — | Filter by trace status. |
+| `--project-id <id>` | string | — | Filter by project ID. |
+| `--issue-id <id>` | string | — | Filter by issue ID. |
+| `--from <iso8601>` | string | — | Only include traces created at or after this timestamp. |
+| `--to <iso8601>` | string | — | Only include traces created at or before this timestamp. |
+| `--shared-only` | flag | `false` | Only include traces eligible for sharing or export. |
+| `--payloads` | flag | `false` | Include raw payload dumps in the terminal report. |
+
+### `paperclipai feedback export`
+
+Export feedback votes and raw trace bundles into a folder plus a `.zip` archive.
+
+```
+paperclipai feedback export [options]
+```
+
+Accepts the same filter flags as `feedback report` plus an output directory option. See `paperclipai feedback export --help` for the full list.
+
+---
+
+## `routines`
+
+Local routine maintenance commands.
+
+### `paperclipai routines disable-all`
+
+Pause all non-archived routines in the configured local instance for one company.
+
+```
+paperclipai routines disable-all [options]
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `-c, --config <path>` | string | — | Path to config file. |
+| `-d, --data-dir <path>` | string | — | Paperclip data directory root (isolates state from `~/.paperclip`). |
+| `-C, --company-id <id>` | string | — | Company ID. |
+| `--json` | flag | `false` | Output raw JSON. |
 
 ---
 

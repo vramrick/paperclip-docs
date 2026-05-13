@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.403.0
+---
+
 # Environment Variables
 
 This page lists the environment variables Paperclip reads for server configuration and the variables it injects into agent processes at runtime.
@@ -81,6 +85,21 @@ These values are covered in more detail in [Secrets](./secrets.md).
 |---|---|---|
 | `HEARTBEAT_SCHEDULER_ENABLED` | `true` | Enables or disables timer-based scheduling. |
 | `HEARTBEAT_SCHEDULER_INTERVAL_MS` | `30000` | Scheduler poll interval in milliseconds. |
+
+---
+
+## Telemetry & Feedback Export
+
+These variables control where the server forwards operator-submitted feedback (and the deprecated telemetry channel that backs the same export pipeline). They are read by `server/src/config.ts` and are only consulted when you want to ship feedback events off your instance to a separate collector.
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `PAPERCLIP_FEEDBACK_EXPORT_BACKEND_URL` | unset | URL of the external feedback collector. When set, the server forwards `paperclipai feedback` submissions to this endpoint. |
+| `PAPERCLIP_FEEDBACK_EXPORT_BACKEND_TOKEN` | unset | Bearer token used to authenticate the forwarding request. |
+| `PAPERCLIP_TELEMETRY_BACKEND_URL` | unset | Legacy alias for `PAPERCLIP_FEEDBACK_EXPORT_BACKEND_URL`. Honoured for backwards compatibility — set the feedback variant in new deployments. |
+| `PAPERCLIP_TELEMETRY_BACKEND_TOKEN` | unset | Legacy alias for `PAPERCLIP_FEEDBACK_EXPORT_BACKEND_TOKEN`. |
+
+If neither variable is set, feedback submissions are stored locally and never leave the instance.
 
 ---
 
