@@ -4,5 +4,2746 @@
   "viewports": {
     "default": "1440x900"
   },
-  "entries": []
+  "entries": [
+    {
+      "file": "dark/activity/activity-filtered-by-agent.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/activity/activity-filters.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/activity/activity-log-full.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/adapters/detail.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/adapters/health.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/adapters/install.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/adapters/list.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/adapter-type-dropdown.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/agent-detail-idle.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/agent-detail-run-history.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/agent-status-running.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/agents-list-empty.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/budget-and-heartbeat-fields.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/budget.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/claude-local-config-filled.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/codex-local-config.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/configuration.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/dashboard.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/heartbeat-toggle-disabled.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/heartbeat-toggle-enabled.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/http-adapter-config.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/instructions.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/list.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/new-agent-name-role.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/new-agent-reports-to-field.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/new.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/run-history-in-progress.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/run-transcript-view.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/runs.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/skills.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/test-environment-fail.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/agents/test-environment-success.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/approvals/approvals-list.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/approvals/approvals-queue-strategy.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/approvals/approve-reject-buttons.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/approvals/approve-reject-revision-buttons.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/approvals/approved-approval.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/approvals/hire-approval-detail.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/approvals/queue-filters.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/approvals/revision-request-input.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/approvals/strategy-approval-detail.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/company/access.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/company/company-budget-setting.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/company/company-goal-field.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/company/company-saved.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/company/export.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/company/import.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/company/invites.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/company/join-requests.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/company/new-company-form.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/company/settings.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/costs/agent-budget-100pct-paused.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/costs/agent-budget-50pct.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/costs/agent-budget-80pct-warning.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/costs/agent-budget-bar.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/costs/agent-budget-field.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/costs/billers.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/costs/budgets.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/costs/company-budget-field.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/costs/costs-dashboard-overview.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/costs/finance.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/costs/overview.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/costs/per-run-cost-detail.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/costs/providers.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/dashboard/activity-feed.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/dashboard/agent-status-panel.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/dashboard/cost-summary-panel.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/dashboard/dashboard-overview-annotated.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/dashboard/dashboard-overview.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/dashboard/stale-tasks-panel.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/dashboard/task-breakdown-panel.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/export-import/export-dialog.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/export-import/import-dialog.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/goals/detail.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/goals/list.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/issues/detail-activity.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/issues/detail-chat.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/issues/detail-sidebar.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/issues/inbox-requests.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/issues/inbox.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/issues/list.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/issues/my-issues.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/onboarding/budget-field.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/onboarding/empty-dashboard.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/onboarding/goal-field.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/onboarding/new-company-modal-empty.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/onboarding/sidebar-new-company-button.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/org/chart.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/org/execution-workspaces-list.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/org/org-chart-add-agent.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/org/org-chart-manager-assigned.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/org/org-chart-small-team.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/org/org-chart-view.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/org/reassign.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/org/skills-list.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/org/workspace-modes.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/plugins/detail.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/plugins/install.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/plugins/jobs-log.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/plugins/list.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/plugins/settings.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/projects/budget.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/projects/configuration.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/projects/issues.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/projects/list.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/projects/overview.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/projects/workspaces.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/routines/cron-picker.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/routines/detail.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/routines/list.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/routines/run-history.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/settings/experimental.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/settings/instance-access.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/settings/instance-adapters.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/settings/instance-general.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/settings/profile.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/settings/scheduler-heartbeats.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/skills/add-skill-dialog-confirm.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/skills/add-skill-dialog.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/skills/assign-to-agent.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/skills/file-inventory.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/skills/list.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/skills/skill-detail.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/skills/skills-list.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/tasks/comment-input-box.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/tasks/inbox-newly-created-tasks.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/tasks/inbox-view-with-filters.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/tasks/inbox-view.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/tasks/new-task-form-empty.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/tasks/new-task-form-filled.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/tasks/task-detail-in-progress.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/tasks/task-detail-with-comments.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/tasks/task-done-status.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/workspaces/configuration.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/workspaces/issues.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/workspaces/list.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "dark/workspaces/runtime-logs.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/activity/activity-filtered-by-agent.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/activity/activity-filters.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/activity/activity-log-full.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/adapters/detail.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/adapters/health.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/adapters/install.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/adapters/list.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/adapter-type-dropdown.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/agent-detail-idle.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/agent-detail-run-history.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/agent-status-running.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/agents-list-empty.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/budget-and-heartbeat-fields.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/budget.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/claude-local-config-filled.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/codex-local-config.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/configuration.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/dashboard.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/heartbeat-toggle-disabled.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/heartbeat-toggle-enabled.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/http-adapter-config.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/instructions.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/list.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/new-agent-name-role.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/new-agent-reports-to-field.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/new.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/run-history-in-progress.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/run-transcript-view.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/runs.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/skills.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/test-environment-fail.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/agents/test-environment-success.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/approvals/approvals-list.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/approvals/approvals-queue-strategy.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/approvals/approve-reject-buttons.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/approvals/approve-reject-revision-buttons.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/approvals/approved-approval.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/approvals/hire-approval-detail.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/approvals/queue-filters.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/approvals/revision-request-input.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/approvals/strategy-approval-detail.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/company/access.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/company/company-budget-setting.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/company/company-goal-field.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/company/company-saved.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/company/export.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/company/import.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/company/invites.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/company/join-requests.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/company/new-company-form.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/company/settings.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/costs/agent-budget-100pct-paused.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/costs/agent-budget-50pct.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/costs/agent-budget-80pct-warning.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/costs/agent-budget-bar.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/costs/agent-budget-field.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/costs/billers.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/costs/budgets.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/costs/company-budget-field.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/costs/costs-dashboard-overview.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/costs/finance.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/costs/overview.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/costs/per-run-cost-detail.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/costs/providers.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/dashboard/activity-feed.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/dashboard/agent-status-panel.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/dashboard/cost-summary-panel.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/dashboard/dashboard-overview-annotated.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/dashboard/dashboard-overview.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/dashboard/stale-tasks-panel.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/dashboard/task-breakdown-panel.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/export-import/export-dialog.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/export-import/import-dialog.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/goals/detail.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/goals/list.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/issues/detail-activity.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/issues/detail-chat.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/issues/detail-sidebar.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/issues/inbox-requests.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/issues/inbox.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/issues/list.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/issues/my-issues.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/onboarding/budget-field.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/onboarding/empty-dashboard.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/onboarding/goal-field.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/onboarding/new-company-modal-empty.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/onboarding/sidebar-new-company-button.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/org/chart.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/org/execution-workspaces-list.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/org/org-chart-add-agent.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/org/org-chart-manager-assigned.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/org/org-chart-small-team.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/org/org-chart-view.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/org/reassign.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/org/skills-list.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/org/workspace-modes.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/plugins/detail.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/plugins/install.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/plugins/jobs-log.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/plugins/list.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/plugins/settings.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/projects/budget.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/projects/configuration.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/projects/issues.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/projects/list.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/projects/overview.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/projects/workspaces.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/routines/cron-picker.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/routines/detail.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/routines/list.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/routines/run-history.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/settings/experimental.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/settings/instance-access.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/settings/instance-adapters.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/settings/instance-general.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/settings/profile.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/settings/scheduler-heartbeats.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/skills/add-skill-dialog-confirm.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/skills/add-skill-dialog.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/skills/assign-to-agent.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/skills/file-inventory.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/skills/list.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/skills/skill-detail.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/skills/skills-list.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/tasks/comment-input-box.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/tasks/inbox-newly-created-tasks.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/tasks/inbox-view-with-filters.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/tasks/inbox-view.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/tasks/new-task-form-empty.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/tasks/new-task-form-filled.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/tasks/task-detail-in-progress.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/tasks/task-detail-with-comments.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/tasks/task-done-status.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/workspaces/configuration.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/workspaces/issues.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/workspaces/list.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    },
+    {
+      "file": "light/workspaces/runtime-logs.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": null,
+      "captured_against": null,
+      "captured_sha": null,
+      "depends_on": [],
+      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+    }
+  ]
 }

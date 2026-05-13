@@ -207,8 +207,23 @@ Recommended cadence: `/loop 24h /sync-docs` for nightly. Release mode is auto-de
 |---|---|
 | `scripts/sync/anchor-map.json` | Maps parent-repo paths → docs paths. Edit when adding new doc sections or new product surfaces. |
 | `scripts/sync/state.example.json` | Template for `.sync-state.json`. |
-| `.sync-state.json` | Per-branch sync state (committed). `main` records the last synced release tag; `nightly` records the last synced parent SHA. |
+| `.sync-state.json` | Per-branch sync state (committed). Schema: `branch_mode`, `base_release_tag`, `base_release_sha`, `last_seen_parent_sha`, `last_applied_manifest_hash`. `base_release_tag` is the diff base for both modes — cumulative diff, only bumps on a successful release merge. |
 | `docs/user-guides/screenshots/registry.json` | Screenshot dependency tracking — see [Screenshots](#screenshots). |
+
+### Helper scripts
+
+The skill (and humans) can run these directly:
+
+```sh
+npm run sync:lint-links         # find broken relative links / image refs in docs/
+npm run sync:verify-nav         # cross-check site/content.json against the docs filesystem
+npm run sync:check              # both of the above (used by the skill before committing)
+npm run sync:backfill-screenshots   # one-shot scaffolder for screenshots/registry.json
+```
+
+`sync:lint-links` skips external URLs, absolute SPA routes (`/...`), and template placeholders (`${...}`, `{id}`) — anything that isn't a real filesystem path. Exit 1 on any broken link.
+
+`sync:verify-nav` reports two classes of issue: **dangling** nav entries (in `content.json` but not on disk — error, exit 1) and **orphan** files (on disk but missing from `content.json` — warning, exit 0). Pass `--strict` to fail on orphans too.
 
 See [`skills/sync-docs/SKILL.md`](skills/sync-docs/SKILL.md) for the full operational playbook.
 

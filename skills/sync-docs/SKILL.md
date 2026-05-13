@@ -78,6 +78,8 @@ gh api repos/paperclipai/paperclip/compare/$PREV...$NEXT \
 
 Cache result under `/tmp/paperclip-sync/<sha>/` so we don't refetch within a run.
 
+> **Pagination & truncation.** The GitHub `compare` endpoint caps responses at ~300 changed files and ~300 commits per call. For large gaps (many releases) the response will be **truncated** (check `total_commits` vs `commits.length` and the presence of `truncated_files` semantics). When truncation is detected, split the window by walking each intermediate release tag and doing tag-to-tag compares, then union the per-tag file lists. For nightly mode with no intermediate tags, split the commit list in halves until each half fits.
+
 > **Why cumulative, not incremental?** If we diffed `yesterday → today`, a revert commit landing today would need to be processed to undo yesterday's doc edit — and filtering revert commits by message regex would lose that signal. With cumulative diffs from the last release, reverts simply aren't in the diff at all. The original commit and its revert cancel out before we ever see them.
 
 ### Phase 3 — Surface diff (the change manifest)
@@ -163,11 +165,11 @@ If all pass: make the mechanical edit directly. Examples: append a row to `envir
 > - Use second person ("you can…"), present tense, short paragraphs.
 > - Never paste from the parent repo's own docs. Their tone is dev-focused; ours is not.
 > - Preserve existing page structure unless the change demands new sections. Keep cross-references intact.
-> - If a new page is needed, mirror the structure of the neighbour page you were given, then register it in `site/content.json` under the correct section.
+> - If a new page is needed, mirror the structure of the neighbour page you were given. Do **NOT** edit `site/content.json` directly — return a `nav_addition` structured object alongside the page content (see below). The orchestrator will merge it.
 > - Add `paperclip_version: <tag>` to the frontmatter of touched pages in release mode; leave alone in nightly mode (nightly pages are versionless until they merge to main).
-> Return only the edited file contents (or the new file). Do not commit.
+> Return: `{ "files": { "<path>": "<new content>" }, "nav_addition": { "section_title": "How-to Guides", "entry": { "title": "...", "file": "../docs/how-to/foo.md" } } }` — `nav_addition` is null if no new page was created.
 
-- After the subagent returns, write the file(s).
+- After all subagents return, the orchestrator (this skill, on the main thread) **serialises** the `site/content.json` merge: collect all `nav_addition` results, then make a single coordinated edit to `content.json`. **Subagents never write `content.json` directly** — this prevents the race where two parallel subagents clobber each other's nav entries.
 
 ### Phase 6 — Screenshot staleness check
 
@@ -181,7 +183,7 @@ Output stale entries to `SCREENSHOTS_PENDING.md` (committed) and to the PR/commi
 ### Phase 7 — Verify & commit
 
 1. Run `npm run docs:build`. Fail loud on build errors — do not commit.
-2. Run any link check available (skip if none configured).
+2. Run `npm run sync:check` (lint-links + verify-nav). Dangling nav entries or broken internal links → fail loud, do not commit. Orphans (md files not in `content.json`) are warnings — surface in the run summary so the user can decide whether the orphan is intentional (a maintenance file) or a missed registration.
 3. Stage edits.
 4. Commit strategy:
    - Nightly auto-merge edits → single commit titled `nightly: <surface name> (paperclip <short-sha>)`.
