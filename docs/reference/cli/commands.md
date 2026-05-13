@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.325.0
+---
+
 # Command Reference
 
 Every `paperclipai` subcommand, every flag, every environment variable the CLI reads. This page is for lookup, not learning — if you want a guided tour, start with [Setup Commands](./setup-commands.md) or [Control-Plane Commands](./control-plane-commands.md).
@@ -344,7 +348,7 @@ paperclipai company export <company-id> --out ./exports/acme --include company,a
 
 ### `paperclipai company import <fromPathOrUrl>`
 
-Import a portable markdown company package from a local path, URL, or GitHub repo.
+Import a portable markdown company package from a local path, URL, GitHub repo, or `.zip` archive.
 
 ```
 paperclipai company import [options] <fromPathOrUrl>
@@ -352,7 +356,7 @@ paperclipai company import [options] <fromPathOrUrl>
 
 | Argument | Description |
 |---|---|
-| `fromPathOrUrl` | Source path or URL. |
+| `fromPathOrUrl` | Source path or URL. Local paths may point at a directory or a `.zip` archive; URLs may resolve to a GitHub repo or a downloadable `.zip`. |
 
 | Flag | Type | Default | Description |
 |---|---|---|---|
