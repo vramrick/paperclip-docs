@@ -1,0 +1,106 @@
+{
+  "$schema_version": 1,
+  "parent_repo": "paperclipai/paperclip",
+  "watchers": [
+    {
+      "name": "cli-commands",
+      "parent_paths": [
+        "cli/src/commands/**/*.ts",
+        "cli/src/index.ts"
+      ],
+      "docs_paths": [
+        "docs/reference/cli/**"
+      ],
+      "tier": "pr",
+      "detect": "New or renamed command names from `program.command()` / Commander definitions. New or removed flags from `.option()`. Argument signature changes. Help-text changes."
+    },
+    {
+      "name": "env-vars",
+      "parent_paths": [
+        ".env.example",
+        "server/src/env.ts",
+        "packages/**/env.ts",
+        "packages/**/config.ts"
+      ],
+      "docs_paths": [
+        "docs/reference/deploy/environment-variables.md"
+      ],
+      "tier": "auto-merge",
+      "detect": "Lines matching `^[A-Z_][A-Z0-9_]*=` in .env.example; `process.env.X` reads; zod env schema fields. Append-only edits are auto-merge; renames/removals escalate to PR tier."
+    },
+    {
+      "name": "rest-routes",
+      "parent_paths": [
+        "server/src/routes/**/*.ts"
+      ],
+      "docs_paths": [
+        "docs/reference/api/**"
+      ],
+      "tier": "pr",
+      "detect": "Route registrations (`app.get/post/put/delete`, fastify `route({...})`). New route file = new doc page; signature/payload changes = update existing page."
+    },
+    {
+      "name": "adapters",
+      "parent_paths": [
+        "packages/adapters/*",
+        "packages/plugins/sandbox-providers/*"
+      ],
+      "docs_paths": [
+        "docs/reference/adapters/**"
+      ],
+      "tier": "pr",
+      "detect": "New top-level directory under either path = new adapter; create a new doc page mirroring the neighbour pattern. Manifest (`package.json`, `adapter.json`) changes = update existing page."
+    },
+    {
+      "name": "plugin-sdk",
+      "parent_paths": [
+        "packages/plugins/sdk/src/index.ts",
+        "packages/plugins/sdk/src/**/*.ts"
+      ],
+      "docs_paths": [
+        "docs/how-to/write-a-company-skill.md",
+        "docs/reference/skills.md"
+      ],
+      "tier": "pr",
+      "detect": "Changes to exported types/functions from `src/index.ts` (public API surface). Internal-only changes ignored."
+    },
+    {
+      "name": "schemas",
+      "parent_paths": [
+        "packages/**/schema/*.ts",
+        "packages/**/*.schema.ts",
+        "server/src/db/schema/**"
+      ],
+      "docs_paths": [
+        "docs/reference/**",
+        "docs/administration/**"
+      ],
+      "tier": "pr",
+      "detect": "Zod / drizzle schema field additions, removals, or type changes on entities surfaced in docs (companies, agents, issues, routines, approvals, secrets)."
+    },
+    {
+      "name": "release-notes",
+      "source": "github-releases",
+      "parent_paths": [],
+      "docs_paths": ["docs/**"],
+      "tier": "context-only",
+      "detect": "Fetched via `gh release view <tag>` to give other watchers framing/intent. Never produces edits directly — release notes are reference data, not source."
+    }
+  ],
+  "screenshot_registry": "docs/user-guides/screenshots/registry.json",
+  "skip_patterns": [
+    "^revert",
+    "^chore\\(deps\\)",
+    "^chore\\(deps-dev\\)",
+    "^\\[codex\\]",
+    "^wip(:|\\s|$)",
+    "\\[draft\\]",
+    "^Bump release changelog"
+  ],
+  "quarantine_hours": 24,
+  "auto_merge_safety": {
+    "max_files_changed": 1,
+    "max_lines_changed": 20,
+    "require_tier": "auto-merge"
+  }
+}

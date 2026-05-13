@@ -1,0 +1,10 @@
+{
+  "$comment": "Template for .sync-state.json at the repo root. Committed per-branch. Edit the real file, not this one.",
+  "mode": "release",
+  "synced_to": "v2026.318.0",
+  "synced_sha": "REPLACE_WITH_PARENT_COMMIT_SHA",
+  "synced_at": "2026-03-18T00:00:00Z",
+  "last_run_at": null,
+  "last_run_outcome": null,
+  "notes": "On `main` branch, `mode` is `release` and `synced_to` is a parent release tag. On `nightly` branch, `mode` is `nightly` and `synced_to` is `main` with `synced_sha` pinning the exact commit."
+}

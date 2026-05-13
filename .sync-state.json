@@ -1,0 +1,9 @@
+{
+  "mode": "release",
+  "synced_to": "v2026.318.0",
+  "synced_sha": null,
+  "synced_at": null,
+  "last_run_at": null,
+  "last_run_outcome": null,
+  "notes": "Initial seed. The first /sync-docs --release run will resolve synced_sha by tag lookup and bring docs forward to the latest parent release."
+}
