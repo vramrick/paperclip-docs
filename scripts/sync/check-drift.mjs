@@ -140,6 +140,37 @@ function ghDefaultBranch(repo) {
   return r.stdout.trim() || "master";
 }
 
+function ghTreeFiles(repo, ref) {
+  if (FIXTURE_DIR) {
+    const file = join(FIXTURE_DIR, `tree-${ref}.json`);
+    if (!existsSync(file)) return null;
+    const body = JSON.parse(readFileSync(file, "utf8"));
+    if (Array.isArray(body)) return body;
+    if (body && Array.isArray(body.tree)) {
+      return body.tree.filter((item) => item.type === "blob").map((item) => item.path);
+    }
+    return null;
+  }
+  const r = spawnSync("gh", ["api", `repos/${repo}/git/trees/${ref}?recursive=1`], {
+    encoding: "utf8",
+    maxBuffer: 128 * 1024 * 1024,
+  });
+  if (r.error && r.error.code === "ENOENT") {
+    process.stderr.write("error: `gh` CLI not found on PATH.\n");
+    process.exit(2);
+  }
+  if (r.status !== 0) {
+    return null;
+  }
+  try {
+    const body = JSON.parse(r.stdout);
+    if (!Array.isArray(body.tree)) return null;
+    return body.tree.filter((item) => item.type === "blob").map((item) => item.path);
+  } catch {
+    return null;
+  }
+}
+
 // --- caching ---------------------------------------------------------------
 
 function cacheGet(refSlug, key) {
@@ -193,6 +224,14 @@ function locate(content, needle) {
     if (lines[i].includes(needle)) return i + 1;
   }
   return null;
+}
+
+function lineOfOffset(content, offset) {
+  let line = 1;
+  for (let i = 0; i < offset && i < content.length; i++) {
+    if (content[i] === "\n") line++;
+  }
+  return line;
 }
 
 // --- Class 1: parent file paths --------------------------------------------
@@ -343,7 +382,38 @@ function envVarSourcesToCheck() {
   return sources;
 }
 
+function shouldFetchEnvSource(path) {
+  if (path === ".env.example") return true;
+  if (path.includes("/__tests__/") || /\.(?:test|spec)\./.test(path)) return false;
+  if (!/\.(?:ts|tsx|js|mjs|json|md)$/.test(path)) return false;
+  if (!/^(cli\/src|server\/src|packages|ui\/src)\//.test(path)) return false;
+  const base = path.split("/").pop();
+  if (path === "server/src/config.ts" || path === "server/src/config-file.ts") return true;
+  if (/^server\/src\/(auth\/better-auth|agent-auth-jwt|runtime-api|worktree-config)\.ts$/.test(path)) return true;
+  if (/^server\/src\/services\/(?:environment|execution-workspace|workspace|secret|plugin|sandbox)[A-Za-z0-9_-]*\.ts$/.test(path)) return true;
+  if (/^cli\/src\/config\/.+\.ts$/.test(path)) return true;
+  if (/^cli\/src\/checks\/.+(?:auth|config|secret|env).+\.ts$/.test(path)) return true;
+  if (/^cli\/src\/commands\/(?:env|env-lab|configure|client\/secrets|client\/auth)\.ts$/.test(path)) return true;
+  if (path.startsWith("packages/plugins/sandbox-providers/") && /(^|\/)(README\.md|manifest\.ts|config\.ts|plugin\.ts|worker\.ts)$/.test(path)) return true;
+  if (/^packages\/adapter-utils\/src\/(?:.*env.*|execution-target.*|sandbox.*|remote.*|workspace.*)\.ts$/.test(path)) return true;
+  if (/^packages\/shared\/src\/.*(?:config|environment|secret|workspace|runtime).*\.ts$/.test(path)) return true;
+  if (/^packages\/[^/]+\/src\/(?:env|config|runtime-config|worktree-config)\.ts$/.test(path)) return true;
+  return /^(?:env|config|manifest|runtime-config|worktree-config)\.(?:ts|tsx|js|mjs|json|md)$/.test(base);
+}
+
+function envVarSourcesToCheckFromTree(repo, ref, refSlug) {
+  const tree = ghTreeFiles(repo, ref);
+  if (!tree) return envVarSourcesToCheck();
+  const sources = new Set(envVarSourcesToCheck());
+  for (const p of tree) {
+    if (shouldFetchEnvSource(p)) sources.add(p);
+  }
+  // Keep source fetching bounded if the parent tree grows unexpectedly.
+  return [...sources].slice(0, 700);
+}
+
 function envVarPresent(name, contentsByPath) {
+  if (isExternallySuppliedEnvVar(name) || isRuntimeInjectedEnvVar(name)) return true;
   const envExample = contentsByPath[".env.example"];
   if (envExample && new RegExp(`^${name}\\b`, "m").test(envExample)) return true;
   for (const [path, content] of Object.entries(contentsByPath)) {
@@ -353,9 +423,36 @@ function envVarPresent(name, contentsByPath) {
   return false;
 }
 
+function isExternallySuppliedEnvVar(name) {
+  return /^(?:ANTHROPIC|OPENAI|GEMINI|GOOGLE|DAYTONA|EXE|E2B|CURSOR|XAI|GITHUB|SLACK|DISCORD)_[A-Z0-9_]*(?:API_KEY|TOKEN|SECRET)$/.test(name);
+}
+
+function isRuntimeInjectedEnvVar(name) {
+  return new Set([
+    "PAPERCLIP_AGENT_ID",
+    "PAPERCLIP_COMPANY_ID",
+    "PAPERCLIP_API_URL",
+    "PAPERCLIP_API_KEY",
+    "PAPERCLIP_RUN_ID",
+    "PAPERCLIP_TASK_ID",
+    "PAPERCLIP_WAKE_REASON",
+    "PAPERCLIP_WAKE_COMMENT_ID",
+    "PAPERCLIP_WAKE_PAYLOAD_JSON",
+    "PAPERCLIP_APPROVAL_ID",
+    "PAPERCLIP_APPROVAL_STATUS",
+    "PAPERCLIP_LINKED_ISSUE_IDS",
+    "PAPERCLIP_WORKSPACE_CWD",
+    "PAPERCLIP_WORKSPACE_PATH",
+    "PAPERCLIP_WORKSPACE_REPO_ROOT",
+    "PAPERCLIP_WORKSPACE_BRANCH",
+    "PAPERCLIP_PROJECT_ID",
+    "PAPERCLIP_ISSUE_ID",
+  ]).has(name);
+}
+
 // --- Class 4: REST routes --------------------------------------------------
 
-const REST_HEADER_RE = /^(?:##\s+)?(GET|POST|PUT|PATCH|DELETE)\s+(\/api\/[^\s`)]+)/gm;
+const REST_ROUTE_RE = /(?:^|[\s|`])((GET|POST|PUT|PATCH|DELETE)\s+(\/api\/[^\s`|)\]]+))/gm;
 
 function normalizeRoute(path) {
   // Strip querystring and trailing punctuation.
@@ -380,18 +477,18 @@ function collectRestRoutes(docFiles) {
     if (!/\/docs\/reference\/api\/[^/]+\.md$/.test(file)) continue;
     if (file.endsWith("overview.md") || file.endsWith("authentication.md")) continue;
     const content = readFileSync(file, "utf8");
-    REST_HEADER_RE.lastIndex = 0;
+    REST_ROUTE_RE.lastIndex = 0;
     let m;
     const seen = new Set();
     const routes = [];
-    while ((m = REST_HEADER_RE.exec(content))) {
-      const method = m[1];
-      const rawPath = m[2];
+    while ((m = REST_ROUTE_RE.exec(content))) {
+      const method = m[2];
+      const rawPath = m[3].replace(/[.,;:`)\]]+$/g, "");
       const normalized = normalizeRoute(rawPath);
       const key = `${method} ${normalized}`;
       if (seen.has(key)) continue;
       seen.add(key);
-      const line = locate(content, m[0]);
+      const line = lineOfOffset(content, m.index + m[0].indexOf(m[1]));
       routes.push({ method, path: rawPath, normalized, line });
     }
     if (routes.length) perDoc.set(file, routes);
@@ -464,6 +561,48 @@ function routeIsDefined(method, normalized, routeFileContent, surface = null) {
     }
   }
   return false;
+}
+
+function fetchRouteFiles(repo, ref, refSlug) {
+  const acc = [];
+  const seen = new Set();
+  const tree = ghTreeFiles(repo, ref);
+  if (tree) {
+    for (const p of tree) {
+      if (!/^server\/src\/routes\/.+\.ts$/.test(p)) continue;
+      const res = cachedContents(repo, p, ref, refSlug);
+      if (res.status === 200 && typeof res.content === "string") {
+        acc.push({ path: p, content: res.content });
+      }
+    }
+    return acc;
+  }
+
+  function visit(dir) {
+    if (seen.has(dir)) return;
+    seen.add(dir);
+    const dirRes = cachedContents(repo, dir, ref, refSlug);
+    if (dirRes.status !== 200 || !Array.isArray(dirRes.list)) return;
+    for (const item of dirRes.list) {
+      if (item.type === "file" && item.name.endsWith(".ts")) {
+        const fileRes = cachedContents(repo, item.path, ref, refSlug);
+        if (fileRes.status === 200 && typeof fileRes.content === "string") {
+          acc.push({ path: item.path, content: fileRes.content });
+        }
+      } else if (item.type === "dir") {
+        visit(item.path);
+      }
+    }
+  }
+  visit("server/src/routes");
+  return acc;
+}
+
+function routeIsDefinedInAnyFile(method, normalized, routeFiles, surface) {
+  for (const file of routeFiles) {
+    if (routeIsDefined(method, normalized, file.content, surface)) return file.path;
+  }
+  return null;
 }
 
 function escapeRegex(s) {
@@ -575,18 +714,6 @@ function main() {
             suggest: "Search the parent CLI for the command. It may have been renamed or moved to a different group.",
           });
         }
-      } else if (matches > 1) {
-        // Ambiguous — flag as medium so reviewers can verify.
-        for (const d of entry.docs) {
-          drift.push({
-            kind: "cli-command-ambiguous",
-            doc: `${relative(ROOT, d.file)}${d.line ? `:${d.line}` : ""}`,
-            documented: `paperclipai ${name}`,
-            parent_searched: `${CLI_CMD_DIRS.join(", ")}@${against}`,
-            confidence: "medium",
-            suggest: `Command name matches in ${matches} parent files — verify the doc references the intended one.`,
-          });
-        }
       }
     }
   }
@@ -595,7 +722,7 @@ function main() {
   const envRefs = collectEnvVars(docFiles);
   stats.env_vars_checked = envRefs.size;
   if (envRefs.size > 0) {
-    const sources = envVarSourcesToCheck();
+    const sources = envVarSourcesToCheckFromTree(repo, against, refSlug);
     const contentsByPath = {};
     for (const s of sources) {
       if (s.includes("*")) continue; // skip globs; handled by watcher in live sync
@@ -625,9 +752,26 @@ function main() {
   let totalRoutes = 0;
   for (const arr of routesPerDoc.values()) totalRoutes += arr.length;
   stats.rest_routes_checked = totalRoutes;
+  const allRouteFiles = totalRoutes > 0 ? fetchRouteFiles(repo, against, refSlug) : [];
   for (const [docFile, routes] of routesPerDoc) {
     const surface = surfaceFromDocPath(docFile);
     if (!surface) continue;
+    if (allRouteFiles.length > 0) {
+      for (const r of routes) {
+        if (!routeIsDefinedInAnyFile(r.method, r.normalized, allRouteFiles, surface)) {
+          drift.push({
+            kind: "rest-route-missing",
+            doc: `${relative(ROOT, docFile)}${r.line ? `:${r.line}` : ""}`,
+            documented: `${r.method} ${r.path}`,
+            parent_searched: `server/src/routes/**/*.ts@${against}`,
+            confidence: "medium",
+            suggest: "Verify the route was removed (not moved). If removed, delete the doc section.",
+          });
+        }
+      }
+      continue;
+    }
+
     const routeFilePath = `server/src/routes/${surface}.ts`;
     const res = cachedContents(repo, routeFilePath, against, refSlug);
     if (res.status === 404) {

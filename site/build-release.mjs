@@ -73,6 +73,23 @@ function toPosixPath(value) {
   return value.split(path.sep).join("/");
 }
 
+export function isPathInside(parentPath, targetPath) {
+  const rel = path.relative(parentPath, targetPath);
+  return rel === "" || (rel && !rel.startsWith("..") && !path.isAbsolute(rel));
+}
+
+function releaseTargetPathForDoc(sourcePath, releaseRoot) {
+  if (!isPathInside(docsRoot, sourcePath)) {
+    throw new Error(`Refusing to copy a file outside docs/: ${path.relative(process.cwd(), sourcePath)}`);
+  }
+  const relativeFromDocsRoot = path.relative(docsRoot, sourcePath);
+  const targetPath = path.join(releaseRoot, relativeFromDocsRoot);
+  if (!isPathInside(releaseRoot, targetPath)) {
+    throw new Error(`Refusing to write outside release directory: ${path.relative(process.cwd(), targetPath)}`);
+  }
+  return targetPath;
+}
+
 /**
  * Parse YAML frontmatter from the head of a markdown string.
  *
@@ -139,8 +156,7 @@ async function ensureDir(targetPath) {
 }
 
 async function copyFileIntoRelease(sourcePath, releaseRoot) {
-  const relativeFromDocsRoot = path.relative(docsRoot, sourcePath);
-  const targetPath = path.join(releaseRoot, relativeFromDocsRoot);
+  const targetPath = releaseTargetPathForDoc(sourcePath, releaseRoot);
   await ensureDir(path.dirname(targetPath));
   await fs.copyFile(sourcePath, targetPath);
 }
@@ -148,8 +164,7 @@ async function copyFileIntoRelease(sourcePath, releaseRoot) {
 // Copy a markdown file into the release bundle while stripping any YAML
 // frontmatter. Returns the parsed frontmatter object (empty if none).
 async function copyMarkdownIntoRelease(sourcePath, releaseRoot) {
-  const relativeFromDocsRoot = path.relative(docsRoot, sourcePath);
-  const targetPath = path.join(releaseRoot, relativeFromDocsRoot);
+  const targetPath = releaseTargetPathForDoc(sourcePath, releaseRoot);
   await ensureDir(path.dirname(targetPath));
   const source = await fs.readFile(sourcePath, "utf8");
   const { body, frontmatter } = parseFrontmatter(source);
@@ -369,7 +384,7 @@ async function collectReleaseFiles(nav) {
       if (!href || !isLocalDocHref(href)) continue;
 
       const resolvedPath = path.resolve(baseDir, href);
-      if (!resolvedPath.startsWith(docsRoot)) continue;
+      if (!isPathInside(docsRoot, resolvedPath)) continue;
 
       if (href.endsWith(".md")) {
         if (await pathExists(resolvedPath)) {

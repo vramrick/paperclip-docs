@@ -144,6 +144,35 @@ function ghDefaultBranch(repo) {
   return r.stdout.trim() || "master";
 }
 
+function ghTreeFiles(repo, ref) {
+  if (FIXTURE_DIR) {
+    const file = join(FIXTURE_DIR, `tree-${ref}.json`);
+    if (!existsSync(file)) return null;
+    const body = JSON.parse(readFileSync(file, "utf8"));
+    if (Array.isArray(body)) return body;
+    if (body && Array.isArray(body.tree)) {
+      return body.tree.filter((item) => item.type === "blob").map((item) => item.path);
+    }
+    return null;
+  }
+  const r = spawnSync("gh", ["api", `repos/${repo}/git/trees/${ref}?recursive=1`], {
+    encoding: "utf8",
+    maxBuffer: 128 * 1024 * 1024,
+  });
+  if (r.error && r.error.code === "ENOENT") {
+    process.stderr.write("error: `gh` CLI not found on PATH.\n");
+    process.exit(2);
+  }
+  if (r.status !== 0) return null;
+  try {
+    const body = JSON.parse(r.stdout);
+    if (!Array.isArray(body.tree)) return null;
+    return body.tree.filter((item) => item.type === "blob").map((item) => item.path);
+  } catch {
+    return null;
+  }
+}
+
 function ghResolveSha(repo, ref) {
   if (FIXTURE_DIR) return null;
   const r = spawnSync(
@@ -495,6 +524,7 @@ function extractCliFlags(regions, docPath) {
 
 // Class: env-var — backticked uppercase identifier in env-y context.
 function extractEnvVars(regions, docPath) {
+  if (isApiDoc(docPath)) return [];
   const out = [];
   const seen = new Set();
   const envCtxRe = /(env(ironment)?|deploy|secret|config|variable)/i;
@@ -526,20 +556,20 @@ function extractEnvVars(regions, docPath) {
   return out;
 }
 
-// Class: rest-route — `## METHOD /api/...` headers.
+// Class: rest-route — headings, fenced blocks, or table cells containing METHOD /api/...
 function extractRestRoutes(content, docPath) {
   if (!isApiDoc(docPath)) return [];
   const out = [];
   const seen = new Set();
-  const re = /^##\s+(GET|POST|PUT|PATCH|DELETE)\s+(\/api\/[^\s`)]+)/gm;
+  const re = /(?:^|[\s|`])((GET|POST|PUT|PATCH|DELETE)\s+(\/api\/[^\s`|)\]]+))/gm;
   let m;
   while ((m = re.exec(content))) {
-    const method = m[1];
-    const rawPath = m[2].replace(/[.,;:`)\]]+$/g, "");
+    const method = m[2];
+    const rawPath = m[3].replace(/[.,;:`)\]]+$/g, "");
     const key = `${method} ${rawPath}`;
     if (seen.has(key)) continue;
     seen.add(key);
-    const line = lineOfOffset(content, m.index);
+    const line = lineOfOffset(content, m.index + m[0].indexOf(m[1]));
     out.push({
       kind: "rest-route",
       value: key,
@@ -760,13 +790,71 @@ function fetchEnvSources(repo, ref, refSlug) {
   } catch {
     // ignore
   }
-  for (const s of sources) {
+  const tree = ghTreeFiles(repo, ref);
+  if (tree) {
+    for (const p of tree) {
+      if (shouldFetchEnvSource(p) && !sources.includes(p)) sources.push(p);
+    }
+  }
+  for (const s of sources.slice(0, 700)) {
     const res = cachedContents(repo, s, ref, refSlug);
     if (res.status === 200 && typeof res.content === "string") {
       out[s] = res.content;
     }
   }
   return out;
+}
+
+function shouldFetchEnvSource(path) {
+  if (path === ".env.example") return true;
+  if (path.includes("/__tests__/") || /\.(?:test|spec)\./.test(path)) return false;
+  if (!/\.(?:ts|tsx|js|mjs|json|md)$/.test(path)) return false;
+  if (!/^(cli\/src|server\/src|packages|ui\/src)\//.test(path)) return false;
+  const base = path.split("/").pop();
+  if (path === "server/src/config.ts" || path === "server/src/config-file.ts") return true;
+  if (/^server\/src\/(auth\/better-auth|agent-auth-jwt|runtime-api|worktree-config)\.ts$/.test(path)) return true;
+  if (/^server\/src\/services\/(?:environment|execution-workspace|workspace|secret|plugin|sandbox)[A-Za-z0-9_-]*\.ts$/.test(path)) return true;
+  if (/^cli\/src\/config\/.+\.ts$/.test(path)) return true;
+  if (/^cli\/src\/checks\/.+(?:auth|config|secret|env).+\.ts$/.test(path)) return true;
+  if (/^cli\/src\/commands\/(?:env|env-lab|configure|client\/secrets|client\/auth)\.ts$/.test(path)) return true;
+  if (path.startsWith("packages/plugins/sandbox-providers/") && /(^|\/)(README\.md|manifest\.ts|config\.ts|plugin\.ts|worker\.ts)$/.test(path)) return true;
+  if (/^packages\/adapter-utils\/src\/(?:.*env.*|execution-target.*|sandbox.*|remote.*|workspace.*)\.ts$/.test(path)) return true;
+  if (/^packages\/shared\/src\/.*(?:config|environment|secret|workspace|runtime).*\.ts$/.test(path)) return true;
+  if (/^packages\/[^/]+\/src\/(?:env|config|runtime-config|worktree-config)\.ts$/.test(path)) return true;
+  return /^(?:env|config|manifest|runtime-config|worktree-config)\.(?:ts|tsx|js|mjs|json|md)$/.test(base);
+}
+
+function fetchRouteFiles(repo, ref, refSlug) {
+  const acc = [];
+  const seen = new Set();
+  const tree = ghTreeFiles(repo, ref);
+  if (tree) {
+    for (const p of tree) {
+      if (!/^server\/src\/routes\/.+\.ts$/.test(p)) continue;
+      const res = cachedContents(repo, p, ref, refSlug);
+      if (res.status === 200 && typeof res.content === "string") {
+        acc.push({ path: p, content: res.content });
+      }
+    }
+    return acc;
+  }
+  function visit(dir) {
+    if (seen.has(dir)) return;
+    seen.add(dir);
+    const list = listDir(repo, dir, ref, refSlug);
+    for (const item of list) {
+      if (item.type === "file" && item.name.endsWith(".ts")) {
+        const fileRes = cachedContents(repo, item.path, ref, refSlug);
+        if (fileRes.status === 200 && typeof fileRes.content === "string") {
+          acc.push({ path: item.path, content: fileRes.content });
+        }
+      } else if (item.type === "dir") {
+        visit(item.path);
+      }
+    }
+  }
+  visit("server/src/routes");
+  return acc;
 }
 
 function normalizeRoute(p) {
@@ -826,12 +914,18 @@ function routeIsDefined(method, rawPath, routeContent, surface) {
         "is"
       );
       if (reFastify.test(routeContent)) return true;
+      const reFastifyRev = new RegExp(
+        `url\\s*:\\s*["'\`]${pattern}(?:[?#]|["'\`])[^}]*method\\s*:\\s*["'\`]${method}["'\`]`,
+        "is"
+      );
+      if (reFastifyRev.test(routeContent)) return true;
     }
   }
   return false;
 }
 
 function envVarPresent(name, envSources) {
+  if (isExternallySuppliedEnvVar(name) || isRuntimeInjectedEnvVar(name)) return true;
   const envExample = envSources[".env.example"];
   if (envExample && new RegExp(`^${name}\\b`, "m").test(envExample)) return true;
   for (const [path, content] of Object.entries(envSources)) {
@@ -839,6 +933,33 @@ function envVarPresent(name, envSources) {
     if (content && content.includes(name)) return true;
   }
   return false;
+}
+
+function isExternallySuppliedEnvVar(name) {
+  return /^(?:ANTHROPIC|OPENAI|GEMINI|GOOGLE|DAYTONA|EXE|E2B|CURSOR|XAI|GITHUB|SLACK|DISCORD)_[A-Z0-9_]*(?:API_KEY|TOKEN|SECRET)$/.test(name);
+}
+
+function isRuntimeInjectedEnvVar(name) {
+  return new Set([
+    "PAPERCLIP_AGENT_ID",
+    "PAPERCLIP_COMPANY_ID",
+    "PAPERCLIP_API_URL",
+    "PAPERCLIP_API_KEY",
+    "PAPERCLIP_RUN_ID",
+    "PAPERCLIP_TASK_ID",
+    "PAPERCLIP_WAKE_REASON",
+    "PAPERCLIP_WAKE_COMMENT_ID",
+    "PAPERCLIP_WAKE_PAYLOAD_JSON",
+    "PAPERCLIP_APPROVAL_ID",
+    "PAPERCLIP_APPROVAL_STATUS",
+    "PAPERCLIP_LINKED_ISSUE_IDS",
+    "PAPERCLIP_WORKSPACE_CWD",
+    "PAPERCLIP_WORKSPACE_PATH",
+    "PAPERCLIP_WORKSPACE_REPO_ROOT",
+    "PAPERCLIP_WORKSPACE_BRANCH",
+    "PAPERCLIP_PROJECT_ID",
+    "PAPERCLIP_ISSUE_ID",
+  ]).has(name);
 }
 
 // Extract all candidate field names from adapter source — used to suggest
@@ -968,6 +1089,11 @@ function main() {
     if (envSources === null) envSources = fetchEnvSources(repo, against, refSlug);
     return envSources;
   };
+  let routeFiles = null;
+  const getRouteFiles = () => {
+    if (routeFiles === null) routeFiles = fetchRouteFiles(repo, against, refSlug);
+    return routeFiles;
+  };
 
   for (const claim of claims) {
     if (claim.kind === "cli-command") {
@@ -1080,6 +1206,25 @@ function main() {
           evidence: "could not infer surface from doc path",
           suggest: "Move the route into a per-surface doc under docs/reference/api/<surface>.md.",
         });
+        continue;
+      }
+      const allRouteFiles = getRouteFiles();
+      if (allRouteFiles.length > 0) {
+        const hit = allRouteFiles.find((file) =>
+          routeIsDefined(claim.method, claim.path, file.content, surface)
+        );
+        if (hit) {
+          verified.push(claim);
+        } else {
+          unverified.push({
+            kind: claim.kind,
+            value: claim.value,
+            location: claim.location,
+            searched: ["server/src/routes/**/*.ts"],
+            evidence: `no ${claim.method.toLowerCase()}() registration matching ${claim.path} in ${allRouteFiles.length} route files`,
+            suggest: "Verify the route was removed (not moved). If moved, update the doc's location; if removed, delete the section.",
+          });
+        }
         continue;
       }
       const routeFilePath = `server/src/routes/${surface}.ts`;

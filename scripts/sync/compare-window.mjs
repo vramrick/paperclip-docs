@@ -256,23 +256,58 @@ function mergeStatus(prev, next) {
   //   otherwise: latest seen wins
   if (prev === "added" && next === "removed") return "__drop__";
   if (prev === "added" && next === "modified") return "modified";
+  if (prev === "added" && next === "renamed") return "added";
   if (prev === "modified" && next === "removed") return "removed";
   if (prev === "renamed" && next === "modified") return "renamed";
   if (prev === "modified" && next === "renamed") return "renamed";
   return next;
 }
 
+function mergeFileRecord(prev, nextFile) {
+  const merged = mergeStatus(prev.status, nextFile.status);
+  if (merged === "__drop__") return null;
+  return {
+    ...prev,
+    filename: nextFile.filename,
+    previous_filename: nextFile.previous_filename || prev.previous_filename,
+    status: merged,
+    additions: (prev.additions || 0) + (nextFile.additions || 0),
+    deletions: (prev.deletions || 0) + (nextFile.deletions || 0),
+  };
+}
+
 function unionFiles(leaves) {
   // Iterate leaves in chronological order (caller passes them already in order)
-  // and merge files keyed by filename.
+  // and merge files keyed by filename. Rename records carry `previous_filename`;
+  // when a path was touched before the rename, move that earlier state onto the
+  // new filename so the cumulative diff does not emit both paths.
   const map = new Map();
   for (const leaf of leaves) {
     const files = leaf.resp.files || [];
     for (const f of files) {
       const name = f.filename;
+      const previousName = f.status === "renamed" ? f.previous_filename : null;
+      if (previousName && map.has(previousName)) {
+        const previousRecord = map.get(previousName);
+        map.delete(previousName);
+        const moved = mergeFileRecord(previousRecord, f);
+        if (!moved) {
+          map.delete(name);
+          continue;
+        }
+        if (map.has(name)) {
+          const existing = mergeFileRecord(map.get(name), moved);
+          if (existing) map.set(name, existing);
+          else map.delete(name);
+        } else {
+          map.set(name, moved);
+        }
+        continue;
+      }
       if (!map.has(name)) {
         map.set(name, {
           filename: name,
+          previous_filename: f.previous_filename,
           status: f.status,
           additions: f.additions || 0,
           deletions: f.deletions || 0,
@@ -280,17 +315,23 @@ function unionFiles(leaves) {
         continue;
       }
       const prev = map.get(name);
-      const merged = mergeStatus(prev.status, f.status);
-      if (merged === "__drop__") {
+      const merged = mergeFileRecord(prev, f);
+      if (!merged) {
         map.delete(name);
         continue;
       }
-      prev.status = merged;
-      prev.additions += f.additions || 0;
-      prev.deletions += f.deletions || 0;
+      map.set(name, merged);
     }
   }
-  return Array.from(map.values()).sort((a, b) => a.filename.localeCompare(b.filename));
+  return Array.from(map.values())
+    .map((f) => {
+      if (!f.previous_filename) {
+        const { previous_filename, ...rest } = f;
+        return rest;
+      }
+      return f;
+    })
+    .sort((a, b) => a.filename.localeCompare(b.filename));
 }
 
 // --- main -------------------------------------------------------------------

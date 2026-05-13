@@ -10,7 +10,7 @@ import { tmpdir } from "node:os";
 import { join, dirname, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { parseFrontmatter } from "../../site/build-release.mjs";
+import { isPathInside, parseFrontmatter } from "../../site/build-release.mjs";
 
 const SELF_DIR = dirname(fileURLToPath(import.meta.url));
 const SCRIPTS = {
@@ -372,6 +372,52 @@ test("compare-window: status merge — added+removed drops, added+modified→mod
   rmSync(fix, { recursive: true, force: true });
 });
 
+test("compare-window: rename after prior modification moves old path state", () => {
+  const fix = mkdtempSync(join(tmpdir(), "cw-test-"));
+  const aSha = "a".repeat(40);
+  const bSha = "b".repeat(40);
+  const midSha = "d".repeat(40);
+  writeFixture(fix, "sha-A.json", { sha: aSha });
+  writeFixture(fix, "sha-B.json", { sha: bSha });
+
+  const topFiles = [];
+  for (let i = 0; i < 300; i++) topFiles.push({ filename: `pad${i}.ts`, status: "modified", additions: 0, deletions: 0 });
+  const topCommits = [];
+  for (let i = 0; i < 50; i++) topCommits.push({ sha: i === 25 ? midSha : `u${i}`.padEnd(40, "0") });
+  writeFixture(fix, `compare-${aSha}...${bSha}.json`, {
+    total_commits: 50,
+    commits: topCommits,
+    files: topFiles,
+  });
+  writeFixture(fix, `compare-${aSha}...${midSha}.json`, {
+    total_commits: 10,
+    commits: Array.from({ length: 10 }, (_, i) => ({ sha: `l${i}`.padEnd(40, "0") })),
+    files: [
+      { filename: "old.ts", status: "modified", additions: 3, deletions: 1 },
+    ],
+  });
+  writeFixture(fix, `compare-${midSha}...${bSha}.json`, {
+    total_commits: 10,
+    commits: Array.from({ length: 10 }, (_, i) => ({ sha: `r${i}`.padEnd(40, "0") })),
+    files: [
+      { filename: "new.ts", previous_filename: "old.ts", status: "renamed", additions: 1, deletions: 0 },
+    ],
+  });
+
+  const r = runCompare(["A", "B", "--json"], fix);
+  assert(r.code === 0, `expected 0, got ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  const names = out.files.map((f) => f.filename);
+  assert(!names.includes("old.ts"), `old.ts should have moved to new.ts; files=${JSON.stringify(out.files)}`);
+  const moved = out.files.find((f) => f.filename === "new.ts");
+  assert(moved, `new.ts missing: ${JSON.stringify(out.files)}`);
+  assert(moved.status === "renamed", `new.ts status=${moved.status}`);
+  assert(moved.previous_filename === "old.ts", `previous_filename=${moved.previous_filename}`);
+  assert(moved.additions === 4, `additions=${moved.additions}`);
+
+  rmSync(fix, { recursive: true, force: true });
+});
+
 // ----------------------------------------------------------------------------
 // compare-window:integration — live network test against paperclipai/paperclip
 // ----------------------------------------------------------------------------
@@ -560,6 +606,79 @@ test("check-drift: no false positive when doc uses {id} but parent uses :id", ()
   rmSync(root, { recursive: true, force: true });
 });
 
+test("check-drift: table routes can resolve in any parent route file", () => {
+  const { root, fixtures, scriptInRoot } = makeDriftFixture();
+  const apiDoc = [
+    "# Instance Admin API",
+    "",
+    "| Endpoint | Purpose |",
+    "|---|---|",
+    "| `POST /api/instance/database-backups` | Trigger a backup. |",
+    "",
+  ].join("\n");
+  writeFile(root, "docs/reference/api/instance-admin.md", apiDoc);
+  writeFileSync(join(fixtures, "tree-master.json"), JSON.stringify([
+    "server/src/routes/instance-database-backups.ts",
+  ]));
+  writeFixtureContents(fixtures, "server/src/routes/instance-database-backups.ts", "master", {
+    status: 200,
+    content_base64: Buffer.from('router.post("/instance/database-backups", handler);\n').toString("base64"),
+  });
+
+  const r = spawnSync(process.execPath, [scriptInRoot, "--json", "--against", "master"], {
+    encoding: "utf8",
+    env: { ...process.env, PAPERCLIP_SYNC_FIXTURE_DIR: fixtures },
+  });
+  assert(r.status === 0, `expected exit 0, got ${r.status}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  assert(out.stats.rest_routes_checked === 1, `expected 1 route checked, got ${out.stats.rest_routes_checked}`);
+  const rr = out.drift.filter((d) => d.kind === "rest-route-missing");
+  assert(rr.length === 0, `expected 0 rest-route-missing, got ${rr.length}: ${JSON.stringify(rr)}`);
+
+  rmSync(root, { recursive: true, force: true });
+});
+
+test("check-drift: env vars can verify against tree-discovered package sources", () => {
+  const { root, fixtures, scriptInRoot } = makeDriftFixture();
+  const envDoc = [
+    "# Environment variables",
+    "",
+    "| Variable | Default | Meaning |",
+    "|---|---|---|",
+    "| `DAYTONA_API_KEY` | none | plugin credential |",
+    "",
+  ].join("\n");
+  writeFile(root, "docs/reference/deploy/environment-variables.md", envDoc);
+  writeFileSync(join(fixtures, "tree-master.json"), JSON.stringify([
+    ".env.example",
+    "server/src/config.ts",
+    "packages/plugins/sandbox-providers/daytona/src/manifest.ts",
+  ]));
+  writeFixtureContents(fixtures, ".env.example", "master", {
+    status: 200,
+    content_base64: Buffer.from("PORT=3100\n").toString("base64"),
+  });
+  writeFixtureContents(fixtures, "server/src/config.ts", "master", {
+    status: 200,
+    content_base64: Buffer.from("export const PORT = process.env.PORT;\n").toString("base64"),
+  });
+  writeFixtureContents(fixtures, "packages/plugins/sandbox-providers/daytona/src/manifest.ts", "master", {
+    status: 200,
+    content_base64: Buffer.from('export const requiredEnv = ["DAYTONA_API_KEY"];\n').toString("base64"),
+  });
+
+  const r = spawnSync(process.execPath, [scriptInRoot, "--json", "--against", "master"], {
+    encoding: "utf8",
+    env: { ...process.env, PAPERCLIP_SYNC_FIXTURE_DIR: fixtures },
+  });
+  assert(r.status === 0, `expected exit 0, got ${r.status}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  const ev = out.drift.filter((d) => d.kind === "env-var-missing");
+  assert(ev.length === 0, `expected 0 env-var-missing, got ${ev.length}: ${JSON.stringify(ev)}`);
+
+  rmSync(root, { recursive: true, force: true });
+});
+
 // ----------------------------------------------------------------------------
 // verify-edit (unit, fixture-driven)
 // ----------------------------------------------------------------------------
@@ -694,6 +813,35 @@ test("verify-edit: REST route — normalized path matches :id", () => {
   rmSync(root, { recursive: true, force: true });
 });
 
+test("verify-edit: REST route tables are extracted and searched across route files", () => {
+  const { root, fixtures, scriptInRoot } = makeVerifyFixture();
+  const doc = [
+    "# Plugins API",
+    "",
+    "| Endpoint | Purpose |",
+    "|---|---|",
+    "| `POST /api/plugins/:pluginId/jobs/:jobId/trigger` | Trigger a job. |",
+    "",
+  ].join("\n");
+  writeFile(root, "docs/reference/api/plugins.md", doc);
+  writeFileSync(join(fixtures, "tree-master.json"), JSON.stringify([
+    "server/src/routes/plugins.ts",
+  ]));
+  writeVerifyContents(fixtures, "server/src/routes/plugins.ts", "master", {
+    status: 200,
+    content_base64: Buffer.from('router.post("/plugins/:pluginId/jobs/:jobId/trigger", handler);\n').toString("base64"),
+  });
+
+  const r = runVerify(scriptInRoot, "docs/reference/api/plugins.md", fixtures);
+  assert(r.code === 0, `exit ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  assert(out.claims_extracted === 1, `expected 1 route claim, got ${out.claims_extracted}: ${r.stdout}`);
+  const routes = (out.unverified || []).filter((c) => c.kind === "rest-route");
+  assert(routes.length === 0, `expected 0 unverified rest-route, got: ${JSON.stringify(routes)}`);
+  assert(out.verified >= 1, `expected ≥1 verified, got ${out.verified}`);
+  rmSync(root, { recursive: true, force: true });
+});
+
 test("verify-edit: env var passes when present in .env.example", () => {
   const { root, fixtures, scriptInRoot } = makeVerifyFixture();
   const doc = [
@@ -710,6 +858,36 @@ test("verify-edit: env var passes when present in .env.example", () => {
   writeVerifyContents(fixtures, "server/src/config.ts", "master", { status: 404 });
 
   const r = runVerify(scriptInRoot, "docs/reference/deploy/environment-variables.md", fixtures);
+  assert(r.code === 0, `exit ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  const ev = (out.unverified || []).filter((c) => c.kind === "env-var");
+  assert(ev.length === 0, `expected 0 unverified env-var, got: ${JSON.stringify(ev)}`);
+  assert(out.verified >= 1, `expected ≥1 verified, got ${out.verified}`);
+  rmSync(root, { recursive: true, force: true });
+});
+
+test("verify-edit: env var passes when present in tree-discovered package source", () => {
+  const { root, fixtures, scriptInRoot } = makeVerifyFixture();
+  writeFile(root, "docs/reference/adapters/sandbox-providers.md", "# Sandbox Providers\n\nUse the env variable `DAYTONA_API_KEY` for Daytona.\n");
+  writeFileSync(join(fixtures, "tree-master.json"), JSON.stringify([
+    ".env.example",
+    "server/src/config.ts",
+    "packages/plugins/sandbox-providers/daytona/src/manifest.ts",
+  ]));
+  writeVerifyContents(fixtures, ".env.example", "master", {
+    status: 200,
+    content_base64: Buffer.from("PORT=3100\n").toString("base64"),
+  });
+  writeVerifyContents(fixtures, "server/src/config.ts", "master", {
+    status: 200,
+    content_base64: Buffer.from("export const PORT = process.env.PORT;\n").toString("base64"),
+  });
+  writeVerifyContents(fixtures, "packages/plugins/sandbox-providers/daytona/src/manifest.ts", "master", {
+    status: 200,
+    content_base64: Buffer.from('export const env = "DAYTONA_API_KEY";\n').toString("base64"),
+  });
+
+  const r = runVerify(scriptInRoot, "docs/reference/adapters/sandbox-providers.md", fixtures);
   assert(r.code === 0, `exit ${r.code}; stderr=${r.stderr}`);
   const out = JSON.parse(r.stdout);
   const ev = (out.unverified || []).filter((c) => c.kind === "env-var");
@@ -779,6 +957,13 @@ test("frontmatter: malformed (missing closing fence) falls back to full body", (
   const { body, frontmatter } = parseFrontmatter(md);
   assert(body === md, `malformed input should be returned unchanged, got: ${JSON.stringify(body.slice(0, 40))}`);
   assert(Object.keys(frontmatter).length === 0, `frontmatter should be empty on malformed input, got: ${JSON.stringify(frontmatter)}`);
+});
+
+test("build-release: path containment rejects sibling docs-prefixed directories", () => {
+  const parent = resolve("/tmp/repo/docs");
+  assert(isPathInside(parent, resolve("/tmp/repo/docs/guide/page.md")), "normal child path should be inside");
+  assert(!isPathInside(parent, resolve("/tmp/repo/docs-evil/page.md")), "docs-evil sibling must not be inside docs");
+  assert(!isPathInside(parent, resolve("/tmp/repo/docs/../outside.md")), "parent traversal must not be inside docs");
 });
 
 // ----------------------------------------------------------------------------
