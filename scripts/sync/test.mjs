@@ -561,6 +561,190 @@ test("check-drift: no false positive when doc uses {id} but parent uses :id", ()
 });
 
 // ----------------------------------------------------------------------------
+// verify-edit (unit, fixture-driven)
+// ----------------------------------------------------------------------------
+
+const VERIFY_SCRIPT = join(SELF_DIR, "verify-edit.mjs");
+
+function makeVerifyFixture() {
+  const dir = mkdtempSync(join(tmpdir(), "verify-test-"));
+  mkdirSync(join(dir, "scripts/sync"), { recursive: true });
+  copyFileSync(VERIFY_SCRIPT, join(dir, "scripts/sync/verify-edit.mjs"));
+  copyFileSync(join(SELF_DIR, "anchor-map.json"), join(dir, "scripts/sync/anchor-map.json"));
+  const fixDir = join(dir, "_fixtures");
+  mkdirSync(fixDir, { recursive: true });
+  writeFile(dir, "_fixtures/repo.json", JSON.stringify({ default_branch: "master" }));
+  return { root: dir, fixtures: fixDir, scriptInRoot: join(dir, "scripts/sync/verify-edit.mjs") };
+}
+
+function writeVerifyContents(fixDir, parentPath, ref, body) {
+  const slug = parentPath.replace(/\//g, "__");
+  writeFileSync(join(fixDir, `contents-${slug}-${ref}.json`), JSON.stringify(body));
+}
+
+function runVerify(scriptInRoot, docPath, fixtures, extraArgs = []) {
+  const r = spawnSync(process.execPath, [scriptInRoot, docPath, "--json", "--against", "master", ...extraArgs], {
+    cwd: dirname(dirname(dirname(scriptInRoot))),
+    encoding: "utf8",
+    env: { ...process.env, PAPERCLIP_SYNC_FIXTURE_DIR: fixtures },
+  });
+  return { code: r.status, stdout: r.stdout, stderr: r.stderr };
+}
+
+test("verify-edit: CLI command verification — pass", () => {
+  const { root, fixtures, scriptInRoot } = makeVerifyFixture();
+  writeFile(root, "docs/reference/cli/foo.md", "# Foo\n\nRun:\n\n```sh\npaperclipai foo\n```\n");
+  // Directory listing for cli/src/commands containing foo.ts.
+  writeVerifyContents(fixtures, "cli/src/commands", "master", {
+    status: 200,
+    list: [{ type: "file", name: "foo.ts", path: "cli/src/commands/foo.ts" }],
+  });
+  writeVerifyContents(fixtures, "cli/src/commands/foo.ts", "master", {
+    status: 200,
+    content_base64: Buffer.from('program.command("foo").action(() => {});\n').toString("base64"),
+  });
+  // Empty subdir & index.
+  writeVerifyContents(fixtures, "cli/src/commands/client", "master", { status: 404 });
+  writeVerifyContents(fixtures, "cli/src/index.ts", "master", { status: 404 });
+
+  const r = runVerify(scriptInRoot, "docs/reference/cli/foo.md", fixtures);
+  assert(r.code === 0, `exit ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  const cliClaims = [
+    ...((out.unverified || []).filter((c) => c.kind === "cli-command")),
+  ];
+  assert(out.claims_extracted >= 1, `claims_extracted=${out.claims_extracted}`);
+  assert(out.verified >= 1, `verified=${out.verified}, body=${r.stdout}`);
+  assert(cliClaims.length === 0, `unexpected unverified cli-command: ${JSON.stringify(cliClaims)}`);
+  rmSync(root, { recursive: true, force: true });
+});
+
+test("verify-edit: CLI command verification — fail", () => {
+  const { root, fixtures, scriptInRoot } = makeVerifyFixture();
+  writeFile(root, "docs/reference/cli/bar.md", "# Bar\n\n```sh\npaperclipai bar\n```\n");
+  // No bar in commands.
+  writeVerifyContents(fixtures, "cli/src/commands", "master", {
+    status: 200,
+    list: [{ type: "file", name: "baz.ts", path: "cli/src/commands/baz.ts" }],
+  });
+  writeVerifyContents(fixtures, "cli/src/commands/baz.ts", "master", {
+    status: 200,
+    content_base64: Buffer.from('program.command("baz");').toString("base64"),
+  });
+  writeVerifyContents(fixtures, "cli/src/commands/client", "master", { status: 404 });
+  writeVerifyContents(fixtures, "cli/src/index.ts", "master", { status: 404 });
+
+  const r = runVerify(scriptInRoot, "docs/reference/cli/bar.md", fixtures);
+  assert(r.code === 0, `exit ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  const cli = (out.unverified || []).filter((c) => c.kind === "cli-command");
+  assert(cli.length === 1, `expected 1 unverified cli-command, got ${cli.length}: ${JSON.stringify(out.unverified)}`);
+  assert(cli[0].value.includes("bar"), `value=${cli[0].value}`);
+  rmSync(root, { recursive: true, force: true });
+});
+
+test("verify-edit: adapter config field — typo caught with suggestion", () => {
+  const { root, fixtures, scriptInRoot } = makeVerifyFixture();
+  // Doc inside a Config heading mentions `approveReads`.
+  const doc = [
+    "# Cursor Cloud",
+    "",
+    "## Config",
+    "",
+    "- `approveReads`: whether to auto-approve reads",
+    "",
+  ].join("\n");
+  writeFile(root, "docs/reference/adapters/cursor-cloud.md", doc);
+  // Parent adapter source uses kebab-case 'approve-reads'.
+  writeVerifyContents(fixtures, "packages/adapters/cursor-cloud", "master", {
+    status: 200,
+    list: [{ type: "file", name: "index.ts", path: "packages/adapters/cursor-cloud/index.ts" }],
+  });
+  writeVerifyContents(fixtures, "packages/adapters/cursor-cloud/index.ts", "master", {
+    status: 200,
+    content_base64: Buffer.from('export const MODE = "approve-reads";\n').toString("base64"),
+  });
+  writeVerifyContents(fixtures, "packages/adapters/cursor-cloud/src", "master", { status: 404 });
+  writeVerifyContents(fixtures, "packages/plugins/sandbox-providers/cursor-cloud", "master", { status: 404 });
+
+  const r = runVerify(scriptInRoot, "docs/reference/adapters/cursor-cloud.md", fixtures);
+  assert(r.code === 0, `exit ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  const fields = (out.unverified || []).filter((c) => c.kind === "adapter-config-field" && c.value === "approveReads");
+  assert(fields.length === 1, `expected 1 unverified approveReads, got: ${JSON.stringify(out.unverified)}`);
+  assert(fields[0].suggest && fields[0].suggest.includes("approve-reads"),
+    `suggest should mention approve-reads, got: ${fields[0].suggest}`);
+  rmSync(root, { recursive: true, force: true });
+});
+
+test("verify-edit: REST route — normalized path matches :id", () => {
+  const { root, fixtures, scriptInRoot } = makeVerifyFixture();
+  writeFile(root, "docs/reference/api/foo.md", "# Foo API\n\n## GET /api/foo/{id}\n\nReads one.\n");
+  writeVerifyContents(fixtures, "server/src/routes/foo.ts", "master", {
+    status: 200,
+    content_base64: Buffer.from('app.get("/foo/:id", handler);\n').toString("base64"),
+  });
+
+  const r = runVerify(scriptInRoot, "docs/reference/api/foo.md", fixtures);
+  assert(r.code === 0, `exit ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  const routes = (out.unverified || []).filter((c) => c.kind === "rest-route");
+  assert(routes.length === 0, `expected 0 unverified rest-route, got: ${JSON.stringify(routes)}`);
+  assert(out.verified >= 1, `expected ≥1 verified, got ${out.verified}`);
+  rmSync(root, { recursive: true, force: true });
+});
+
+test("verify-edit: env var passes when present in .env.example", () => {
+  const { root, fixtures, scriptInRoot } = makeVerifyFixture();
+  const doc = [
+    "# Environment variables",
+    "",
+    "The deployment needs `BETTER_AUTH_SECRET` to sign sessions.",
+    "",
+  ].join("\n");
+  writeFile(root, "docs/reference/deploy/environment-variables.md", doc);
+  writeVerifyContents(fixtures, ".env.example", "master", {
+    status: 200,
+    content_base64: Buffer.from("BETTER_AUTH_SECRET=changeme\nPORT=3100\n").toString("base64"),
+  });
+  writeVerifyContents(fixtures, "server/src/config.ts", "master", { status: 404 });
+
+  const r = runVerify(scriptInRoot, "docs/reference/deploy/environment-variables.md", fixtures);
+  assert(r.code === 0, `exit ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  const ev = (out.unverified || []).filter((c) => c.kind === "env-var");
+  assert(ev.length === 0, `expected 0 unverified env-var, got: ${JSON.stringify(ev)}`);
+  assert(out.verified >= 1, `expected ≥1 verified, got ${out.verified}`);
+  rmSync(root, { recursive: true, force: true });
+});
+
+test("verify-edit: backticked identifier in narrative prose is NOT extracted", () => {
+  const { root, fixtures, scriptInRoot } = makeVerifyFixture();
+  // Adapter doc — but the backticked `model` appears in narrative prose, NOT
+  // under a Config heading nor inside code/table. Should yield 0 claims.
+  const doc = [
+    "# Cursor Cloud",
+    "",
+    "## Overview",
+    "",
+    "When configuring the adapter, use the `model` field to specify which LLM to call.",
+    "",
+  ].join("\n");
+  writeFile(root, "docs/reference/adapters/cursor-cloud.md", doc);
+  // No adapter source fetches needed; the test asserts 0 extraction.
+  writeVerifyContents(fixtures, "packages/adapters/cursor-cloud", "master", { status: 404 });
+  writeVerifyContents(fixtures, "packages/adapters/cursor-cloud/src", "master", { status: 404 });
+  writeVerifyContents(fixtures, "packages/plugins/sandbox-providers/cursor-cloud", "master", { status: 404 });
+
+  const r = runVerify(scriptInRoot, "docs/reference/adapters/cursor-cloud.md", fixtures);
+  assert(r.code === 0, `exit ${r.code}; stderr=${r.stderr}`);
+  const out = JSON.parse(r.stdout);
+  assert(out.claims_extracted === 0,
+    `narrative prose should not yield claims, got ${out.claims_extracted}: ${r.stdout}`);
+  rmSync(root, { recursive: true, force: true });
+});
+
+// ----------------------------------------------------------------------------
 // frontmatter (unit, in-process — imports parseFrontmatter directly)
 // ----------------------------------------------------------------------------
 

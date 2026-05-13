@@ -16,6 +16,7 @@
     "sync:compare-window": "node scripts/sync/compare-window.mjs",
     "sync:check-drift": "node scripts/sync/check-drift.mjs",
     "sync:detect-renames": "node scripts/sync/detect-renames.mjs",
+    "sync:verify-edit": "node scripts/sync/verify-edit.mjs",
     "sync:check": "npm run sync:lint-links && npm run sync:verify-nav && npm run sync:check-drift",
     "sync:test": "node scripts/sync/test.mjs"
   }
