@@ -89,6 +89,10 @@ Bundled with the Paperclip server (`skills/` next to the server):
 - `paperclip-create-agent` — governance-aware hire workflow.
 - `paperclip-create-plugin` — plugin scaffold flow.
 - `paperclip-dev` — operating a local Paperclip instance.
+- `paperclip-converting-plans-to-tasks` — the Paperclip way of translating a plan into assigned issues with the right specialty, dependencies, and parallelization.
+- `diagnose-why-work-stopped` — forensics procedure for stalled, looping, or "went too deep" issue trees: surface the exact stop point and deliver a fix-as-rule plan gated by board approval.
+- `para-memory-files` — file-based memory using Tiago Forte's PARA method, covering the knowledge-graph, daily-notes, and tacit-knowledge layers plus weekly synthesis and recall.
+- `terminal-bench-loop` — bounded, human-in-the-loop driver that runs a single Terminal-Bench problem through Paperclip until the smoke passes, the board rejects the next fix, or the iteration budget is exhausted.
 
 Community examples in [`paperclipai/companies`](https://github.com/paperclipai/companies):
 

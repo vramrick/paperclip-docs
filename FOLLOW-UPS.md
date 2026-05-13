@@ -22,6 +22,10 @@ The /sync-docs Phase 1.5 drift check reports ~41 candidates against parent `mast
 - 23 `env-var-missing` candidates — most are plugin-defined or CLI-only env vars that don't live in `server/src/config.ts`. The fix is to expand `verify-edit.mjs`'s env-var source list to include the CLI and plugin sources, not to delete the doc rows.
 - 14 `rest-route-missing` candidates — most are the goals-and-projects spillover above plus a handful of internal-only routes documented externally that shouldn't be.
 
+## Internal REST routes — intentionally undocumented
+
+The v2026.512.0 coverage audit triaged the seven previously-flagged route files. All seven turned out to be public/admin-facing and were documented in this release (see `docs/reference/api/adapters.md`, `docs/reference/api/plugins.md`, `docs/reference/api/instance-admin.md`). No routes from that batch were classified as internal-only. This section is the reserved home for future triage outcomes when an undocumented route turns out to be private bridge plumbing rather than a public surface.
+
 ## Screenshot anchors
 
 `docs/user-guides/screenshots/registry.json` was scaffolded with 274 empty entries. The `depends_on` arrays need to be populated by hand for staleness detection to fire. Pick high-traffic screenshots first (issues, dashboard, costs, onboarding) and trace them to the relevant `ui/src/**` paths.

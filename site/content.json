@@ -115,7 +115,10 @@
         { "title": "Secrets",          "file": "../docs/reference/api/secrets.md" },
         { "title": "Activity",         "file": "../docs/reference/api/activity.md" },
         { "title": "Dashboard",        "file": "../docs/reference/api/dashboard.md" },
-        { "title": "Routines",         "file": "../docs/reference/api/routines.md" }
+        { "title": "Routines",         "file": "../docs/reference/api/routines.md" },
+        { "title": "Adapters",         "file": "../docs/reference/api/adapters.md" },
+        { "title": "Plugins",          "file": "../docs/reference/api/plugins.md" },
+        { "title": "Instance Admin",   "file": "../docs/reference/api/instance-admin.md" }
       ]
     },
     {
@@ -162,6 +165,15 @@
         { "title": "External Adapters",   "file": "../docs/reference/adapters/external-adapters.md" },
         { "title": "Creating an Adapter", "file": "../docs/reference/adapters/creating-an-adapter.md" },
         { "title": "UI Parser Contract",  "file": "../docs/reference/adapters/adapter-ui-parser.md" }
+      ]
+    },
+    {
+      "tier": "Reference",
+      "title": "Plugins",
+      "icon": "puzzle",
+      "desc": "Plugin SDK reference for authors building Paperclip plugins.",
+      "pages": [
+        { "title": "Plugin SDK", "file": "../docs/reference/plugins/sdk.md" }
       ]
     },
     {

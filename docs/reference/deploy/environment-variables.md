@@ -21,6 +21,7 @@ Use it when you are wiring a deployment, debugging a startup issue, or checking 
 | `PAPERCLIP_HOME` | `~/.paperclip` | Base directory for all Paperclip data |
 | `PAPERCLIP_INSTANCE_ID` | `default` | Instance identifier for multiple local instances |
 | `PAPERCLIP_DEPLOYMENT_MODE` | `local_trusted` | Runtime mode override |
+| `SERVE_UI` | `true` (from `server.serveUi` in `config.json`) | When set, overrides the file-config flag that controls whether the server serves the bundled UI. `SERVE_UI=true` enables it; `SERVE_UI=false` disables it. |
 | `PAPERCLIP_BIND` | inferred from `HOST` | Bind mode for the server socket. One of the values in `BIND_MODES` (see `packages/shared`); overrides `server.bind` in `config.json`. |
 | `PAPERCLIP_BIND_HOST` | inferred | Custom host when `PAPERCLIP_BIND` is set to a custom mode; overrides `server.customBindHost`. |
 | `PAPERCLIP_TAILNET_BIND_HOST` | auto-detected via `tailscale ip -4` | Tailnet IPv4 address the server binds to when bind mode is `tailnet`. Set explicitly to skip the `tailscale` CLI probe. |
@@ -38,6 +39,7 @@ These variables matter most once you move beyond a default local install.
 | `PAPERCLIP_PUBLIC_URL` | Canonical public URL for invites, redirects, and auth origin wiring. |
 | `PAPERCLIP_AUTH_PUBLIC_BASE_URL` | Explicit auth base URL when you want Better Auth to use a fixed public origin. |
 | `BETTER_AUTH_URL` | Alternate Better Auth base URL input. |
+| `BETTER_AUTH_SECRET` | Signing secret for Better Auth sessions and tokens. Falls back to `PAPERCLIP_AGENT_JWT_SECRET` when unset; the server refuses to start if neither is configured. For local development the `.env.example` ships `paperclip-dev-secret`. |
 | `BETTER_AUTH_BASE_URL` | Alternate Better Auth base URL input used by some deployments. |
 | `BETTER_AUTH_TRUSTED_ORIGINS` | Comma-separated allowlist of trusted auth origins. |
 | `PAPERCLIP_AGENT_JWT_SECRET` | Secret used to mint agent API JWTs. Required for local adapter auth. |
