@@ -58,7 +58,9 @@ An errored plugin stays installed — you don't need to uninstall and reinstall 
 
 There are two ways to get a plugin into Paperclip.
 
-**From the Available Plugins list.** Bundled example plugins ship inside the Paperclip repository. On the Plugin Manager page, scroll to the **Available Plugins** section and click **Install Example** next to the one you want. Paperclip installs it straight from the local checkout — no registry round trip.
+**From the Available Plugins list.** Bundled example plugins ship inside the Paperclip repository. On the Plugin Manager page, scroll to the **Available Plugins** section and click **Install Example** next to the one you want. Paperclip installs it straight from the local checkout — no registry round trip. The same list is what `paperclipai plugin examples` returns from the CLI.
+
+> The Available Plugins list is intentionally just the **reference examples** below — it's not the full catalogue of first-party plugins. Real first-party plugins like the [LLM Wiki](../reference/plugins/llm-wiki.md) are published to npm and installed by full package name; see *By npm package name* below.
 
 The examples that ship today:
 

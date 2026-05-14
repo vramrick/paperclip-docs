@@ -6,9 +6,27 @@ paperclip_version: v2026.512.0
 
 If you want a cited, in-dashboard wiki that your agents build and maintain from raw source material — Paperclip issues, comments, documents, and files you drop into a folder — the `@paperclipai/plugin-llm-wiki` plugin is the surface that does it. It captures sources into a local folder, lets agents ingest them into markdown pages with backlinks and provenance, and ships a Wiki page inside Paperclip so you (and the agents) can browse the result.
 
-This page is for **operators** who want to enable and configure the plugin. The mechanics of *how* plugins are installed and authored live elsewhere — see [Administration → Plugins](../../administration/plugins.md) and [How-to → Develop a plugin locally](../../how-to/develop-a-plugin-locally.md). This page covers what the plugin contributes once it's running.
+This page is for **operators** who want to enable and configure the plugin.
 
 > The LLM Wiki plugin is in alpha alongside the plugin runtime itself. Expect breaking changes between Paperclip releases and pin your version when you depend on it.
+
+---
+
+## Quick install
+
+The plugin ships as a published npm package, so any Paperclip install (Docker, systemd, bare-metal — all the same) can pull it in with one command from a host that has your Paperclip CLI configured:
+
+```sh
+paperclipai plugin install @paperclipai/plugin-llm-wiki
+```
+
+Or from the dashboard: **Settings → Plugins → Install Plugin**, paste `@paperclipai/plugin-llm-wiki`, submit.
+
+The plugin won't appear in `paperclipai plugin examples` — that command only lists the four built-in reference *example* plugins, not the full catalogue of first-party plugins. Install LLM Wiki by full package name.
+
+If you're running from a monorepo checkout, see [Develop a plugin locally](../../how-to/develop-a-plugin-locally.md) and point the installer at `packages/plugins/plugin-llm-wiki` instead.
+
+The first enable asks for a fairly broad capability set — including `local.folders`, the `database.namespace.*` family, `agents.managed`, `skills.managed`, `routines.managed`, and `ui.page.register` — because the plugin owns a managed agent, project, routines, skills, REST routes, and a database namespace. Review the Permissions card on the plugin detail page before approving.
 
 ---
 
@@ -28,16 +46,6 @@ Behind the scenes the plugin also registers:
 - A bundle of managed skills installed for the maintainer agent: `wiki-maintainer`, `wiki-ingest`, `wiki-query`, `wiki-lint`, `paperclip-distill`, and `index-refresh`.
 
 The routines ship paused so nothing fires until you decide it should. Enable them from the plugin's settings or from the standard managed-routines surface.
-
----
-
-## Installing it
-
-The plugin installs through the standard plugin flow — the Plugin Manager under **Settings → Plugins**. The mechanics (Install Plugin button, npm vs local path, status transitions, capability approval) are the same as any other plugin; see [Administration → Plugins](../../administration/plugins.md) for the full walkthrough.
-
-If you're developing or running it from a checkout, follow [Develop a plugin locally](../../how-to/develop-a-plugin-locally.md) and point the installer at `packages/plugins/plugin-llm-wiki`. The package name is `@paperclipai/plugin-llm-wiki`.
-
-The first time you enable the plugin it asks for a fairly broad capability set — including `local.folders`, the `database.namespace.*` family, `agents.managed`, `skills.managed`, `routines.managed`, and `ui.page.register` — because it owns a managed agent, project, routines, skills, REST routes, and a database namespace. Review the Permissions card on the plugin detail page before approving.
 
 ---
 
