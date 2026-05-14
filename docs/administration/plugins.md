@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.513.0
+---
+
 # Plugins
 
 Some things Paperclip does out of the box — run agents, manage tasks, call adapters. Plenty of other things it does not, because they're too specific to your setup: a Hello World widget on the dashboard, a file browser for your project workspaces, a smoke-test runner for a third-party service you happen to use. Plugins are how you add those.
@@ -189,6 +193,12 @@ The full authoring path lives outside this guide:
 - The Paperclip CLI (`paperclipai`) wraps common authoring tasks — scaffolding, dev serving, building, and publishing. See the [CLI overview](../guides/getting-started/your-first-agent.md) and the plugin adapter documentation in the main Paperclip repository for details.
 
 Once your plugin builds, install it with **Install Plugin** on the Plugin Manager page the same way you'd install anything else. During development you can also point the installer at a local path — the **Install Example** flow is the same mechanism, just targeted at `packages/plugins/examples/`.
+
+### Developing plugins locally
+
+If you're iterating on your own plugin rather than running a published one, the friendliest loop is the CLI-driven local-path install: `paperclipai plugin init` scaffolds the package, `pnpm dev` runs a watch build, and `paperclipai plugin install <path>` points Paperclip at the folder so the worker reloads each time `dist/` is rewritten.
+
+See **[Develop a plugin locally](../how-to/develop-a-plugin-locally.md)** for the full walkthrough — scaffolding flags, the reload semantics, when to switch back to an npm install, and the troubleshooting checklist for the moments edits stop reaching Paperclip.
 
 ---
 

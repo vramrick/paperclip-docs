@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.513.0
+---
+
 # Claude Local
 
 `claude_local` runs Anthropic's Claude Code CLI on the same machine as Paperclip. Use it when you want a local coding agent with session persistence, skills injection, and full access to the configured working directory.
@@ -56,6 +60,16 @@ The session codec also preserves the important location hints from Claude's own 
 - `repoRef`
 
 > **Tip:** If you move the working directory between heartbeats, expect Claude Local to start a new session instead of trying to reuse the old one.
+
+### Resuming a session's workspace
+
+When Paperclip resumes a `claude_local` session, the saved `cwd` is the **host workspace cwd** — the path on the machine where Paperclip runs — not whatever cwd a remote sandbox happened to report. That keeps resume paths stable when the agent executes against a remote sandbox.
+
+Before the heartbeat trusts a saved cwd, `isUnsafeSessionWorkspaceCwd` checks it against a small set of system roots (`/`, `/tmp`, `/var`, `/var/tmp`, `/var/run`, `/usr`, `/etc`, `/proc`, `/sys`, `/dev`, `/run`, `/private`, `/private/tmp`). If the saved cwd resolves to one of those, Paperclip rejects it and falls back to the agent home workspace instead of letting the agent loose on a system directory.
+
+Workspace restore also gets stricter about what it copies. During `captureDirectorySnapshot`, anything that is not a directory, symlink, or regular file — sockets, FIFOs, character or block devices, and other non-file entries — is skipped, so restoring a workspace can no longer trip over a stray device node.
+
+Finally, plugins that declare the `environment.drivers.register` capability now receive only a small allowlist of model-provider API keys from the adapter environment, rather than the full env. Driver plugins still get what they need to talk to providers like Anthropic, but unrelated secrets stay with the host.
 
 ---
 

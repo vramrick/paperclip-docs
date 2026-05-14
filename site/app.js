@@ -798,16 +798,6 @@ function appendPageFeedback(article, page, file) {
     </span>
   `;
   article.appendChild(block);
-
-  // If the build pipeline parsed a `paperclip_version` from the page's YAML
-  // frontmatter, surface it as a small sibling line under the feedback row.
-  const version = page.frontmatter?.paperclip_version;
-  if (version) {
-    const versionBlock = document.createElement('div');
-    versionBlock.className = 'page-version';
-    versionBlock.textContent = `Documenting Paperclip ${version}`;
-    article.appendChild(versionBlock);
-  }
 }
 
 function insertMetaRow(article, page) {
