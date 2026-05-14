@@ -125,7 +125,7 @@ When a new parent release tag drops (`v2026.X.Y`):
    - Voice quality of any newly-authored pages — these go live on `docs.paperclip.ing` the moment you merge.
    - Frontmatter `paperclip_version` correctly stamped on changed pages.
 4. Merge to `main` when satisfied.
-5. **After merge — three follow-ups:**
+5. **After merge — four follow-ups:**
    - Tag the merge commit:
      ```sh
      git checkout main && git pull
@@ -133,7 +133,18 @@ When a new parent release tag drops (`v2026.X.Y`):
      git push --tags
      ```
    - Verify `.sync-state.json` on `main` now shows `base_release_tag: v2026.X.Y` and `base_release_sha` matches.
-   - Cloudflare Pages auto-deploys on push to `main`. Confirm `docs.paperclip.ing` renders the new "Documenting Paperclip v2026.X.Y" footer.
+   - Cloudflare Pages auto-deploys on push to `main`. Confirm `docs.paperclip.ing` is rebuilt successfully.
+   - **Catch `nightly` back up.** After the release PR merges, `main` is ahead of `nightly` by the release commits and `nightly`'s `.sync-state.json` still reads `branch_mode: "nightly"` with the old `base_release_tag`. Merge `main` down and flip `branch_mode` back, otherwise the next `/sync-docs` run sees a stale state file:
+     ```sh
+     git checkout nightly && git pull
+     git merge main
+     # Edit .sync-state.json on nightly:
+     #   "branch_mode": "nightly"   (the merge inherited "release" from main)
+     # Leave base_release_tag at v2026.X.Y — that's now the correct cumulative-diff base.
+     git commit -am "nightly: catch up to v2026.X.Y release"
+     git push
+     ```
+     The skill's "merge main → nightly at start of each nightly run" rule (see [Daily operation](#daily-operation)) is what keeps subsequent runs aligned, but the **first** post-release merge-down has to be done by hand because the `branch_mode` flip is manual.
 
 **Large gaps (8+ release tags behind)**
 
@@ -247,4 +258,5 @@ Read it weekly. Items get moved out as they're addressed.
 | Skill won't auto-detect mode | `.sync-state.json` missing or malformed | Seed from `scripts/sync/state.example.json`, set `base_release_tag` to current parent state |
 | Verify-edit reports false-positive `env-var-missing` | Env var defined in CLI / plugin source not in watcher's source list | Add to FOLLOW-UPS, or (preferred) extend `verify-edit.mjs`'s env-var source list |
 | First nightly run after release produces empty manifest | Cumulative diff is empty because nightly's base bumped | Verify `.sync-state.json` `base_release_tag` matches parent's latest release tag |
+| Nightly run reports `release` mode unexpectedly | `branch_mode` wasn't flipped back to `nightly` after the last release merge-down | Edit `.sync-state.json` on `nightly`: set `branch_mode` to `"nightly"`, commit, push. See [Release ceremony](#release-ceremony) step 5 follow-up #4 |
 | `wrangler pages deploy` fails | Cloudflare auth | `wrangler login` |

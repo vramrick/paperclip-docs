@@ -217,7 +217,7 @@ If all pass: make the mechanical edit directly. Examples: append a row to `envir
 
 **Batched-release mode is exhaustive.** In `--batched` release mode, every doc-relevant manifest entry in EACH window must be processed — no subsampling. This is the equivalent of how nightly mode handles every entry of its cumulative manifest. Wet-run subsampling (e.g. "pick 2 representative entries") was scope-control for testing, not skill design. Skipping entries in real catchup runs leaves docs incomplete. Per-window tier classification still applies — auto-merge and PR entries both get processed; the only thing that varies is how many entries each window contains (some releases are small).
 
-> **Builder note.** `site/build-release.mjs` strips and surfaces YAML frontmatter into `content.json` (the SPA renders `paperclip_version` as a "Documenting Paperclip <version>" footer). Authored pages SHOULD include `paperclip_version` in release mode — the voice rule below is live, not aspirational.
+> **Builder note.** `site/build-release.mjs` strips YAML frontmatter from the rendered markdown body and surfaces parsed fields into `content.json`. `paperclip_version` is **internal metadata only** — the SPA does NOT render it on-page. Authored pages SHOULD still include `paperclip_version` in release mode so the field is queryable from `content.json` (e.g., to drive future per-page version badges or release-PR diff tooling) and so the source of truth for "which release does this page document" lives next to the prose.
 
 **PR tier** (judgment calls):
 - Spawn a subagent per entry, in parallel where possible. Give each:
