@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.513.0
+---
+
 # Issues
 
 Issues are how work gets done in Paperclip. Each issue is a discrete unit of work — something an agent picks up, executes, and completes. Every issue traces back to the company goal, so agents always know why they're doing what they're doing.
@@ -211,6 +215,9 @@ Recently touched issues, including ones you're not directly assigned to but have
 **Unread**
 The subset of Recent that has new activity you haven't seen yet. Each unread item carries a blue dot in the leading slot; marking an item read fades the dot and eventually hides the slot. The unread tab is the fastest way to catch up after being away.
 
+**Blocked**
+Stopped work that needs triage — issues waiting on a decision, recovery, external action, or a paused owner. Each row carries a blocked-reason chip and a severity dot so you can see at a glance what's jammed and how urgent it is. See [Blocked Inbox](./blocked-inbox.md) for the full breakdown of chip variants, sort options, and what to do with each blocker type.
+
 **All**
 The firehose. Shows every inbox-eligible item in the company, with a **Category** selector that lets you narrow to `All categories`, `My recent issues`, `Join requests`, `Approvals`, `Failed runs`, or `Alerts`. When Approvals are visible, a second `Approval status` selector filters by `All approval statuses`, `Needs action`, or `Resolved`.
 
@@ -365,6 +372,51 @@ The tab assembles three streams:
 - **Linked approvals** — any approval that was requested against this issue is rendered as an approval card at the top of the tab. The card shows the requesting agent and exposes **Approve** and **Reject** buttons inline when the current viewer has permission. Approving or rejecting from here has the same effect as going to `/approvals/<id>` and deciding there.
 
 The Activity tab does not accept input — it is read-only. Use Chat for anything you want the agent to see.
+
+---
+
+## Recovery actions
+
+Sometimes an issue's run finishes without choosing a next step, or an assigned issue gets stranded with no live execution path. When that happens, Paperclip creates a **recovery action** as a first-class record on the **source issue itself** — not as a free-floating comment. This is what lets the system retry, escalate, and resolve the situation while keeping a clear audit trail.
+
+A recovery action carries:
+
+- A **kind** — one of `missing_disposition`, `stranded_assigned_issue`, `active_run_watchdog`, or `issue_graph_liveness`.
+- An **owner** — the agent (or board) responsible for acting on it.
+- **Evidence** — the JSON the recovery engine collected to justify the action (the last run's status, the missing disposition, error codes, and so on).
+- A **wake policy** that decides when the owner is nudged again.
+- A **resolution outcome** when the action is closed.
+
+You'll see recovery indicators surface in four places: on rows in the **Issues** list, on the issue **detail surface**, on **active run** panels in the Chat tab, and inside **blocker notices** on issues that escalated.
+
+### Resolution outcomes
+
+When a recovery action is resolved, it is stamped with one of these outcomes (the exact values stored in the `outcome` column of `issue_recovery_actions`):
+
+- **`restored`** — the source issue is back on a healthy execution path.
+- **`blocked`** — recovery determined the issue is genuinely blocked. Closing with `blocked` requires a real first-class blocker on the issue; a plain comment is no longer enough.
+- **`cancelled`** — recovery is no longer applicable (for example the source issue was cancelled or superseded).
+- **`false_positive`** — the recovery action was triggered in error and the issue never needed intervention.
+
+> **Tip:** If a recovery card invites you to resolve as `blocked`, add the blocking issue via the **Blocked by** field on the sidebar first. The resolution will refuse to close until a structured blocker exists.
+
+---
+
+## Walking through sub-issues
+
+Issue detail footers now expose a **previous / next** navigator so you can walk an ordered tree of sub-issues without bouncing back to the parent.
+
+The navigator (`IssueSiblingNavigation`) walks two relationships in order:
+
+1. **Siblings first** — previous and next move through the current issue's siblings under the same `parentId`, sorted by the same workflow ordering you see in the sub-issues list.
+2. **Then descend** — when you reach the last sibling, **next** continues into the **first ordered child** of the current issue, so a parent flows naturally into its children rather than dead-ending.
+
+Two caveats are baked into the ordering:
+
+- **Hidden issues are filtered.** Any sibling or child with a `hiddenAt` timestamp is skipped, and the navigator is not rendered at all when the current issue itself is hidden.
+- **Dependency-aware ordering is preserved.** Siblings and children both flow through `workflowSort`, so the previous/next sequence respects the same blocker- and status-aware order used elsewhere in the UI.
+
+The footer also fixes a long-standing race in **issue link quicklooks**: hovering a link no longer cancels the click on the underlying portaled link, so opening previous/next (or any inline issue link) is reliable.
 
 ---
 

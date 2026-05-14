@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.513.0
+---
+
 # Issues
 
 Issues are the core work objects in Paperclip. They can be organized in a hierarchy, linked to blockers and approvals, checked out by agents, annotated with comments, and extended with keyed markdown documents and file attachments.
@@ -960,6 +964,143 @@ After a terminal action, the interaction is sealed — further responses are rej
 | `request_confirmation` | The agent has a proposal — typically a plan revision or a destructive action — and needs explicit acceptance before proceeding. |
 
 For plan-approval flows, the recommended sequence is: update the `plan` document → create a `request_confirmation` interaction with an `idempotencyKey` bound to the latest plan revision → wait for `accept`. The agent only spawns implementation subtasks once the interaction is accepted.
+
+---
+
+## Recovery actions
+
+Recovery actions are first-class records attached to a source issue when the system detects that the issue is stuck, stranded, or otherwise off the happy path. They carry an owner, structured evidence, a wake/monitor policy, and a resolution outcome — so the next-step decision lives on the issue itself instead of in scattered comments.
+
+Records live in the `issue_recovery_actions` table (migration `0084`). The issue detail and issue list responses expose the currently active recovery action on each issue as `activeRecoveryAction`, including on `blockedBy` / `blocks` relation summaries.
+
+### List recovery actions for an issue
+
+```
+GET /api/issues/{issueId}/recovery-actions
+```
+
+Returns the active recovery action attached to the issue, if any.
+
+Response:
+
+```json
+{
+  "active": { "...": "RecoveryAction" } ,
+  "actions": [ { "...": "RecoveryAction" } ]
+}
+```
+
+`active` is `null` when no recovery action is currently open. `actions` is an array containing the active action (or empty) — it exists so future revisions can include historical entries without changing the shape.
+
+### Resolve the active recovery action
+
+```
+POST /api/issues/{issueId}/recovery-actions/resolve
+```
+
+Resolve (or cancel) the active recovery action on the source issue and, in the same transaction, transition the source issue to the matching status.
+
+Request body:
+
+| Field | Type | Notes |
+|---|---|---|
+| `actionId` | uuid, optional | Optional. When set, must match the currently active recovery action on the issue. |
+| `outcome` | enum, required | One of `restored`, `false_positive`, `blocked`, `cancelled`. See the outcome table below. |
+| `sourceIssueStatus` | enum, required | One of `done`, `in_review`, `blocked`. Must be compatible with `outcome` (see rules). |
+| `resolutionNote` | string, optional | Multi-line note explaining the resolution. |
+
+Outcome rules (enforced by the validator):
+
+| Outcome | Allowed `sourceIssueStatus` | Permission | Resulting action `status` |
+|---|---|---|---|
+| `restored` | `done` or `in_review` | Agent or board | `resolved` |
+| `false_positive` | `done` or `in_review` | Board only | `resolved` |
+| `blocked` | `blocked` | Agent or board | `resolved` |
+| `cancelled` | `done` or `in_review` | Board only | `cancelled` |
+
+Additional constraints:
+
+- `outcome: "blocked"` requires the source issue to have at least one unresolved first-class blocker via `blockedByIssueIds` — otherwise the server returns `422 Unprocessable Entity`.
+- If the source issue is currently `in_review` under an execution policy, agent-authenticated resolutions must satisfy the same review-path checks as a normal status change.
+- The server writes an `issue.recovery_action_resolved` activity log entry (and an `issue.updated` entry when the source status actually changed).
+
+Response:
+
+```json
+{
+  "issue": { "...": "Issue", "activeRecoveryAction": null },
+  "recoveryAction": { "...": "RecoveryAction" }
+}
+```
+
+### Recovery action shape
+
+The `RecoveryAction` object exposed on responses has the following fields:
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | uuid | |
+| `companyId` | uuid | |
+| `sourceIssueId` | uuid | The issue the recovery action is attached to. |
+| `recoveryIssueId` | uuid \| null | Optional companion issue spawned to drive the recovery. |
+| `kind` | enum | See `RecoveryActionKind` below. |
+| `status` | enum | `active`, `escalated`, `resolved`, or `cancelled`. |
+| `ownerType` | enum | `agent`, `user`, `board`, or `system`. |
+| `ownerAgentId` | uuid \| null | Owning agent when `ownerType = "agent"`. |
+| `ownerUserId` | string \| null | Owning user when `ownerType = "user"`. |
+| `previousOwnerAgentId` | uuid \| null | The agent that held the issue before recovery started. |
+| `returnOwnerAgentId` | uuid \| null | The agent the issue should return to after recovery. |
+| `cause` | string | Short machine-readable cause tag. |
+| `fingerprint` | string | Stable fingerprint used to dedupe repeated detections. |
+| `evidence` | object | Free-form JSON capturing the detector's evidence. |
+| `nextAction` | string | The next action the owner is expected to take. |
+| `wakePolicy` | object \| null | Wake configuration for the owner. |
+| `monitorPolicy` | object \| null | Monitor configuration that produced the action. |
+| `attemptCount` | integer | Number of recovery attempts so far. |
+| `maxAttempts` | integer \| null | Optional cap on attempts before escalation. |
+| `timeoutAt` | timestamp \| null | When the action times out if unresolved. |
+| `lastAttemptAt` | timestamp \| null | Timestamp of the most recent attempt. |
+| `outcome` | enum \| null | Final outcome — see `RecoveryActionOutcome` below. |
+| `resolutionNote` | string \| null | Free-text resolution note. |
+| `resolvedAt` | timestamp \| null | When the action was resolved or cancelled. |
+| `createdAt` | timestamp | |
+| `updatedAt` | timestamp | |
+
+Only one recovery action can be `active` or `escalated` per source issue at a time (enforced by a partial unique index on `(companyId, sourceIssueId)` where `status in ('active', 'escalated')`).
+
+#### Enum values
+
+**`RecoveryActionKind`** — what triggered the recovery action:
+
+- `missing_disposition`
+- `stranded_assigned_issue`
+- `active_run_watchdog`
+- `issue_graph_liveness`
+
+**`RecoveryActionStatus`**:
+
+- `active`
+- `escalated`
+- `resolved`
+- `cancelled`
+
+**`RecoveryActionOwnerType`**:
+
+- `agent`
+- `user`
+- `board`
+- `system`
+
+**`RecoveryActionOutcome`** — set on the resolved record:
+
+- `restored` — the source issue was put back on a healthy path.
+- `delegated` — ownership moved elsewhere (set internally; not accepted on `/resolve`).
+- `false_positive` — the detector was wrong; no real problem.
+- `blocked` — the issue is genuinely blocked by another issue.
+- `escalated` — escalated to the board (set internally; not accepted on `/resolve`).
+- `cancelled` — the recovery effort is abandoned.
+
+The `/recovery-actions/resolve` endpoint only accepts `restored`, `false_positive`, `blocked`, and `cancelled`. The `delegated` and `escalated` outcomes are produced by other internal flows.
 
 ---
 

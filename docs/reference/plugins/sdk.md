@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.512.0
+paperclip_version: v2026.513.0
 ---
 
 # Plugin SDK
@@ -37,7 +37,7 @@ The SDK package exposes two entrypoints:
 - `@paperclipai/plugin-sdk` — the worker-side surface documented on this page. Default for `definePlugin`, `runWorker`, `PluginContext`, the protocol helpers, and all manifest/protocol types.
 - `@paperclipai/plugin-sdk/ui` — UI-bundle surface for plugin UI contributions. Out of scope for this page; see [Administration → Plugins](../../administration/plugins.md) for the operator-facing view.
 
-All identifiers below are exported from `@paperclipai/plugin-sdk` at v2026.512.0. They are the source of truth — copy names verbatim.
+All identifiers below are exported from `@paperclipai/plugin-sdk` at v2026.513.0. They are the source of truth — copy names verbatim.
 
 ---
 
@@ -208,6 +208,24 @@ runWorker(plugin, import.meta.url);
 ```
 
 The shape above is the canonical example in the SDK's own `index.ts` header. For the matching manifest types and capability flags, see the corresponding `Plugin*Declaration` types listed above.
+
+---
+
+## Worker entrypoint validation
+
+`runWorker(plugin, import.meta.url)` only starts the JSON-RPC host when the file it is called from is the process entrypoint. The check is intentionally tolerant of symlinked package layouts — common during local plugin development, where a `pnpm`-linked SDK or a workspace-linked plugin sits behind one or more symlinks.
+
+The exported helper that backs this is `isWorkerEntrypoint(entry, moduleUrl)`:
+
+- It takes `process.argv[1]` (the path Node was invoked with) and the `import.meta.url` you passed to `runWorker`.
+- It resolves both sides through `fs.realpathSync.native`, falling back to a plain `path.resolve` if the realpath call throws (for example, on a path that doesn't exist yet).
+- It compares the resolved real paths for equality. If they match, the file is the entrypoint and `runWorker` calls `startWorkerRpcHost({ plugin })`. If they don't, `runWorker` returns silently — useful when the same module is also imported from tests or re-export shims.
+
+The practical implications:
+
+- **Symlinked plugin packages work.** When the host runs `node /Users/you/.../dist/worker.js` against a path that resolves through a symlink, the real-path comparison still matches `import.meta.url` and the worker boots.
+- **In-process tests skip the check.** Passing both `stdin` and `stdout` in `RunWorkerOptions` makes `runWorker` start the host directly without consulting `process.argv[1]`. The test harnesses (`createTestHarness`, `createEnvironmentTestHarness`) use this path.
+- **Re-importing a worker file is safe.** Importing the worker module from another file (e.g. a `worker-bootstrap.ts` that calls `startWorkerRpcHost` itself) won't double-boot the RPC host, because `process.argv[1]` will be the bootstrap file, not the worker module.
 
 ---
 
