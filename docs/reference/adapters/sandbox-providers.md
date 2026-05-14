@@ -62,6 +62,16 @@ Configure from **Company Settings → Environments**. The plugin manifest declar
 
 ---
 
+## Fake Sandbox (`provider: "fake-plugin"`)
+
+Package: `@paperclipai/plugin-fake-sandbox`.
+
+A first-party deterministic sandbox provider that runs commands in an isolated local temp directory while exercising the full sandbox-provider plugin lifecycle. It's intended for development, integration testing, and reproducing plugin-runtime issues without an external sandbox service.
+
+The plugin is private to the monorepo (`"private": true` in its `package.json`), so it isn't published to npm — you build and install it locally as a workspace plugin. The `configSchema` exposes `image` (a deterministic fake label, default `fake:latest`), `timeoutMs` (default `300000`), and `reuseLease`. Pick this provider when you want predictable sandbox behavior in tests, or when you're debugging the provider-plugin contract itself.
+
+---
+
 ## Related
 
 - [Plugins](../../administration/plugins.md) — install and manage plugins from the Plugin Manager.
