@@ -66,6 +66,7 @@ The examples that ship today:
 - **plugin-file-browser-example** — adds a Files link to project sidebars and a file-browser tab to the project detail page, scoped to the project's workspace.
 - **plugin-kitchen-sink-example** — demonstrates the full plugin surface in one package: pages, widgets, settings forms, scheduled jobs, webhooks. Good for exploring what a plugin can do.
 - **plugin-authoring-smoke-example** — a thin smoke test for the plugin authoring workflow. Useful if you're working on a plugin of your own and want to confirm the runtime picks it up.
+- **plugin-orchestration-smoke-example** — a smoke plugin that exercises Paperclip's orchestration-grade plugin APIs (scheduled jobs, webhooks, plugin-driven agent interactions). Useful as a reference when you're building a plugin that needs to coordinate work over time, not just render a widget.
 
 **By npm package name.** Click the **Install Plugin** button at the top right of the Plugin Manager. Paperclip asks for an npm package name (for example, `@paperclipai/plugin-example`). Submit it and Paperclip fetches, installs, and loads the package. Success or failure appears as a toast, and the plugin shows up in the installed list with its current status.
 

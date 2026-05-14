@@ -421,6 +421,10 @@
         {
           "title": "Plugin SDK",
           "file": "../docs/reference/plugins/sdk.md"
+        },
+        {
+          "title": "LLM Wiki",
+          "file": "../docs/reference/plugins/llm-wiki.md"
         }
       ]
     },
