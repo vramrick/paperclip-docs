@@ -32,13 +32,14 @@ Validation rules:
 
 The Cloudflare bridge gained a batch of hardening fixes in v2026.517.0:
 
-- The bridge worker now runs on the `standard-2` container instance type with `max_instances: 10` by default, so long-running agent runs have more headroom before they're throttled.
-- The execution-streaming endpoint emits SSE keepalive frames so intermediate proxies don't drop long-idle command streams.
-- Stdout/stderr decoding is hardened against partial UTF-8 chunks at byte boundaries, eliminating a class of garbled output during high-throughput runs.
-- Probe budgets are now sandbox-aware — environment tests and readiness checks scale their attempt budget when the bridge reports it's still warming a container.
-- The Pi sandbox install path inside the bridge image was corrected, so `pi_local` adapters running against a Cloudflare sandbox find the Pi binary on first run instead of failing the environment probe.
+- **Bigger default container.** The bridge worker's container `instance_type` moved from `lite` to `standard-2` (with `max_instances: 10`), giving long-running agent runs more headroom before they're throttled.
+- **SSE keepalives on streaming exec.** The execution-streaming endpoint now emits a `: keepalive\n\n` SSE comment every 15 seconds while a command is running, so intermediate proxies and Cloudflare's edge no longer idle-time out during silent stretches (for example, an `npm install` that downloads quietly for a minute).
+- **Bridge control traffic skips streaming.** Commands tagged as bridge-channel (readiness probes, file payload reads, queue responses — anything where Paperclip consumes the stdout machine-side) now use the non-streaming `exec` path. The `@cloudflare/sandbox` SDK's streaming mode could drop the final stdout chunk when a short shell exited the same tick as it wrote, which surfaced as opaque `"invalid readiness JSON"` errors. Adapter sessions still stream so live logs flow as before.
+- **Default bridge request timeout raised to 5 minutes.** `DEFAULT_BRIDGE_REQUEST_TIMEOUT_MS` jumped from 30,000 to 300,000 ms, matching the default sandbox `timeoutMs` so longer agent commands no longer hit the request budget before the inner timeout.
+- **Sandbox-aware environment-test timeout.** The `helloProbeTimeoutSec` used by `testEnvironment()` on local adapters (Claude, Cursor, OpenCode, Grok) now defaults to **90 s when the run targets a sandbox** and **45 s otherwise** — Cloudflare's `standard-2` warmup needs the extra runway without masking real hangs on local runs.
+- **Pi adapter install command corrected.** `pi_local`'s `SANDBOX_INSTALL_COMMAND` now points at `@earendil-works/pi-coding-agent@0.74.0` (pinned) instead of the previous unmaintained namespace, so Pi agents running inside a Cloudflare sandbox install cleanly on first run.
 
-There's nothing to configure on the Paperclip side — upgrade the bridge to match this release and the fixes apply.
+There's nothing to configure on the Paperclip side — upgrade the bridge worker image and the host to match this release and the fixes apply.
 
 ---
 
