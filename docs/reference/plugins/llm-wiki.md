@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.512.0
+paperclip_version: v2026.517.0
 ---
 
 # LLM Wiki
@@ -25,6 +25,8 @@ Or from the dashboard: **Settings → Plugins → Install Plugin**, paste `@pape
 The plugin won't appear in `paperclipai plugin examples` — that command only lists the four built-in reference *example* plugins, not the full catalogue of first-party plugins. Install LLM Wiki by full package name.
 
 If you're running from a monorepo checkout, see [Develop a plugin locally](../../how-to/develop-a-plugin-locally.md) and point the installer at `packages/plugins/plugin-llm-wiki` instead.
+
+> **Heads up (v2026.517.0):** the packaged plugin now ships with all the bootstrap assets (templates, agent instruction files, and migrations) inside the published tarball, so first-enable no longer leaves you staring at an unexpanded wiki root. The bootstrap template that scaffolds `wiki/index.md`, `wiki/log.md`, and the canonical folder layout is the same one used in dev. If you upgrade from an older release, re-run the **Bootstrap** action from the plugin settings to materialise any newly required files — existing files are preserved.
 
 The first enable asks for a fairly broad capability set — including `local.folders`, the `database.namespace.*` family, `agents.managed`, `skills.managed`, `routines.managed`, and `ui.page.register` — because the plugin owns a managed agent, project, routines, skills, REST routes, and a database namespace. Review the Permissions card on the plugin detail page before approving.
 
@@ -81,6 +83,8 @@ Bootstrap preserves existing files rather than overwriting them, so it's safe to
 A single wiki root can host multiple **spaces** — independent wiki bodies under one configured folder. The plugin always provisions a `default` space (slug: `default`) and lets you create more via the `POST /spaces` route or the settings UI. Each space gets its own `wiki/`, `raw/`, page index, and operation history.
 
 One thing to know up front: **Paperclip-derived ingestion always writes into the `default` space.** The cursor-window, distill, and backfill flows are not yet space-aware, so non-default spaces stay on manual or raw-file ingest for now. Per-space Paperclip ingestion profiles are tracked as a later phase.
+
+The space table itself is provisioned through the plugin's `003_spaces.sql` migration, which is now validated and applied through namespace-safe SQL. The plugin runtime refuses migrations that escape the plugin's database namespace, so a faulty migration fails at install time with a clear error instead of polluting the host schema.
 
 ---
 

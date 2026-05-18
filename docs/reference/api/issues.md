@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.513.0
+paperclip_version: v2026.517.0
 ---
 
 # Issues
@@ -620,6 +620,33 @@ Concurrency rules:
 - Include the current latest `baseRevisionId` when updating.
 - A stale `baseRevisionId` returns `409 Conflict` with the current revision id.
 - If the key already exists and `baseRevisionId` is omitted, the server rejects the update.
+
+#### Writing to a locked document
+
+If the target document is locked, the behavior depends on who is writing:
+
+- **User callers** receive `409 Conflict` with `{ "error": "Document is locked", "key": "...", "lockedAt": "..." }`.
+- **Agent callers** are routed to a derived document instead. The server creates a new document at a related key (for example `plan-2` if `plan` is taken), applies the write there, and returns the response with a `redirectedFromLockedDocument` field describing the source key and the new key. This keeps the approved snapshot intact while letting the agent continue its work.
+
+Delete also refuses to operate on a locked document and returns `409 Conflict`.
+
+### Lock A Document
+
+```
+POST /api/issues/{issueId}/documents/{key}/lock
+```
+
+Lock an existing document. Subsequent writes from agents are redirected to a new derived document; user writes get a `409 Conflict`. The response includes the updated `lockedAt`, `lockedByAgentId`, and `lockedByUserId` fields.
+
+Locking emits an `issue.document_locked` activity entry.
+
+### Unlock A Document
+
+```
+POST /api/issues/{issueId}/documents/{key}/unlock
+```
+
+Clear the lock. Writes resume normally and an `issue.document_unlocked` activity entry is recorded.
 
 ### Revision History
 
