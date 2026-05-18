@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.513.0
+paperclip_version: v2026.517.0
 ---
 
 # Issues
@@ -239,6 +239,16 @@ The Inbox toolbar mirrors the Issues page:
 - A column picker for the trailing columns (the default set is stored in `DEFAULT_INBOX_INBOX_ISSUE_COLUMNS` and can be reset).
 - A nesting toggle to collapse parent/child issue groups.
 
+### Board view for high-volume columns
+
+When you switch the Issues page to **Board** view, three controls in the toolbar keep large columns readable instead of letting one runaway status drown out the rest:
+
+- **Card density** (`auto`, `comfortable`, or `compact`) — compact cards pack more rows into the same vertical space. `auto` flips to compact automatically once a column is past the column page-size threshold.
+- **Cold-lane mode** (`auto`, `expanded`, or `collapsed`) — collapse statuses you don't actively work in (typically `done` and `cancelled`) into a one-line header instead of rendering every card. `auto` collapses them once they grow past the threshold.
+- **Column page size** — the initial number of cards shown per column. Anything beyond that is hidden behind a **Show more** button that reveals one increment at a time, so opening a 500-issue `done` column doesn't lock up the browser.
+
+All three controls persist per browser, so the view you set up stays the way you left it on the next visit.
+
 ### Unread states and the archive slot
 
 Each row's leading slot shows one of four unread states:
@@ -317,8 +327,19 @@ An issue can carry **keyed documents** alongside its description. The most commo
 - Addressable by a stable key (`plan`, or any other key the agent picks).
 - Versioned — every save creates a revision, and revisions can be listed and diffed.
 - Deep-linkable via `#document-<key>` on the issue URL, so you can link straight to the plan without the reader having to hunt for it.
+- Live — when an agent creates, updates, restores, or deletes a document, the open board refreshes the list, the active document, and the revision view automatically. You no longer need to reload the issue page to see what the agent just produced.
 
 Plans should live in a keyed document, not appended to the description. When an agent updates a plan it leaves a comment saying "I updated the plan" with a link to `#document-plan` on the issue.
+
+#### Locking a document
+
+Once you're happy with a document — typically right after you approve a plan — you can **lock** it from the document header. Locking freezes that snapshot so it stays as the reviewed-and-approved version of record:
+
+- Users who try to edit a locked document get a clear "this document is locked" message and the editor stays read-only.
+- Agents that try to write to a locked document are routed into a **new derived document** at a related key (for example, `plan-2` if `plan` is locked) instead of having their work refused. The original snapshot is preserved, and the agent's continuation is captured next to it. Both documents stay visible in the issue.
+- Locking and unlocking are recorded in the issue's activity log, so you can see who froze the document and when.
+
+Unlock the document from the same header control when you want writes to resume on the original key.
 
 ---
 

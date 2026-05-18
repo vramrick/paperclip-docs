@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.512.0
+paperclip_version: v2026.517.0
 ---
 
 # Sandbox Providers
@@ -25,6 +25,20 @@ Validation rules:
 - `reuseLease: true` requires `keepAlive: true`.
 - Non-local `bridgeBaseUrl` values must use `https://`.
 - `sessionId` is required when `sessionStrategy` is `named`.
+- `timeoutMs` and `bridgeRequestTimeoutMs` must each be between 1 and 86,400,000 ms.
+- `requestedCwd` must be an absolute POSIX path. Default: `/workspace/paperclip`.
+
+### Reliability tuning (v2026.517.0)
+
+The Cloudflare bridge gained a batch of hardening fixes in v2026.517.0:
+
+- The bridge worker now runs on the `standard-2` container instance type with `max_instances: 10` by default, so long-running agent runs have more headroom before they're throttled.
+- The execution-streaming endpoint emits SSE keepalive frames so intermediate proxies don't drop long-idle command streams.
+- Stdout/stderr decoding is hardened against partial UTF-8 chunks at byte boundaries, eliminating a class of garbled output during high-throughput runs.
+- Probe budgets are now sandbox-aware — environment tests and readiness checks scale their attempt budget when the bridge reports it's still warming a container.
+- The Pi sandbox install path inside the bridge image was corrected, so `pi_local` adapters running against a Cloudflare sandbox find the Pi binary on first run instead of failing the environment probe.
+
+There's nothing to configure on the Paperclip side — upgrade the bridge to match this release and the fixes apply.
 
 ---
 

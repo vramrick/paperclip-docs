@@ -383,6 +383,10 @@
           "file": "../docs/reference/adapters/hermes-local.md"
         },
         {
+          "title": "Grok Local",
+          "file": "../docs/reference/adapters/grok-local.md"
+        },
+        {
           "title": "OpenClaw Gateway",
           "file": "../docs/reference/adapters/openclaw-gateway.md"
         },
