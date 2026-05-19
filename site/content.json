@@ -403,6 +403,10 @@
           "file": "../docs/reference/adapters/sandbox-providers.md"
         },
         {
+          "title": "Modal",
+          "file": "../docs/reference/adapters/modal.md"
+        },
+        {
           "title": "External Adapters",
           "file": "../docs/reference/adapters/external-adapters.md"
         },
@@ -429,6 +433,10 @@
         {
           "title": "LLM Wiki",
           "file": "../docs/reference/plugins/llm-wiki.md"
+        },
+        {
+          "title": "Workspace Diff Viewer",
+          "file": "../docs/reference/plugins/workspace-diff.md"
         }
       ]
     },
