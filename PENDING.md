@@ -104,3 +104,12 @@ _None._ No `.env.example` or schema-bound additions in window.
 - All 14 parent commits in the window are older than the 24h quarantine — full window processed.
 - Anchor-map mismatch found: watcher `db-migrations` lists `packages/db/migrations/**` but actual parent path is `packages/db/src/migrations/**`. Surface this in the next maintenance pass.
 - Rename detector reports `packages/plugins/sandbox-providers/modal` as a genuinely new dir (not a rename) — safe to author a fresh adapter page.
+
+## Plugin SDK followups
+
+<!-- TODO Items below were flagged during the SDK audit against parent c0c5a82 but could not be
+fully verified against the current parent source in this pass. Spot-check before acting. -->
+
+- TODO: `PluginRoutinesClient` is defined in `packages/plugins/sdk/src/types.ts` but not re-exported from `packages/plugins/sdk/src/index.ts`, while `ctx.routines` is reachable on `PluginContext`. Decide whether to add the type to the SDK export list upstream, or document the asymmetry permanently.
+- TODO: `Routine` and `RoutineRun` are imported by the SDK from `@paperclipai/shared` and used in `PluginRoutinesClient` return types but are not re-exported from the SDK index. Plugin authors typing these returns must import from `@paperclipai/shared` directly — confirm and document if intentional.
+- TODO: Verify whether any pre-managed-resources symbol names (e.g. older managed-agent helpers) were renamed in the `c0c5a82` window. The current audit only spot-checked `index.ts` exports against the existing `sdk.md` symbol list; no removals were found, but the testing/host-client/protocol surfaces were not exhaustively diffed against the prior release.
