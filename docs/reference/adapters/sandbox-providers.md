@@ -77,6 +77,14 @@ Configure from **Company Settings → Environments**. The plugin manifest declar
 
 ---
 
+## Modal (`provider: "modal"`)
+
+Package: `@paperclipai/plugin-modal`
+
+First-party sandbox provider that provisions [Modal](https://modal.com/) sandboxes with a configurable image, app, auth, timeouts, and network controls. Required fields are `appName`, `image`, `tokenId`, and `tokenSecret`; `tokenId` and `tokenSecret` must both be set. `sandboxTimeoutMs` defaults to `3_600_000` (1 hour) and must be a positive multiple of `1000` up to `86_400_000` (24 hours). Modal has no native pause primitive, so `reuseLease: true` keeps the sandbox billing until `sandboxTimeoutMs` or `idleTimeoutMs` elapses. See the dedicated [Modal](./modal.md) page for the full field reference and operator verification flow.
+
+---
+
 ## Fake Sandbox (`provider: "fake-plugin"`)
 
 Package: `@paperclipai/plugin-fake-sandbox`.
