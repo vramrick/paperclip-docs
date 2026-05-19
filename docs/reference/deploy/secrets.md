@@ -127,3 +127,11 @@ At runtime, the server resolves the secret, decrypts it through the configured p
 Use `version: "latest"` for values you expect to rotate. Pin a numeric version only when you need a fixed historical value.
 
 > **Tip:** If a config value would be unsafe to print in a log, it should probably be a secret reference.
+
+---
+
+## Routine `env` Bindings
+
+Routines carry their own `env` map (`routines.env`) on top of agent adapter env. The shape is the same: each value is either a literal string or a `{ "type": "secret_ref", "secretId": "...", "version": "latest" }` reference into the company secret store. Strict mode applies to routine env the same way it applies to adapter env — sensitive keys must use `secret_ref` when persisted.
+
+Each routine run pins itself to the routine revision it executed under via `routine_runs.routine_revision_id`, so historical runs keep the env they were dispatched with even after you edit the routine. See [Create a routine — env map](../../how-to/create-a-daily-routine.md#4-optional-give-the-routine-an-env-map) for the UI and API walkthrough.
