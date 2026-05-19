@@ -708,6 +708,8 @@ paperclipai worktree init [options]
 | `--no-seed` | flag | off | Skip database seeding from the source instance. |
 | `--force` | flag | `false` | Replace existing repo-local config and isolated instance data. |
 
+> **Scope of `--force`.** It only rewrites the two files it's about to regenerate — `.paperclip/config.json` and `.paperclip/.env` — and clears this worktree's own `instanceRoot`. It does **not** touch `.paperclip/worktrees/`, so any sibling worktree checkouts under the same repo are preserved. Safe to run from inside a worktree without disturbing siblings.
+
 ### `paperclipai worktree env`
 
 Print shell exports for the current worktree-local instance.
