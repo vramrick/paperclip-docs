@@ -52,7 +52,21 @@ Two views are supported via the `view` query parameter:
 - `working-tree` (the default) — staged + unstaged + untracked changes relative to `HEAD`.
 - `head` — what `HEAD` looks like compared to the resolved base ref.
 
+If you ask for the `head` view without supplying a base ref, the Changes tab falls back to `working-tree` rather than failing, so the diff always renders even when the base hasn't been picked yet.
+
 You can also pass `paths` / `path` to limit the diff to specific files, and `includeUntracked` (default `true`) to toggle untracked-file inclusion.
+
+---
+
+## Controls in the Changes tab
+
+The tab's toolbar gives you two toggles and a base-ref input:
+
+- **Split / Unified** — switch between side-by-side and inline patch rendering. Split is the default.
+- **Working tree / Against ref** — pick `working-tree` (default) to inspect uncommitted changes, or **Against ref** to diff `HEAD` against the resolved base ref.
+- **Base ref** — the input next to the view toggle (shown when **Against ref** is selected). If you leave it blank, the tab prefills the workspace's `defaultBaseRef` (resolved by the worker) and flips the view to **Against ref** for you, so common cases just work without any toggling. Once you edit either control by hand, your choice sticks for the session.
+
+The toolbar stays **sticky at the top** of the tab while you scroll, so the toggles and the base-ref input remain in reach on large diffs.
 
 ---
 
