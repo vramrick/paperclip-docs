@@ -135,6 +135,10 @@ If the agent uses two providers (for example a model and an embedding provider),
 
 ## Troubleshooting
 
+**"I added a new secret but the agent still 401s"** — Creating a secret in **Company Settings → Secrets** does *not* auto-rewire existing agents. The agent is still using whatever was wired into its `ANTHROPIC_API_KEY` (or equivalent) env-var row when you last saved it. Open the agent → **Edit** → **Environment variables**, change the row's source to **Secret**, pick the new secret, then click **Test environment**. If the row was already set to **Plain** with the old key, that plain value shadows any new secret you create elsewhere — switching it to **Secret** is the fix.
+
+**A 401 from the provider after a rotation** — The provider (not Paperclip) is rejecting the credential, which means the request reached them with *some* key. Two common causes: (1) the key value itself is wrong — whitespace pasted around it, copied from the wrong account/workspace, or the new console account hasn't been funded yet; (2) the agent picked up an old plain value rather than the rotated secret. Re-copy the key from the provider console, paste it as a plain value temporarily to isolate which side is wrong, then move it back to a secret reference once Test environment passes.
+
 **"API key invalid"** — Compare the env-var *name* against the provider's expected name (`ANTHROPIC_API_KEY`, not `ANTHROPIC_KEY`). Check the key prefix matches what the provider issues (`sk-ant-`, `sk-`, etc.). Whitespace pasted in front of or after the key is a common culprit.
 
 **Test environment still fails after rotation** — The agent may be holding a cached process. Stop and re-enable heartbeats so the next run starts a fresh subprocess with the new environment. For long-running adapters like `cursor`, end the existing session so the resume cache doesn't reuse the old auth.
