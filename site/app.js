@@ -608,7 +608,6 @@ async function init() {
   } catch { /* no redirects file is fine */ }
 
   buildFlatList();
-  document.getElementById('logo').href = getRouteUrl('');
   buildLanding();
   buildSidebar();
   buildMobileDrawer();
