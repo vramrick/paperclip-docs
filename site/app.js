@@ -271,6 +271,45 @@ function decorateCodeBlocks(article) {
   });
 }
 
+/* ─── GitHub star count (mirrors paperclip.ing) ────────────────────────── */
+(function () {
+  const REPO = 'paperclipai/paperclip';
+  const TTL_MS = 6 * 60 * 60 * 1000; // 6h
+  const CACHE_KEY = 'pc-docs-star-count';
+  const els = document.querySelectorAll('[data-star-count]');
+  if (!els.length) return;
+
+  function format(n) {
+    if (n >= 1000) return (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, '') + 'k';
+    return String(n);
+  }
+  function render(text) {
+    els.forEach(el => { el.textContent = text; el.hidden = false; });
+  }
+
+  try {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+      const { count, ts } = JSON.parse(cached);
+      if (typeof count === 'number') {
+        render(format(count));
+        if (Date.now() - ts < TTL_MS) return;
+      }
+    }
+  } catch (_) {}
+
+  fetch('https://api.github.com/repos/' + REPO, {
+    headers: { 'Accept': 'application/vnd.github.v3+json' },
+  })
+    .then(res => (res.ok ? res.json() : null))
+    .then(data => {
+      if (!data || typeof data.stargazers_count !== 'number') return;
+      render(format(data.stargazers_count));
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify({ count: data.stargazers_count, ts: Date.now() })); } catch (_) {}
+    })
+    .catch(() => {});
+})();
+
 /* ─── Theme toggle wiring ───────────────────────────────────────────────── */
 document.getElementById('theme-toggle').addEventListener('click', () => {
   const html = document.documentElement;
