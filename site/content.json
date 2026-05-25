@@ -163,6 +163,10 @@
           "file": "../docs/how-to/set-monthly-budget.md"
         },
         {
+          "title": "Require Approval Before Spend",
+          "file": "../docs/how-to/require-board-approval-before-spend.md"
+        },
+        {
           "title": "Create a Daily Routine",
           "file": "../docs/how-to/create-a-daily-routine.md"
         },
