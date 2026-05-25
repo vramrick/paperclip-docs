@@ -991,7 +991,87 @@ function renderMarkdown(md) {
   md = stripFrontmatter(md);
   md = preprocessTabs(md);
   marked.setOptions({ gfm: true, breaks: false });
-  return marked.parse(md);
+  return sanitizeMarkdownHtml(marked.parse(md));
+}
+
+const ALLOWED_MARKDOWN_TAGS = new Set([
+  'A', 'BLOCKQUOTE', 'BR', 'BUTTON', 'CODE', 'DEL', 'DIV', 'EM', 'H1', 'H2',
+  'H3', 'H4', 'H5', 'H6', 'HR', 'IMG', 'LI', 'OL', 'P', 'PRE', 'SPAN',
+  'STRONG', 'TABLE', 'TBODY', 'TD', 'TH', 'THEAD', 'TR', 'UL',
+]);
+const DROP_MARKDOWN_TAGS = new Set([
+  'IFRAME', 'MATH', 'META', 'OBJECT', 'SCRIPT', 'STYLE', 'SVG', 'TEMPLATE',
+]);
+const GLOBAL_MARKDOWN_ATTRS = new Set([
+  'aria-label', 'aria-selected', 'class', 'colspan', 'data-panel', 'data-tab',
+  'id', 'role', 'rowspan', 'title',
+]);
+const TAG_MARKDOWN_ATTRS = {
+  A: new Set(['href']),
+  BUTTON: new Set(['type']),
+  CODE: new Set(['class']),
+  IMG: new Set(['alt', 'height', 'loading', 'src', 'title', 'width']),
+};
+const SAFE_URL_PROTOCOLS = new Set(['http:', 'https:', 'mailto:', 'tel:']);
+const SAFE_IMAGE_DATA_URL = /^data:image\/(?:gif|jpe?g|png|webp);base64,[a-z0-9+/=]+$/i;
+
+function isSafeUrl(value, { image = false } = {}) {
+  const normalized = String(value).replace(/[\u0000-\u001f\u007f\s]+/g, '');
+  if (!normalized) return false;
+  if (image && SAFE_IMAGE_DATA_URL.test(normalized)) return true;
+  if (normalized.startsWith('#')) return true;
+  try {
+    const parsed = new URL(normalized, window.location.href);
+    return SAFE_URL_PROTOCOLS.has(parsed.protocol);
+  } catch {
+    return false;
+  }
+}
+
+function sanitizeMarkdownElement(element) {
+  if (!ALLOWED_MARKDOWN_TAGS.has(element.tagName)) {
+    if (DROP_MARKDOWN_TAGS.has(element.tagName)) {
+      element.remove();
+      return;
+    }
+    element.replaceWith(...element.childNodes);
+    return;
+  }
+
+  for (const attr of [...element.attributes]) {
+    const name = attr.name.toLowerCase();
+    const allowedForTag = TAG_MARKDOWN_ATTRS[element.tagName]?.has(name);
+    if (name.startsWith('on') || (!GLOBAL_MARKDOWN_ATTRS.has(name) && !allowedForTag)) {
+      element.removeAttribute(attr.name);
+      continue;
+    }
+    if (name === 'href' && !isSafeUrl(attr.value)) {
+      element.removeAttribute(attr.name);
+    }
+    if (name === 'src' && !isSafeUrl(attr.value, { image: element.tagName === 'IMG' })) {
+      element.removeAttribute(attr.name);
+    }
+  }
+
+  if (element.tagName === 'A' && element.hasAttribute('href')) {
+    const href = element.getAttribute('href') || '';
+    if (/^(?:[a-z]+:)?\/\//i.test(href)) {
+      element.setAttribute('target', '_blank');
+      element.setAttribute('rel', 'noopener noreferrer');
+    }
+  }
+  if (element.tagName === 'BUTTON') {
+    element.setAttribute('type', 'button');
+  }
+}
+
+function sanitizeMarkdownHtml(html) {
+  const document = new DOMParser().parseFromString(html, 'text/html');
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);
+  const elements = [];
+  while (walker.nextNode()) elements.push(walker.currentNode);
+  elements.forEach(sanitizeMarkdownElement);
+  return document.body.innerHTML;
 }
 
 function renderTabsBlock(labels, body) {
@@ -1293,7 +1373,14 @@ function escapeHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function escapeAttr(s) { return String(s).replace(/"/g,'&quot;'); }
+function escapeAttr(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
 
 window.addEventListener('hashchange', () => {
   const route = parseRoute(applyRedirect(location.hash.slice(1)));

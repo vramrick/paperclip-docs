@@ -204,7 +204,7 @@ When you add OpenClaw to a Paperclip company:
         "version": "latest"
       }
     },
-    "devicePrivateKeyPem": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----",
+    "devicePrivateKeyPem": "<PEM private key stored as a secret reference in production>",
     "autoPairOnFirstConnect": true,
     "sessionKeyStrategy": "issue",
     "timeoutSec": 300,
