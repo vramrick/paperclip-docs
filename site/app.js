@@ -502,13 +502,24 @@ function renderSearchResults(query) {
   box.classList.add('is-open');
 }
 
+function openSearchModal() {
+  const modal = document.getElementById('search-modal');
+  const input = document.getElementById('search-input');
+  if (!modal || !input) return;
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+  // focus next tick so modal animates in cleanly
+  requestAnimationFrame(() => { input.focus(); input.select(); });
+}
+
 function closeSearch() {
+  const modal = document.getElementById('search-modal');
   const input = document.getElementById('search-input');
   const box   = document.getElementById('search-results');
-  const kbd   = document.getElementById('search-kbd');
   if (input) input.value = '';
   if (box)   box.classList.remove('is-open');
-  if (kbd)   kbd.style.display = '';
+  if (modal) modal.hidden = true;
+  document.body.style.overflow = '';
   searchFocusedIdx = -1;
 }
 
@@ -547,14 +558,23 @@ function initSearch() {
   });
 
   input.addEventListener('focus', () => { if (input.value.trim()) renderSearchResults(input.value); });
-  input.addEventListener('blur',  () => { setTimeout(() => { box.classList.remove('is-open'); searchFocusedIdx = -1; }, 150); });
 
-  // ⌘K / Ctrl+K
+  // Open modal from the navbar trigger button
+  const trigger = document.getElementById('search-trigger');
+  if (trigger) trigger.addEventListener('click', openSearchModal);
+
+  // Click backdrop to close
+  const backdrop = document.getElementById('search-modal-backdrop');
+  if (backdrop) backdrop.addEventListener('click', closeSearch);
+
+  // ⌘K / Ctrl+K opens; Esc closes (handled in input keydown above)
   document.addEventListener('keydown', e => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
       e.preventDefault();
-      input.focus();
-      input.select();
+      openSearchModal();
+    } else if (e.key === 'Escape') {
+      const modal = document.getElementById('search-modal');
+      if (modal && !modal.hidden) closeSearch();
     }
   });
 }

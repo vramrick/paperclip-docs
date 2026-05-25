@@ -17,8 +17,15 @@
 <header id="header" class="navbar">
   <div class="navbar-inner">
     <div class="navbar-left">
-      <a href="https://paperclip.ing" class="navbar-link" target="_blank" rel="noopener">Site</a>
       <a href="https://paperclip.ing/blog" class="navbar-link" target="_blank" rel="noopener">Blog</a>
+      <a href="#" class="navbar-link" data-nav="home">Docs</a>
+      <button id="search-trigger" class="navbar-search-btn" aria-label="Search docs" aria-haspopup="dialog">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+          <circle cx="7" cy="7" r="5"/><path d="m11 11 3 3"/>
+        </svg>
+        <span class="navbar-search-label">Search</span>
+        <kbd class="navbar-search-kbd">⌘K</kbd>
+      </button>
       <a href="https://github.com/paperclipai/paperclip" class="navbar-link navbar-link--icon" target="_blank" rel="noopener" aria-label="GitHub">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
         GitHub
@@ -44,16 +51,16 @@
   </div>
 </header>
 
-<!-- ─── Search sub-bar ─────────────────────────────────────── -->
-<div id="search-bar">
-  <div id="search-bar-inner">
-    <div id="breadcrumb" aria-hidden="true"></div>
+<!-- ─── Search modal (⌘K) ──────────────────────────────────── -->
+<div id="search-modal" role="dialog" aria-modal="true" aria-label="Search" hidden>
+  <div id="search-modal-backdrop"></div>
+  <div id="search-modal-panel">
     <div id="search-wrap">
       <svg id="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
         <circle cx="7" cy="7" r="5"/><path d="m11 11 3 3"/>
       </svg>
       <input id="search-input" type="search" placeholder="Search the docs…" autocomplete="off" spellcheck="false" aria-label="Search guides" aria-haspopup="listbox" />
-      <kbd id="search-kbd">⌘K</kbd>
+      <kbd id="search-kbd">esc</kbd>
       <div id="search-results" role="listbox" aria-label="Search results"></div>
     </div>
   </div>
@@ -111,6 +118,7 @@
     </nav>
 
     <main id="content">
+      <div id="breadcrumb" aria-label="Breadcrumb"></div>
       <div id="loading"><div class="spinner"></div><span>Loading…</span></div>
       <div id="error-state" style="display:none">
         <span>Could not load this guide.</span>
