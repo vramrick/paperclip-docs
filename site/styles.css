@@ -1,19 +1,20 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --white:      #ffffff;
-      --linen:      #f5f3f0;
-      --parchment:  #f0ece7;
-      --stone:      #e0dcd6;
-      --stone-dark: #c8c3bc;
-      --ink:        #1a1a1a;
-      --graphite:   #4a4a4a;
-      --ash:        #888880;
-      --void:       #0c0c0c;
-      --green:      #22c55e;
-      --mint:       #dcfce7;
+      /* Light theme — paperclip.ing "materials" palette */
+      --white:      #ffffff;            /* bond */
+      --linen:      #f5f3f0;            /* page background */
+      --parchment:  #f0ece7;            /* raised surface */
+      --stone:      #e0dcd6;            /* rule / border */
+      --stone-dark: #c8c3bc;            /* border hover */
+      --ink:        #0a0a0a;            /* primary text */
+      --graphite:   #52585d;            /* secondary text */
+      --ash:        #9a958a;            /* muted text */
+      --void:       #141413;            /* charcoal */
+      --green:      #22c55e;            /* accent */
+      --mint:       #dcfce7;            /* accent tint */
       --amber:      #f59e0b;
-      --red:        #ef4444;
+      --red:        #b23030;
 
       --sidebar-w:   272px;
       --content-max: 760px;
@@ -22,30 +23,31 @@
 
       --header-h:    56px;
 
-      --font-serif: 'Instrument Serif', Georgia, serif;
+      /* Inter Tight for display, Inter for body, JetBrains Mono for code */
+      --font-serif: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-body:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono:  'JetBrains Mono', 'Fira Code', monospace;
 
-      --radius-sm:  10px;
-      --radius:     16px;
+      --radius-sm:  8px;
+      --radius:     12px;
       --transition: 0.2s ease;
     }
 
-    /* ─── Dark theme ──────────────────────────────────────────── */
+    /* ─── Dark theme — warm charcoal + manila cream ──────────── */
     [data-theme="dark"] {
-      --white:      #0f1117;
-      --linen:      #0b0d12;
-      --parchment:  #181c27;
-      --stone:      #252a3a;
-      --stone-dark: #353c52;
-      --ink:        #e4e6f0;
-      --graphite:   #9ba3bf;
-      --ash:        #6b7290;
-      --void:       #07080c;
+      --white:      #1f1d1a;            /* surface */
+      --linen:      #141413;            /* page background — charcoal */
+      --parchment:  #2a2724;            /* raised surface */
+      --stone:      #2f2c28;            /* rule / border */
+      --stone-dark: #3a3836;            /* border hover */
+      --ink:        #f3e6c4;            /* manila — primary text */
+      --graphite:   #b5b0a8;            /* secondary text */
+      --ash:        #9a958a;            /* muted text */
+      --void:       #0d0d0d;
       --mint:       rgba(34,197,94,0.12);
     }
-    [data-theme="dark"] #article pre { background: #07080c; color: #d4d4d4; }
-    [data-theme="dark"] #header { background: rgba(15,17,23,0.85); }
+    [data-theme="dark"] #article pre { background: #0d0d0d; color: #f3e6c4; }
+    [data-theme="dark"] #header { background: rgba(20,20,19,0.85); }
     [data-theme="dark"] .icon-sun { display: block !important; }
     [data-theme="dark"] .icon-moon { display: none !important; }
     .icon-sun { display: none; }
@@ -207,10 +209,10 @@
     #landing-title {
       font-family: var(--font-serif);
       font-size: clamp(40px, 6vw, 64px);
-      font-weight: 400; line-height: 1.05; letter-spacing: -0.015em;
+      font-weight: 600; line-height: 1.05; letter-spacing: -0.03em;
       color: var(--ink); margin-bottom: 20px;
     }
-    #landing-title em { font-style: italic; color: var(--graphite); }
+    #landing-title em { font-style: normal; color: var(--graphite); }
     #landing-desc { font-size: 17px; line-height: 1.6; color: var(--graphite); max-width: 560px; }
 
     .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
@@ -244,7 +246,7 @@
     }
     .card-icon svg { width: 18px; height: 18px; }
 
-    .card-title { font-family: var(--font-serif); font-size: 22px; font-weight: 400; color: var(--ink); line-height: 1.2; }
+    .card-title { font-family: var(--font-serif); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); line-height: 1.2; }
     .card-desc  { font-size: 13.5px; color: var(--graphite); line-height: 1.55; }
     .card-meta  { font-size: 11.5px; color: var(--ash); margin-top: 10px; display: flex; align-items: center; gap: 6px; }
     .card-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--stone-dark); }
@@ -406,9 +408,9 @@
     #article h1 {
       font-family: var(--font-serif);
       font-size: clamp(28px, 4vw, 38px);
-      font-weight: 400; letter-spacing: -0.01em;
+      font-weight: 600; letter-spacing: -0.03em;
       color: var(--ink);
-      margin-bottom: 20px; line-height: 1.15;
+      margin-bottom: 20px; line-height: 1.1;
     }
     .meta-row {
       display: flex; align-items: center; gap: 10px;
@@ -499,9 +501,9 @@
     }
     .page-feedback .pf-label {
       font-family: var(--font-serif);
-      font-size: 17px;
+      font-size: 17px; font-weight: 600;
       color: var(--ink);
-      letter-spacing: -0.005em;
+      letter-spacing: -0.02em;
       flex: 1 1 auto;
     }
     .page-feedback .pf-actions { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -605,7 +607,7 @@
 
     #article h2 {
       font-family: var(--font-serif);
-      font-size: 24px; font-weight: 400;
+      font-size: 24px; font-weight: 600; letter-spacing: -0.02em;
       color: var(--ink);
       margin-top: 40px; margin-bottom: 14px;
       line-height: 1.25;
