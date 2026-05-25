@@ -325,7 +325,6 @@ Paperclip exposes both broad and company-scoped portability routes:
 | `POST /api/companies/{companyId}/exports/preview` | Preview a company export | Board or CEO of that company |
 | `POST /api/companies/{companyId}/exports` | Export a company bundle with the stricter portability flow | Board or CEO of that company |
 | `POST /api/companies/import/preview` | Preview an import into a new or existing company | Board only |
-| `POST /api/companies/import` | Apply a board-level import | Board only |
 | `POST /api/companies/{companyId}/imports/preview` | Preview an import into the same company | Board or CEO of that company |
 | `POST /api/companies/{companyId}/imports/apply` | Apply an import into the same company | Board or CEO of that company |
 
@@ -334,7 +333,7 @@ The company-scoped `imports/*` routes are intentionally safer:
 - they can only target the route company
 - they reject the `replace` collision strategy
 
-Use the board-level `import` routes when you are creating a brand-new company or moving data into a different target.
+Use the board-level preview route when you need to inspect an import that would create a brand-new company or target a different company.
 
 ---
 
