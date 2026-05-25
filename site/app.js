@@ -670,21 +670,6 @@ function buildLanding() {
     grid.appendChild(block);
   });
 
-  const ql = document.getElementById('landing-quicklinks');
-  ql.innerHTML = '';
-  const candidates = [
-    allPages.find(p => /what-is-paperclip/i.test(p.file)),
-    allPages.find(p => /installation/i.test(p.file)),
-    allPages.find(p => /first-company|your-first-company/i.test(p.file)),
-  ].filter(Boolean);
-  candidates.forEach(page => {
-    const a = document.createElement('a');
-    a.href = getPageUrl(page);
-    a.dataset.navFile = page.file;
-    a.textContent = page.title;
-    ql.appendChild(a);
-  });
-
   renderLucideIcons();
 }
 
