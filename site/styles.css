@@ -343,7 +343,7 @@
       font-weight: 600; line-height: 1.05; letter-spacing: -0.03em;
       color: var(--ink); margin-bottom: 20px;
     }
-    #landing-title em { font-style: normal; color: var(--graphite); }
+    #landing-title em { font-style: italic; color: inherit; }
     #landing-desc { font-size: 17px; line-height: 1.6; color: var(--graphite); max-width: 560px; }
 
     .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
@@ -360,14 +360,7 @@
       position: relative; overflow: hidden;
       cursor: pointer;
     }
-    .card::after {
-      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-      background: var(--green);
-      transform: scaleY(0); transform-origin: top;
-      transition: transform var(--transition);
-    }
     .card:hover { border-color: var(--stone-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,26,26,0.04); }
-    .card:hover::after { transform: scaleY(1); }
 
     .card-icon {
       width: 36px; height: 36px; border-radius: 9px;
