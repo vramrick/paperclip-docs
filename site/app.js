@@ -858,6 +858,7 @@ function insertMetaRow(article, page) {
 
 function buildPageActions(page) {
   const COPY_SVG   = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-5A1.5 1.5 0 0 0 3 3.5v5A1.5 1.5 0 0 0 4.5 10H6"/></svg>';
+  const LINK_SVG   = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9a3 3 0 0 0 4.5.3l2-2a3 3 0 0 0-4.2-4.2l-1 1"/><path d="M9 7a3 3 0 0 0-4.5-.3l-2 2a3 3 0 0 0 4.2 4.2l1-1"/></svg>';
   const CHECK_SVG  = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 8.5 3 3 6-7"/></svg>';
   const CARET_SVG  = '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 4.5 3 3 3-3"/></svg>';
   const MD_SVG     = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M4.5 10V6l1.5 2L7.5 6v4M10 6v4M10 10l1.5-1.5L13 10"/></svg>';
@@ -866,14 +867,14 @@ function buildPageActions(page) {
   const wrap = document.createElement('div');
   wrap.className = 'page-actions';
   wrap.innerHTML = `
-    <button type="button" class="pa-btn pa-copy" aria-label="Copy page as Markdown">
-      ${COPY_SVG}<span class="pa-copy-label">Copy Page</span>
+    <button type="button" class="pa-btn pa-copy" aria-label="Copy link to this page">
+      ${LINK_SVG}<span class="pa-copy-label">Copy Link</span>
     </button>
     <button type="button" class="pa-btn pa-caret" aria-expanded="false" aria-label="More page actions">
       ${CARET_SVG}
     </button>
     <div class="pa-menu" role="menu">
-      <button type="button" data-action="copy" role="menuitem">${COPY_SVG}<span>Copy Page</span></button>
+      <button type="button" data-action="copy-page" role="menuitem">${COPY_SVG}<span>Copy Page</span></button>
       <button type="button" data-action="view-md" role="menuitem">${MD_SVG}<span>View as Markdown</span></button>
       <button type="button" data-action="open-claude" role="menuitem">${EXT_SVG}<span>Open in Claude</span></button>
       <button type="button" data-action="open-chatgpt" role="menuitem">${EXT_SVG}<span>Open in ChatGPT</span></button>
@@ -883,24 +884,32 @@ function buildPageActions(page) {
   const copyBtn  = wrap.querySelector('.pa-copy');
   const caret    = wrap.querySelector('.pa-caret');
   const menu     = wrap.querySelector('.pa-menu');
-  const label    = copyBtn.querySelector('.pa-copy-label');
 
   const closeMenu = () => { menu.classList.remove('is-open'); caret.setAttribute('aria-expanded', 'false'); };
   const openMenu  = () => { menu.classList.add('is-open'); caret.setAttribute('aria-expanded', 'true'); };
 
-  const flashCopied = () => {
+  const flashCopied = (text) => {
     copyBtn.classList.add('is-copied');
-    copyBtn.innerHTML = `${CHECK_SVG}<span class="pa-copy-label">Copied</span>`;
+    copyBtn.innerHTML = `${CHECK_SVG}<span class="pa-copy-label">${text}</span>`;
     setTimeout(() => {
       copyBtn.classList.remove('is-copied');
-      copyBtn.innerHTML = `${COPY_SVG}<span class="pa-copy-label">Copy Page</span>`;
+      copyBtn.innerHTML = `${LINK_SVG}<span class="pa-copy-label">Copy Link</span>`;
     }, 1600);
+  };
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(location.href);
+      flashCopied('Copied');
+    } catch (e) {
+      console.error('Copy failed', e);
+    }
   };
 
   const copyMarkdown = async () => {
     try {
       await navigator.clipboard.writeText(currentMarkdown || '');
-      flashCopied();
+      flashCopied('Page copied');
     } catch (e) {
       console.error('Copy failed', e);
     }
@@ -909,7 +918,7 @@ function buildPageActions(page) {
   const mdUrl = () => new URL(resolveContentUrl(page.file), location.href).href;
   const llmPrompt = () => `Read ${location.href} so I can ask questions about it.`;
 
-  copyBtn.addEventListener('click', copyMarkdown);
+  copyBtn.addEventListener('click', copyLink);
   caret.addEventListener('click', e => {
     e.stopPropagation();
     menu.classList.contains('is-open') ? closeMenu() : openMenu();
@@ -919,7 +928,7 @@ function buildPageActions(page) {
     if (!btn) return;
     closeMenu();
     switch (btn.dataset.action) {
-      case 'copy':         copyMarkdown(); break;
+      case 'copy-page':    copyMarkdown(); break;
       case 'view-md':      window.open(mdUrl(), '_blank', 'noopener'); break;
       case 'open-claude':  window.open(`https://claude.ai/new?q=${encodeURIComponent(llmPrompt())}`, '_blank', 'noopener'); break;
       case 'open-chatgpt': window.open(`https://chatgpt.com/?hints=search&q=${encodeURIComponent(llmPrompt())}`, '_blank', 'noopener'); break;
