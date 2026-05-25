@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.513.0
+paperclip_version: v2026.525.0
 ---
 
 # Plugin SDK
@@ -37,7 +37,7 @@ The SDK package exposes two entrypoints:
 - `@paperclipai/plugin-sdk` — the worker-side surface documented on this page. Default for `definePlugin`, `runWorker`, `PluginContext`, the protocol helpers, and all manifest/protocol types.
 - `@paperclipai/plugin-sdk/ui` — UI-bundle surface for plugin UI contributions. Out of scope for this page; see [Administration → Plugins](../../administration/plugins.md) for the operator-facing view.
 
-All identifiers below are exported from `@paperclipai/plugin-sdk` at v2026.513.0. They are the source of truth — copy names verbatim.
+All identifiers below are exported from `@paperclipai/plugin-sdk`. They are the source of truth — copy names verbatim.
 
 ---
 
@@ -69,7 +69,8 @@ Types: `PluginDefinition`, `PaperclipPlugin`, `PluginHealthDiagnostics`, `Plugin
 | `PluginActivityClient` | Append `PluginActivityLogEntry` rows to the host activity log. |
 | `PluginStateClient` | Scoped key-value state under a `ScopeKey`. |
 | `PluginEntitiesClient` | Upsert and query plugin-owned entities (`PluginEntityUpsert`, `PluginEntityQuery`, `PluginEntityRecord`). |
-| `PluginProjectsClient`, `PluginCompaniesClient`, `PluginIssuesClient`, `PluginIssueRelationsClient`, `PluginIssueSummariesClient`, `PluginAgentsClient`, `PluginAgentSessionsClient`, `PluginGoalsClient`, `PluginSkillsClient` | Read/write access to the core Paperclip domain via the host. |
+| `PluginProjectsClient`, `PluginExecutionWorkspacesClient`, `PluginCompaniesClient`, `PluginIssuesClient`, `PluginIssueRelationsClient`, `PluginIssueSummariesClient`, `PluginAgentsClient`, `PluginAgentSessionsClient`, `PluginGoalsClient`, `PluginSkillsClient` | Read/write access to the core Paperclip domain via the host. |
+| `ctx.routines` | Resolve and reconcile plugin-managed Paperclip routines (`ctx.routines.managed`). Requires the `routines.managed` capability. The interface type is not currently re-exported as a name, but it is reachable from `PluginContext`. |
 | `PluginDataClient` | Register data feeds the UI can query (`ctx.data.register(...)`). |
 | `PluginActionsClient` | Register host-invokable actions. |
 | `PluginStreamsClient` | Stream-style host APIs. |
@@ -78,7 +79,9 @@ Types: `PluginDefinition`, `PaperclipPlugin`, `PluginHealthDiagnostics`, `Plugin
 | `PluginLogger` | Structured logger (`ctx.logger.info/warn/error`). |
 | `PluginDatabaseClient` | Access the managed Postgres namespace declared for the plugin. |
 
-Issue-domain helpers: `PluginIssueMutationActor`, `PluginIssueRelationSummary`, `PluginIssueCheckoutOwnership`, `PluginIssueWakeupResult`, `PluginIssueWakeupBatchResult`, `PluginIssueRunSummary`, `PluginIssueApprovalSummary`, `PluginIssueCostSummary`, `PluginBudgetIncidentSummary`, `PluginIssueInvocationBlockSummary`, `PluginIssueOrchestrationSummary`, `PluginIssueSubtreeOptions`, `PluginIssueAssigneeSummary`, `PluginIssueSubtree`.
+Issue-domain helpers: `PluginIssueMutationActor`, `PluginIssueRelationSummary`, `PluginIssueCheckoutOwnership`, `PluginIssueWakeupResult`, `PluginIssueWakeupBatchResult`, `PluginIssueRunSummary`, `PluginIssueApprovalSummary`, `PluginIssueCostSummary`, `PluginBudgetIncidentSummary`, `PluginIssueInvocationBlockSummary`, `PluginIssueOrchestrationSummary`, `PluginIssueSubtreeOptions`, `PluginIssueAssigneeSummary`, `PluginIssueSubtree`, `IssueDocumentSummary`.
+
+Workspace metadata for `ctx.executionWorkspaces`: `PluginExecutionWorkspaceMetadata`.
 
 Agent-session helpers: `AgentSession`, `AgentSessionEvent`, `AgentSessionSendResult`.
 
@@ -108,6 +111,29 @@ Plugin manifests are validated against types re-exported from `@paperclipai/shar
 | `PluginCompanySettings`, `PluginRecord`, `PluginDatabaseNamespaceRecord`, `PluginMigrationRecord`, `PluginConfig`, `CompanySkill`, `PluginManagedResourceKind`, `PluginManagedResourceRef` | Persisted records and shared building blocks. |
 
 Constant enum types: `PluginStatus`, `PluginCategory`, `PluginCapability`, `PluginUiSlotType`, `PluginUiSlotEntityType`, `PluginLauncherPlacementZone`, `PluginLauncherAction`, `PluginLauncherBounds`, `PluginLauncherRenderEnvironment`, `PluginStateScopeKind`, `PluginJobStatus`, `PluginJobRunStatus`, `PluginJobRunTrigger`, `PluginWebhookDeliveryStatus`, `PluginDatabaseCoreReadTable`, `PluginDatabaseMigrationStatus`, `PluginDatabaseNamespaceMode`, `PluginDatabaseNamespaceStatus`, `PluginApiRouteAuthMode`, `PluginApiRouteCheckoutPolicy`, `PluginApiRouteMethod`, `PluginEventType`, `PluginBridgeErrorCode`, `JsonSchema`.
+
+### Managed resources
+
+"Managed resources" is the umbrella term for plugin-owned Paperclip records that the host materialises per company: managed **agents**, **projects**, **routines**, and **skills**. You declare them once on the manifest under top-level `agents[]`, `projects[]`, `routines[]`, and `skills[]`, and the host creates, relinks, or returns the existing record for the current `companyId` at runtime.
+
+Reach for managed resources when your plugin needs durable business objects the operator should see in the board — a named worker, a stable project home for plugin-generated issues, a recurring routine that produces visible task trails, or a reusable skill surfaced on managed agents. Keep `jobs[]` for plugin runtime maintenance that does not need a board-visible task trail.
+
+Each kind requires its own capability (`agents.managed`, `projects.managed`, `routines.managed`, `skills.managed`) and is reached through a dedicated client on `PluginContext`:
+
+```ts
+await ctx.projects.managed.reconcile("research", companyId);
+await ctx.agents.managed.reconcile("researcher", companyId);
+await ctx.routines.managed.reconcile("weekly-brief", companyId);
+await ctx.skills.managed.reconcile("weekly-brief-skills", companyId);
+```
+
+The relevant methods are `get()`, `reconcile()`, and `reset()` — plus `update()` and `run()` on routines. `reconcile()` creates the missing resource, relinks a recoverable binding, or returns the existing resource. `reset()` reapplies the manifest defaults when the operator wants to restore the plugin's suggested configuration.
+
+Dependencies between managed resources are declared with `PluginManagedResourceRef` — for example a routine's `assigneeRef` and `projectRef`. Reconcile the referenced agent and project before reconciling the routine; if a ref is still missing, the routine resolution reports `missing_refs` instead of guessing.
+
+Keys are stable identity. Renaming `agentKey`, `projectKey`, `routineKey`, or `skillKey` after publishing creates a new managed resource from the host's point of view.
+
+For the full manifest example and authoring rules, see the parent `doc/plugins/PLUGIN_AUTHORING_GUIDE.md`; the declaration types listed under [Manifest types](#manifest-types) above are the source of truth for what each managed entry accepts.
 
 ### JSON-RPC protocol
 

@@ -213,6 +213,14 @@
         {
           "title": "Develop a plugin locally",
           "file": "../docs/how-to/develop-a-plugin-locally.md"
+        },
+        {
+          "title": "Sync to Cloud Upstream",
+          "file": "../docs/how-to/sync-to-cloud-upstream.md"
+        },
+        {
+          "title": "Connect an AWS Secrets Manager Vault",
+          "file": "../docs/how-to/connect-aws-secrets-vault.md"
         }
       ]
     },
@@ -411,6 +419,10 @@
           "file": "../docs/reference/adapters/sandbox-providers.md"
         },
         {
+          "title": "Modal",
+          "file": "../docs/reference/adapters/modal.md"
+        },
+        {
           "title": "External Adapters",
           "file": "../docs/reference/adapters/external-adapters.md"
         },
@@ -437,6 +449,10 @@
         {
           "title": "LLM Wiki",
           "file": "../docs/reference/plugins/llm-wiki.md"
+        },
+        {
+          "title": "Workspace Diff Viewer",
+          "file": "../docs/reference/plugins/workspace-diff.md"
         }
       ]
     },

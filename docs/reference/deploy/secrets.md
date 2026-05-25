@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.525.0
+---
+
 # Secrets
 
 Secrets keep sensitive values out of adapter configs while still making them available to agents at runtime.
@@ -19,6 +23,18 @@ It stores secret material using a local master key at:
 That key is created automatically during onboarding and remains local to the machine unless you override it.
 
 > **Note:** The default provider is designed for local and single-machine use. For other deployment patterns, keep the same secret model but verify the surrounding infrastructure carefully.
+
+---
+
+## Provider Vaults
+
+A *provider vault* is a per-company routing record that tells Paperclip how to talk to an external secret store (AWS Secrets Manager today; GCP Secret Manager and HashiCorp Vault save as draft metadata only). Each vault stores the address, namespace, and prefixes the provider needs — never the credentials. Server-side credentials still come from the host's normal chain (env vars, instance role, `~/.aws/credentials`).
+
+Vaults live under **Company Settings → Secrets → Provider vaults**. The page exposes one section per provider with an **Add vault** button, and shows health, default status, and removal controls on each card. Removing a vault from the UI drops only the Paperclip-side routing record — for AWS Secrets Manager the confirmation dialog spells this out explicitly: "This does not delete the remote AWS Secrets Manager vault, secrets, or any AWS data."
+
+For AWS Secrets Manager the create form includes a **Find existing AWS values** discovery step that scans `secretsmanager:ListSecrets` metadata in the region you specify and prefills namespace, name prefix, KMS key id, and tag fields from the candidate you pick. Values are not read. The full operator walkthrough is in [Connect an AWS Secrets Manager vault](../../how-to/connect-aws-secrets-vault.md).
+
+The REST surface mirrors the UI: `GET/POST /companies/{companyId}/secret-provider-configs`, `POST /companies/{companyId}/secret-provider-configs/discovery/preview` for the AWS scan, and `PATCH`/`DELETE`/`POST .../default`/`POST .../health` on `/secret-provider-configs/{id}` for individual edits.
 
 ---
 
@@ -127,3 +143,11 @@ At runtime, the server resolves the secret, decrypts it through the configured p
 Use `version: "latest"` for values you expect to rotate. Pin a numeric version only when you need a fixed historical value.
 
 > **Tip:** If a config value would be unsafe to print in a log, it should probably be a secret reference.
+
+---
+
+## Routine `env` Bindings
+
+Routines carry their own `env` map (`routines.env`) on top of agent adapter env. The shape is the same: each value is either a literal string or a `{ "type": "secret_ref", "secretId": "...", "version": "latest" }` reference into the company secret store. Strict mode applies to routine env the same way it applies to adapter env — sensitive keys must use `secret_ref` when persisted.
+
+Each routine run pins itself to the routine revision it executed under via `routine_runs.routine_revision_id`, so historical runs keep the env they were dispatched with even after you edit the routine. See [Create a routine — env map](../../how-to/create-a-daily-routine.md#4-optional-give-the-routine-an-env-map) for the UI and API walkthrough.

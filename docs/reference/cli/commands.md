@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.512.0
+paperclip_version: v2026.525.0
 ---
 
 # Command Reference
@@ -708,6 +708,8 @@ paperclipai worktree init [options]
 | `--no-seed` | flag | off | Skip database seeding from the source instance. |
 | `--force` | flag | `false` | Replace existing repo-local config and isolated instance data. |
 
+> **Scope of `--force`.** It only rewrites the two files it's about to regenerate — `.paperclip/config.json` and `.paperclip/.env` — and clears this worktree's own `instanceRoot`. It does **not** touch `.paperclip/worktrees/`, so any sibling worktree checkouts under the same repo are preserved. Safe to run from inside a worktree without disturbing siblings.
+
 ### `paperclipai worktree env`
 
 Print shell exports for the current worktree-local instance.
@@ -1122,6 +1124,59 @@ paperclipai routines disable-all [options]
 | `-d, --data-dir <path>` | string | — | Paperclip data directory root (isolates state from `~/.paperclip`). |
 | `-C, --company-id <id>` | string | — | Company ID. |
 | `--json` | flag | `false` | Output raw JSON. |
+
+---
+
+## `cloud`
+
+Paperclip Cloud upstream sync commands. Pushes a local company into a connected Paperclip Cloud stack. Gated behind the `enableCloudSync` instance experimental setting — both the CLI and the server refuse to run until it's `true`. Walkthrough: [Sync a local company to a Paperclip Cloud upstream](../../how-to/sync-to-cloud-upstream.md).
+
+### `paperclipai cloud connect <remote-url>`
+
+Authorize this local instance to push into a Paperclip Cloud stack. Generates an ed25519 source identity, runs the PKCE (or device-code) authorization flow, and stores the connection under `~/.paperclip/<instance>/secrets/cloud-upstream-connections.json` (mode `0600`).
+
+```
+paperclipai cloud connect <remote-url> [options]
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--no-browser` | flag | `false` | Use the device-code flow instead of opening a browser. |
+| `--json` | flag | `false` | Print a redacted connection record as JSON. |
+
+```sh
+paperclipai cloud connect https://cloud.example.com
+paperclipai cloud connect https://cloud.example.com --no-browser
+```
+
+### `paperclipai cloud push`
+
+Preview or apply a local company push into the connected Paperclip Cloud stack. Requires a stored connection (`cloud connect` first) and `enableCloudSync: true` on the local instance.
+
+```
+paperclipai cloud push --company <local-company-id> [options]
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--company <local-company-id>` | string | — | **Required.** Local company id to export. |
+| `--remote-url <remote-url>` | string | current connection | Use a specific stored cloud connection (matched by `remoteUrl` or `targetOrigin`). |
+| `--dry-run` | flag | `false` | Preview without applying. |
+| `--max-entities-per-chunk <count>` | number | `100` | Chunk size for upstream uploads. |
+| `--json` | flag | `false` | Emit the full `result` and trailing `events` as JSON. |
+
+Exit codes for `cloud push` (in addition to the standard `0`/`1`):
+
+| Code | Meaning |
+|---|---|
+| `2` | At least one conflict or stale mapping needs human attention. Re-run with `--dry-run` to inspect. |
+| `3` | Cloud upstream schema mismatch — the local and remote transfer schema majors disagree. |
+
+```sh
+paperclipai cloud push --company "$LOCAL_COMPANY_ID" --dry-run
+paperclipai cloud push --company "$LOCAL_COMPANY_ID"
+paperclipai cloud push --company "$LOCAL_COMPANY_ID" --max-entities-per-chunk 50 --json
+```
 
 ---
 
