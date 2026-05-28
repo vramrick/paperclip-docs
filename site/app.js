@@ -16,8 +16,7 @@ const TIER_ORDER = ['Learn', 'Administration', 'Reference'];
 
 /* ─── Theme bootstrap (before first paint of body) ──────────────────────── */
 (function() {
-  const saved = localStorage.getItem('pc-guides-theme')
-    || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  const saved = localStorage.getItem('pc-guides-theme') || 'dark';
   if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
   else document.documentElement.removeAttribute('data-theme');
 })();
@@ -559,9 +558,8 @@ function initSearch() {
 
   input.addEventListener('focus', () => { if (input.value.trim()) renderSearchResults(input.value); });
 
-  // Open modal from the navbar trigger button
-  const trigger = document.getElementById('search-trigger');
-  if (trigger) trigger.addEventListener('click', openSearchModal);
+  // Open modal from any navbar trigger button (desktop right + mobile left)
+  document.querySelectorAll('.js-search-open').forEach(btn => btn.addEventListener('click', openSearchModal));
 
   // Click backdrop to close
   const backdrop = document.getElementById('search-modal-backdrop');
