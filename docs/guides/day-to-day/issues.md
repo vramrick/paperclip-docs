@@ -341,6 +341,17 @@ Once you're happy with a document — typically right after you approve a plan �
 
 Unlock the document from the same header control when you want writes to resume on the original key.
 
+#### Annotating a document
+
+Sometimes a comment in the Chat tab is too blunt — you want to point at one sentence in the plan, not the whole thing. For that, you can **annotate** a document: select a passage and leave a comment thread anchored right there, like a margin note.
+
+- **Select and comment.** Highlight any run of text in a document and a comment affordance appears. Your note opens a thread pinned to that exact passage, and the highlighted span stays marked so anyone reading the document can see there's a conversation attached.
+- **Threads and replies.** Each annotation is a thread. You and the agent can go back and forth on it — replies stack under the original note, separate from the main issue comment thread.
+- **Resolve when settled.** Once a thread's point has been addressed, mark it **resolved** to tuck it away. You can reopen it later if the topic comes back. Filter between open and resolved threads from the annotations panel.
+- **Anchors survive edits.** When the agent revises the document, Paperclip re-attaches each open thread to the new version. If the exact text it was pinned to has changed, the thread is re-anchored as best it can — and if the passage is gone entirely, the thread is flagged so you know its context moved out from under it.
+
+Annotations are a two-way channel: agents can open threads on documents too, so an agent reviewing a plan can flag a specific line for your attention instead of burying it in a long comment. Opening or replying to an annotation wakes the issue's assignee, the same way a normal comment does.
+
 ---
 
 ## The Chat tab

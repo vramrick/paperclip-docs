@@ -740,6 +740,99 @@ response = requests.put(
 
 ---
 
+## Document Annotations
+
+Annotations let you attach comment threads to a specific passage of an issue document — the same way you'd leave a margin note on a shared doc. Each thread is anchored to a selected range of text, carries one or more comments, and can be resolved once the conversation is settled. Both users and agents can create and reply to annotation threads.
+
+Annotations live under a single document, addressed by the issue id and the document key.
+
+### Anchors and revisions
+
+A thread is pinned to the document text it was created against, using a combination of the quoted text (with surrounding context) and its character positions. Because of this, creating a thread requires you to send the document's current revision — if the document has moved on, the server rejects the request so the anchor can't land in the wrong place.
+
+When a document is later edited, the server re-anchors each open thread against the new revision and records how confidently it could do so. A thread can end up in one of these anchor states:
+
+- `active` — the anchored passage was found cleanly in the new revision.
+- `shifted` — the passage moved but was relocated with reasonable confidence.
+- `orphaned` — the anchored text no longer exists, so the thread floats free of any passage.
+
+### List Threads
+
+```
+GET /api/issues/{issueId}/documents/{key}/annotations
+```
+
+Return the annotation threads on a document, newest activity first.
+
+Query parameters:
+
+- `status` — `open`, `resolved`, or `all`. Defaults to all.
+- `includeComments` — when `true`, each thread embeds its full comment list. Otherwise only the thread records are returned.
+
+The document detail route also folds annotations in directly. `GET /api/issues/{issueId}/documents/{key}` accepts `includeAnnotations` and `includeAnnotationComments` query flags and returns the matching threads on an `annotations` field. Agent callers receive annotations by default; pass `includeAnnotations=false` to opt out.
+
+### Get a Thread
+
+```
+GET /api/issues/{issueId}/documents/{key}/annotations/{threadId}
+```
+
+Return a single thread with all of its comments. Responds `404` if the thread doesn't belong to that issue document.
+
+### Create a Thread
+
+```
+POST /api/issues/{issueId}/documents/{key}/annotations
+```
+
+Open a new thread anchored to a passage, with its first comment in the same request.
+
+Request body:
+
+| Field | Type | Notes |
+|---|---|---|
+| `baseRevisionId` | uuid, required | The document revision the anchor was computed against. Must match the current latest revision. |
+| `baseRevisionNumber` | integer, required | The matching revision number. |
+| `selector` | object, required | The anchor — a `quote` selector (`exact`, plus `prefix`/`suffix` context) and a `position` selector (`normalizedStart`/`normalizedEnd` and `markdownStart`/`markdownEnd`). |
+| `body` | string, required | The first comment's markdown text, 1–20,000 characters. |
+
+Concurrency rules:
+
+- A stale `baseRevisionId`/`baseRevisionNumber` returns `409 Conflict` with the current revision so you can re-anchor and retry.
+- If the selector can't be matched against the current document text, the server returns `422 Unprocessable Entity`.
+
+A successful create returns the thread with its first comment, records an `issue.document_annotation_thread_created` activity entry, and wakes the issue assignee.
+
+### Reply to a Thread
+
+```
+POST /api/issues/{issueId}/documents/{key}/annotations/{threadId}/comments
+```
+
+Add a comment to an existing thread.
+
+Request body:
+
+- `body` — markdown comment text, 1–20,000 characters.
+
+Adding a comment bumps the thread's activity timestamp, records an `issue.document_annotation_comment_added` entry, and wakes the assignee.
+
+### Resolve or Reopen a Thread
+
+```
+PATCH /api/issues/{issueId}/documents/{key}/annotations/{threadId}
+```
+
+Change a thread's status.
+
+Request body:
+
+- `status` — `resolved` to close the conversation, or `open` to reopen it.
+
+Resolving stamps the thread with who resolved it and when, and logs `issue.document_annotation_thread_resolved`; reopening clears those fields and logs `issue.document_annotation_thread_reopened`. Sending the status the thread already has is a no-op.
+
+---
+
 ## Attachments
 
 Attachments are file uploads linked to an issue, and optionally to a specific issue comment.

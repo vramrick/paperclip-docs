@@ -17,10 +17,32 @@ For the operator-facing walkthrough see [Administration → Plugins](../../admin
 | Endpoint | Purpose |
 |---|---|
 | `GET /api/plugins` | List installed plugins on this instance. |
-| `GET /api/plugins/examples` | List bundled example plugins available to install. |
+| `GET /api/plugins/examples` | List the bundled plugins discovered in the current checkout (reference examples and vendored first-party plugins). See below. |
 | `GET /api/plugins/ui-contributions` | Aggregate of UI slots and launchers contributed by enabled plugins. The Paperclip UI consumes this on page load. |
 | `GET /api/plugins/tools` | Tools declared by enabled plugins. |
 | `POST /api/plugins/tools/execute` | Execute a plugin-declared tool by key. |
+
+### Bundled plugin discovery
+
+`GET /api/plugins/examples` returns the plugins that ship inside the current Paperclip checkout. Rather than a fixed list, the server scans the bundled packages on disk for plugin manifests, so the result reflects whatever your checkout actually contains — the reference example plugins plus any vendored first-party plugins. The result is cached after the first scan.
+
+Each entry has this shape:
+
+```json
+{
+  "packageName": "@paperclipai/plugin-llm-wiki",
+  "pluginKey": "llm-wiki",
+  "displayName": "LLM Wiki",
+  "description": "…",
+  "localPath": "packages/plugins/…",
+  "tag": "first-party",
+  "experimental": true
+}
+```
+
+- `tag` is `example` for the reference plugins or `first-party` for vendored real plugins.
+- `experimental` is `true` for first-party plugins that aren't production-ready yet; the Plugin Manager renders these with an **Experimental** badge.
+- `localPath` is what the install flow points at for an in-checkout install.
 
 ## Install and lifecycle
 
