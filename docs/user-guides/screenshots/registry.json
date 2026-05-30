@@ -9,31 +9,34 @@
       "file": "dark/activity/activity-filtered-by-agent.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/activity",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Activity.tsx"
+      ]
     },
     {
       "file": "dark/activity/activity-filters.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/activity",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Activity.tsx"
+      ]
     },
     {
       "file": "dark/activity/activity-log-full.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/activity",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Activity.tsx"
+      ]
     },
     {
       "file": "dark/adapters/detail.png",
@@ -82,31 +85,34 @@
       "file": "dark/agents/adapter-type-dropdown.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/new",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "dark/agents/agent-detail-idle.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{agentId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/AgentDetail.tsx"
+      ]
     },
     {
       "file": "dark/agents/agent-detail-run-history.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{agentId}/runs",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/AgentDetail.tsx"
+      ]
     },
     {
       "file": "dark/agents/agent-status-running.png",
@@ -122,21 +128,23 @@
       "file": "dark/agents/agents-list-empty.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/{emptyPrefix}/agents/all",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Agents.tsx"
+      ]
     },
     {
       "file": "dark/agents/budget-and-heartbeat-fields.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/new",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "dark/agents/budget.png",
@@ -153,21 +161,23 @@
       "file": "dark/agents/claude-local-config-filled.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/new",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "dark/agents/codex-local-config.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/new",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "dark/agents/configuration.png",
@@ -195,31 +205,34 @@
       "file": "dark/agents/heartbeat-toggle-disabled.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{agentId}/configuration",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "dark/agents/heartbeat-toggle-enabled.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{agentId}/configuration",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "dark/agents/http-adapter-config.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{httpAgentId}/configuration",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "dark/agents/instructions.png",
@@ -247,21 +260,24 @@
       "file": "dark/agents/new-agent-name-role.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/new",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/NewAgent.tsx"
+      ]
     },
     {
       "file": "dark/agents/new-agent-reports-to-field.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/new",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/NewAgent.tsx",
+        "ui/src/components/ReportsToPicker.tsx"
+      ]
     },
     {
       "file": "dark/agents/new.png",
@@ -320,11 +336,12 @@
       "file": "dark/agents/test-environment-fail.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/new",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "dark/agents/test-environment-success.png",
@@ -340,71 +357,81 @@
       "file": "dark/approvals/approvals-list.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/pending",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Approvals.tsx",
+        "ui/src/components/ApprovalCard.tsx"
+      ]
     },
     {
       "file": "dark/approvals/approvals-queue-strategy.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/pending",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Approvals.tsx",
+        "ui/src/components/ApprovalPayload.tsx"
+      ]
     },
     {
       "file": "dark/approvals/approve-reject-buttons.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/{hireApprovalId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/ApprovalDetail.tsx"
+      ]
     },
     {
       "file": "dark/approvals/approve-reject-revision-buttons.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/{hireApprovalId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/ApprovalDetail.tsx"
+      ]
     },
     {
       "file": "dark/approvals/approved-approval.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/{approvedApprovalId}?resolved=approved",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/ApprovalDetail.tsx"
+      ]
     },
     {
       "file": "dark/approvals/hire-approval-detail.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/{hireApprovalId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/ApprovalPayload.tsx",
+        "ui/src/pages/ApprovalDetail.tsx"
+      ]
     },
     {
       "file": "dark/approvals/queue-filters.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/pending",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Approvals.tsx"
+      ]
     },
     {
       "file": "dark/approvals/revision-request-input.png",
@@ -420,11 +447,13 @@
       "file": "dark/approvals/strategy-approval-detail.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/{strategyApprovalId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/ApprovalPayload.tsx",
+        "ui/src/pages/ApprovalDetail.tsx"
+      ]
     },
     {
       "file": "dark/company/access.png",
@@ -536,51 +565,57 @@
       "file": "dark/costs/agent-budget-100pct-paused.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{budgetMaxAgentId}/budget",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/BudgetPolicyCard.tsx"
+      ]
     },
     {
       "file": "dark/costs/agent-budget-50pct.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{budgetHalfAgentId}/budget",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/BudgetPolicyCard.tsx"
+      ]
     },
     {
       "file": "dark/costs/agent-budget-80pct-warning.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{budgetWarnAgentId}/budget",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/BudgetPolicyCard.tsx"
+      ]
     },
     {
       "file": "dark/costs/agent-budget-bar.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{budgetHalfAgentId}/budget",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/BudgetPolicyCard.tsx"
+      ]
     },
     {
       "file": "dark/costs/agent-budget-field.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{agentId}/budget",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/AgentDetail.tsx",
+        "ui/src/components/BudgetPolicyCard.tsx"
+      ]
     },
     {
       "file": "dark/costs/billers.png",
@@ -608,21 +643,24 @@
       "file": "dark/costs/company-budget-field.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/costs",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Costs.tsx",
+        "ui/src/components/BudgetPolicyCard.tsx"
+      ]
     },
     {
       "file": "dark/costs/costs-dashboard-overview.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/costs",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Costs.tsx"
+      ]
     },
     {
       "file": "dark/costs/finance.png",
@@ -650,11 +688,12 @@
       "file": "dark/costs/per-run-cost-detail.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/costs",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Costs.tsx"
+      ]
     },
     {
       "file": "dark/costs/providers.png",
@@ -671,21 +710,23 @@
       "file": "dark/dashboard/activity-feed.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Dashboard.tsx"
+      ]
     },
     {
       "file": "dark/dashboard/agent-status-panel.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Dashboard.tsx"
+      ]
     },
     {
       "file": "dark/dashboard/cost-summary-panel.png",
@@ -711,11 +752,12 @@
       "file": "dark/dashboard/dashboard-overview.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Dashboard.tsx"
+      ]
     },
     {
       "file": "dark/dashboard/stale-tasks-panel.png",
@@ -731,11 +773,12 @@
       "file": "dark/dashboard/task-breakdown-panel.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Dashboard.tsx"
+      ]
     },
     {
       "file": "dark/export-import/export-dialog.png",
@@ -805,11 +848,12 @@
       "file": "dark/issues/detail-sidebar.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/issues/{issueId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/IssueDetail.tsx"
+      ]
     },
     {
       "file": "dark/issues/inbox-requests.png",
@@ -848,11 +892,12 @@
       "file": "dark/issues/my-issues.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/inbox/mine",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Inbox.tsx"
+      ]
     },
     {
       "file": "dark/onboarding/budget-field.png",
@@ -868,11 +913,12 @@
       "file": "dark/onboarding/empty-dashboard.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/{emptyPrefix}/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Dashboard.tsx"
+      ]
     },
     {
       "file": "dark/onboarding/goal-field.png",
@@ -888,21 +934,24 @@
       "file": "dark/onboarding/new-company-modal-empty.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/OnboardingWizard.tsx",
+        "ui/src/components/SidebarCompanyMenu.tsx"
+      ]
     },
     {
       "file": "dark/onboarding/sidebar-new-company-button.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/SidebarCompanyMenu.tsx"
+      ]
     },
     {
       "file": "dark/org/chart.png",
@@ -919,11 +968,12 @@
       "file": "dark/org/execution-workspaces-list.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/workspaces",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Workspaces.tsx"
+      ]
     },
     {
       "file": "dark/org/org-chart-add-agent.png",
@@ -949,41 +999,45 @@
       "file": "dark/org/org-chart-small-team.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/org",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/OrgChart.tsx"
+      ]
     },
     {
       "file": "dark/org/org-chart-view.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/org",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/OrgChart.tsx"
+      ]
     },
     {
       "file": "dark/org/reassign.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{agentId}/configuration",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "dark/org/skills-list.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/skills",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/CompanySkills.tsx"
+      ]
     },
     {
       "file": "dark/org/workspace-modes.png",
@@ -1120,11 +1174,13 @@
       "file": "dark/routines/cron-picker.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/routines/{routineId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/RoutineDetail.tsx",
+        "ui/src/components/ScheduleEditor.tsx"
+      ]
     },
     {
       "file": "dark/routines/detail.png",
@@ -1152,11 +1208,12 @@
       "file": "dark/routines/run-history.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/routines/{routineId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/RoutineDetail.tsx"
+      ]
     },
     {
       "file": "dark/settings/experimental.png",
@@ -1184,11 +1241,12 @@
       "file": "dark/settings/instance-adapters.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/instance/settings/adapters",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/AdapterManager.tsx"
+      ]
     },
     {
       "file": "dark/settings/instance-general.png",
@@ -1249,11 +1307,12 @@
       "file": "dark/skills/assign-to-agent.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/skills/{skillId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/CompanySkills.tsx"
+      ]
     },
     {
       "file": "dark/skills/file-inventory.png",
@@ -1311,11 +1370,12 @@
       "file": "dark/tasks/inbox-newly-created-tasks.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/inbox/recent",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Inbox.tsx"
+      ]
     },
     {
       "file": "dark/tasks/inbox-view-with-filters.png",
@@ -1331,11 +1391,12 @@
       "file": "dark/tasks/inbox-view.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/inbox/mine",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Inbox.tsx"
+      ]
     },
     {
       "file": "dark/tasks/new-task-form-empty.png",
@@ -1371,11 +1432,12 @@
       "file": "dark/tasks/task-detail-with-comments.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/issues/{issueId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/IssueDetail.tsx"
+      ]
     },
     {
       "file": "dark/tasks/task-done-status.png",
@@ -1413,11 +1475,12 @@
       "file": "dark/workspaces/list.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/workspaces",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Workspaces.tsx"
+      ]
     },
     {
       "file": "dark/workspaces/runtime-logs.png",
@@ -1434,31 +1497,34 @@
       "file": "light/activity/activity-filtered-by-agent.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/activity",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Activity.tsx"
+      ]
     },
     {
       "file": "light/activity/activity-filters.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/activity",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Activity.tsx"
+      ]
     },
     {
       "file": "light/activity/activity-log-full.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/activity",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Activity.tsx"
+      ]
     },
     {
       "file": "light/adapters/detail.png",
@@ -1507,31 +1573,34 @@
       "file": "light/agents/adapter-type-dropdown.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/new",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "light/agents/agent-detail-idle.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{agentId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/AgentDetail.tsx"
+      ]
     },
     {
       "file": "light/agents/agent-detail-run-history.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{agentId}/runs",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/AgentDetail.tsx"
+      ]
     },
     {
       "file": "light/agents/agent-status-running.png",
@@ -1547,21 +1616,23 @@
       "file": "light/agents/agents-list-empty.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/{emptyPrefix}/agents/all",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Agents.tsx"
+      ]
     },
     {
       "file": "light/agents/budget-and-heartbeat-fields.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/new",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "light/agents/budget.png",
@@ -1578,21 +1649,23 @@
       "file": "light/agents/claude-local-config-filled.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/new",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "light/agents/codex-local-config.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/new",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "light/agents/configuration.png",
@@ -1620,31 +1693,34 @@
       "file": "light/agents/heartbeat-toggle-disabled.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{agentId}/configuration",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "light/agents/heartbeat-toggle-enabled.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{agentId}/configuration",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "light/agents/http-adapter-config.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{httpAgentId}/configuration",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "light/agents/instructions.png",
@@ -1672,21 +1748,24 @@
       "file": "light/agents/new-agent-name-role.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/new",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/NewAgent.tsx"
+      ]
     },
     {
       "file": "light/agents/new-agent-reports-to-field.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/new",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/NewAgent.tsx",
+        "ui/src/components/ReportsToPicker.tsx"
+      ]
     },
     {
       "file": "light/agents/new.png",
@@ -1745,11 +1824,12 @@
       "file": "light/agents/test-environment-fail.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/new",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "light/agents/test-environment-success.png",
@@ -1765,71 +1845,81 @@
       "file": "light/approvals/approvals-list.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/pending",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Approvals.tsx",
+        "ui/src/components/ApprovalCard.tsx"
+      ]
     },
     {
       "file": "light/approvals/approvals-queue-strategy.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/pending",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Approvals.tsx",
+        "ui/src/components/ApprovalPayload.tsx"
+      ]
     },
     {
       "file": "light/approvals/approve-reject-buttons.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/{hireApprovalId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/ApprovalDetail.tsx"
+      ]
     },
     {
       "file": "light/approvals/approve-reject-revision-buttons.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/{hireApprovalId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/ApprovalDetail.tsx"
+      ]
     },
     {
       "file": "light/approvals/approved-approval.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/{approvedApprovalId}?resolved=approved",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/ApprovalDetail.tsx"
+      ]
     },
     {
       "file": "light/approvals/hire-approval-detail.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/{hireApprovalId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/ApprovalPayload.tsx",
+        "ui/src/pages/ApprovalDetail.tsx"
+      ]
     },
     {
       "file": "light/approvals/queue-filters.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/pending",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Approvals.tsx"
+      ]
     },
     {
       "file": "light/approvals/revision-request-input.png",
@@ -1845,11 +1935,13 @@
       "file": "light/approvals/strategy-approval-detail.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/{strategyApprovalId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/ApprovalPayload.tsx",
+        "ui/src/pages/ApprovalDetail.tsx"
+      ]
     },
     {
       "file": "light/company/access.png",
@@ -1961,51 +2053,57 @@
       "file": "light/costs/agent-budget-100pct-paused.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{budgetMaxAgentId}/budget",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/BudgetPolicyCard.tsx"
+      ]
     },
     {
       "file": "light/costs/agent-budget-50pct.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{budgetHalfAgentId}/budget",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/BudgetPolicyCard.tsx"
+      ]
     },
     {
       "file": "light/costs/agent-budget-80pct-warning.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{budgetWarnAgentId}/budget",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/BudgetPolicyCard.tsx"
+      ]
     },
     {
       "file": "light/costs/agent-budget-bar.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{budgetHalfAgentId}/budget",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/BudgetPolicyCard.tsx"
+      ]
     },
     {
       "file": "light/costs/agent-budget-field.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{agentId}/budget",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/AgentDetail.tsx",
+        "ui/src/components/BudgetPolicyCard.tsx"
+      ]
     },
     {
       "file": "light/costs/billers.png",
@@ -2033,21 +2131,24 @@
       "file": "light/costs/company-budget-field.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/costs",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Costs.tsx",
+        "ui/src/components/BudgetPolicyCard.tsx"
+      ]
     },
     {
       "file": "light/costs/costs-dashboard-overview.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/costs",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Costs.tsx"
+      ]
     },
     {
       "file": "light/costs/finance.png",
@@ -2075,11 +2176,12 @@
       "file": "light/costs/per-run-cost-detail.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/costs",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Costs.tsx"
+      ]
     },
     {
       "file": "light/costs/providers.png",
@@ -2096,21 +2198,23 @@
       "file": "light/dashboard/activity-feed.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Dashboard.tsx"
+      ]
     },
     {
       "file": "light/dashboard/agent-status-panel.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Dashboard.tsx"
+      ]
     },
     {
       "file": "light/dashboard/cost-summary-panel.png",
@@ -2136,11 +2240,12 @@
       "file": "light/dashboard/dashboard-overview.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Dashboard.tsx"
+      ]
     },
     {
       "file": "light/dashboard/stale-tasks-panel.png",
@@ -2156,11 +2261,12 @@
       "file": "light/dashboard/task-breakdown-panel.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Dashboard.tsx"
+      ]
     },
     {
       "file": "light/export-import/export-dialog.png",
@@ -2230,11 +2336,12 @@
       "file": "light/issues/detail-sidebar.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/issues/{issueId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/IssueDetail.tsx"
+      ]
     },
     {
       "file": "light/issues/inbox-requests.png",
@@ -2273,11 +2380,12 @@
       "file": "light/issues/my-issues.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/inbox/mine",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Inbox.tsx"
+      ]
     },
     {
       "file": "light/onboarding/budget-field.png",
@@ -2293,11 +2401,12 @@
       "file": "light/onboarding/empty-dashboard.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/{emptyPrefix}/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Dashboard.tsx"
+      ]
     },
     {
       "file": "light/onboarding/goal-field.png",
@@ -2313,21 +2422,24 @@
       "file": "light/onboarding/new-company-modal-empty.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/OnboardingWizard.tsx",
+        "ui/src/components/SidebarCompanyMenu.tsx"
+      ]
     },
     {
       "file": "light/onboarding/sidebar-new-company-button.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/SidebarCompanyMenu.tsx"
+      ]
     },
     {
       "file": "light/org/chart.png",
@@ -2344,11 +2456,12 @@
       "file": "light/org/execution-workspaces-list.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/workspaces",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Workspaces.tsx"
+      ]
     },
     {
       "file": "light/org/org-chart-add-agent.png",
@@ -2374,41 +2487,45 @@
       "file": "light/org/org-chart-small-team.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/org",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/OrgChart.tsx"
+      ]
     },
     {
       "file": "light/org/org-chart-view.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/org",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/OrgChart.tsx"
+      ]
     },
     {
       "file": "light/org/reassign.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{agentId}/configuration",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "light/org/skills-list.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/skills",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/CompanySkills.tsx"
+      ]
     },
     {
       "file": "light/org/workspace-modes.png",
@@ -2545,11 +2662,13 @@
       "file": "light/routines/cron-picker.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/routines/{routineId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/RoutineDetail.tsx",
+        "ui/src/components/ScheduleEditor.tsx"
+      ]
     },
     {
       "file": "light/routines/detail.png",
@@ -2577,11 +2696,12 @@
       "file": "light/routines/run-history.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/routines/{routineId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/RoutineDetail.tsx"
+      ]
     },
     {
       "file": "light/settings/experimental.png",
@@ -2609,11 +2729,12 @@
       "file": "light/settings/instance-adapters.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/instance/settings/adapters",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/AdapterManager.tsx"
+      ]
     },
     {
       "file": "light/settings/instance-general.png",
@@ -2674,11 +2795,12 @@
       "file": "light/skills/assign-to-agent.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/skills/{skillId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/CompanySkills.tsx"
+      ]
     },
     {
       "file": "light/skills/file-inventory.png",
@@ -2736,11 +2858,12 @@
       "file": "light/tasks/inbox-newly-created-tasks.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/inbox/recent",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Inbox.tsx"
+      ]
     },
     {
       "file": "light/tasks/inbox-view-with-filters.png",
@@ -2756,11 +2879,12 @@
       "file": "light/tasks/inbox-view.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/inbox/mine",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Inbox.tsx"
+      ]
     },
     {
       "file": "light/tasks/new-task-form-empty.png",
@@ -2796,11 +2920,12 @@
       "file": "light/tasks/task-detail-with-comments.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/issues/{issueId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/IssueDetail.tsx"
+      ]
     },
     {
       "file": "light/tasks/task-done-status.png",
@@ -2838,11 +2963,12 @@
       "file": "light/workspaces/list.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/workspaces",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Workspaces.tsx"
+      ]
     },
     {
       "file": "light/workspaces/runtime-logs.png",
