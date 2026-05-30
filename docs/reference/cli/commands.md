@@ -565,6 +565,269 @@ eval "$(paperclipai agent local-cli claudecoder -C <company-id>)"
 
 ---
 
+## `skills`
+
+Company and agent skill operations. Commands split into three groups: read-only **catalog** browsing (not company-scoped), the **company skill library**, and per-agent **desired-skill sync**. Every library and agent subcommand requires a company scope and accepts the common client flags.
+
+### `paperclipai skills browse`
+
+Browse app-shipped catalog skills without installing them. Not company-scoped.
+
+```
+paperclipai skills browse [options]
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--kind <kind>` | enum | — | Catalog kind filter: `bundled` or `optional`. |
+| `--category <slug>` | string | — | Catalog category filter. |
+| `--query <text>` | string | — | Search catalog text. |
+
+### `paperclipai skills search <query>`
+
+Search app-shipped catalog skills without installing them. Not company-scoped.
+
+```
+paperclipai skills search [options] <query>
+```
+
+| Argument | Description |
+|---|---|
+| `query` | Search text. |
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--kind <kind>` | enum | — | Catalog kind filter: `bundled` or `optional`. |
+| `--category <slug>` | string | — | Catalog category filter. |
+
+### `paperclipai skills inspect <catalogRef>`
+
+Inspect an app-shipped catalog skill before installing it. Not company-scoped.
+
+```
+paperclipai skills inspect [options] <catalogRef>
+```
+
+| Argument | Description |
+|---|---|
+| `catalogRef` | Catalog skill ID, key, or unique slug. |
+
+### `paperclipai skills install <catalogRef>`
+
+Install a catalog skill into the company skill library; does not attach it to agents.
+
+```
+paperclipai skills install [options] <catalogRef>
+```
+
+| Argument | Description |
+|---|---|
+| `catalogRef` | Catalog skill ID, key, or unique slug. |
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--as <slug>` | string | — | Company skill slug override. |
+| `--force` | flag | `false` | Replace a same-key catalog-managed skill when the server allows it. |
+| Common client flags | — | — | `-C, --company-id` (required) plus `--api-base`, `--api-key`, `--json`, etc. |
+
+### `paperclipai skills list`
+
+List company skills.
+
+```
+paperclipai skills list [options]
+```
+
+Common client flags; `-C, --company-id` required.
+
+### `paperclipai skills show <skillRef>`
+
+Show company skill details.
+
+```
+paperclipai skills show [options] <skillRef>
+```
+
+| Argument | Description |
+|---|---|
+| `skillRef` | Company skill ID, key, or unique slug. |
+
+### `paperclipai skills file <skillRef>`
+
+Print a company skill file.
+
+```
+paperclipai skills file [options] <skillRef>
+```
+
+| Argument | Description |
+|---|---|
+| `skillRef` | Company skill ID, key, or unique slug. |
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--path <path>` | string | `SKILL.md` | Relative file path. |
+
+### `paperclipai skills import <source>`
+
+Import company skills from a local path, GitHub, skills.sh, or URL source.
+
+```
+paperclipai skills import [options] <source>
+```
+
+| Argument | Description |
+|---|---|
+| `source` | Skill source: local path, GitHub repo, skills.sh reference, or URL. |
+
+### `paperclipai skills create`
+
+Create a managed local company skill.
+
+```
+paperclipai skills create [options]
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--name <name>` | string | — | **Required.** Skill name. |
+| `--slug <slug>` | string | — | Skill slug. |
+| `--description <text>` | string | — | Skill description. |
+| `--body-file <path>` | string | — | Markdown body file; use `-` to read stdin. |
+
+### `paperclipai skills scan-projects`
+
+Scan project workspaces for skills.
+
+```
+paperclipai skills scan-projects [options]
+```
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--project-id <id>` | string | — | Project ID to scan; may be repeated. |
+| `--workspace-id <id>` | string | — | Workspace ID to scan; may be repeated. |
+
+### `paperclipai skills check [skillRef]`
+
+Check company skill update status. Omit the reference to check every skill.
+
+```
+paperclipai skills check [options] [skillRef]
+```
+
+| Argument | Description |
+|---|---|
+| `skillRef` | Optional company skill ID, key, or unique slug. |
+
+### `paperclipai skills update [skillRef]`
+
+Install company skill updates. Pass a single skill reference or `--all`, not both.
+
+```
+paperclipai skills update [options] [skillRef]
+```
+
+| Argument | Description |
+|---|---|
+| `skillRef` | Company skill ID, key, or unique slug (required unless `--all`). |
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--all` | flag | `false` | Check all skills and install available updates. |
+| `--force` | flag | `false` | Discard local-modification or soft-audit holds; hard-stop audit findings still fail. |
+
+### `paperclipai skills audit [skillRef]`
+
+Audit installed company skill bytes without executing them. Omit the reference to audit every skill.
+
+```
+paperclipai skills audit [options] [skillRef]
+```
+
+| Argument | Description |
+|---|---|
+| `skillRef` | Optional company skill ID, key, or unique slug. |
+
+### `paperclipai skills reset <skillRef>`
+
+Reset a catalog-managed company skill to its pinned installed origin.
+
+```
+paperclipai skills reset [options] <skillRef>
+```
+
+| Argument | Description |
+|---|---|
+| `skillRef` | Company skill ID, key, or unique slug. |
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--yes` | flag | `false` | Confirm reset without prompting. |
+| `--force` | flag | `false` | Discard local modifications or accept soft audit warnings; hard-stop audit findings still fail. |
+
+### `paperclipai skills remove <skillRef>`
+
+Remove a company skill.
+
+```
+paperclipai skills remove [options] <skillRef>
+```
+
+| Argument | Description |
+|---|---|
+| `skillRef` | Company skill ID, key, or unique slug. |
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--yes` | flag | `false` | Confirm removal without prompting. |
+
+### `paperclipai skills agent list <agentRef>`
+
+List an agent runtime skill snapshot.
+
+```
+paperclipai skills agent list [options] <agentRef>
+```
+
+| Argument | Description |
+|---|---|
+| `agentRef` | Agent ID or shortname/url-key. |
+
+### `paperclipai skills agent sync <agentRef>`
+
+Replace an agent's non-required desired company skills and sync runtime state. At least one `--skill` is required.
+
+```
+paperclipai skills agent sync [options] <agentRef>
+```
+
+| Argument | Description |
+|---|---|
+| `agentRef` | Agent ID or shortname/url-key. |
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--skill <skillRef>` | string | — | Desired company skill ID, key, or slug; may be repeated. |
+
+### `paperclipai skills agent clear <agentRef>`
+
+Clear an agent's non-required desired company skills and sync runtime state. Required Paperclip skills remain server-enforced.
+
+```
+paperclipai skills agent clear [options] <agentRef>
+```
+
+| Argument | Description |
+|---|---|
+| `agentRef` | Agent ID or shortname/url-key. |
+
+| Flag | Type | Default | Description |
+|---|---|---|---|
+| `--yes` | flag | `false` | Confirm clear without prompting. |
+
+---
+
 ## `approval`
 
 ### `paperclipai approval list`

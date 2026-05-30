@@ -85,6 +85,19 @@ The skill is now available in the company library. When creating or editing an a
 
 ![Skills page showing available skills with their names and descriptions](../../user-guides/screenshots/light/org/skills-list.png)
 
+### Install a ready-made skill from the built-in catalog
+
+You don't have to write every skill from scratch. Paperclip ships with a built-in **catalog** of ready-made skills you can browse and install with a click — a head start for common procedures.
+
+The catalog comes in two flavours:
+
+- **Bundled** skills are the everyday kit — things like keeping docs maintained, triaging issues, planning tasks, running QA acceptance, and managing a GitHub PR workflow.
+- **Optional** skills are extras you add when you need them — for example, browser-driving an agent, drafting a release announcement, or running a design critique.
+
+Browse the catalog, pick a skill, and install it into your company library. Installing puts the skill in the library only — it doesn't attach it to any agent, so you stay in control of who uses it. From there it behaves like any other installed skill: open it, read its `SKILL.md`, and assign it to the agents that need it.
+
+Because these skills come from Paperclip, the app knows exactly which version you installed. That means a catalog skill can be **kept up to date**: Paperclip can check whether a newer version shipped and install the update, audit the skill's contents for safety before you trust it, and reset the skill back to its original shipped version if it was edited locally. For the mechanics of installing, updating, auditing, and resetting catalog skills, see the [Skills reference](../../reference/skills.md#3-app-shipped-catalog).
+
 ---
 
 ## File inventory

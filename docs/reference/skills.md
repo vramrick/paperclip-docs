@@ -175,7 +175,113 @@ Bundled skills (the four `paperclip-*` skills shipped with the server) are re-im
 
 ---
 
-## 3. Assigning skills to agents
+## 3. App-shipped catalog
+
+Beyond importing skills from GitHub, skills.sh, URLs, or local folders, Paperclip ships its own **catalog** of ready-made skills inside the app. You browse the catalog, install the skill you want into a company, and from then on Paperclip can keep that copy in step with the version it shipped — checking for updates, auditing the bytes, and resetting back to the pinned origin if needed.
+
+Catalog skills are split into two **kinds** (`CatalogSkillKind`):
+
+| Kind | Meaning | Examples |
+|---|---|---|
+| `bundled` | Core skills the app considers part of the baseline kit. | `doc-maintenance`, `issue-triage`, `task-planning`, `qa-acceptance`, `github-pr-workflow` |
+| `optional` | Extra skills you opt into when you need them. | `agent-browser`, `release-announcement`, `design-critique` |
+
+Once installed, a catalog skill becomes an ordinary company-skill row, but it is tagged as **catalog-managed**: its `sourceType` is `catalog` and its `metadata.sourceKind` is `catalog`. The catalog kind (`bundled` / `optional`) is carried through on `metadata.catalogKind`, and the byte-exact origin it was pinned to is stored in `metadata.originHash`.
+
+> The catalog browse routes are read-only and only require an authenticated caller. The install/audit/update/reset routes mutate the company library and therefore need `agents:create` (or `permissions.canCreateAgents=true`), exactly like the other mutating skill routes.
+
+### Browse the catalog
+
+The catalog itself is the same for every company, so the browse routes are not company-scoped:
+
+| Action | Endpoint |
+|---|---|
+| List catalog skills | `GET /api/skills/catalog` |
+| Inspect one catalog skill | `GET /api/skills/catalog/{catalogId}` |
+| List a catalog skill's files | `GET /api/skills/catalog/{catalogId}/files` |
+
+The list route accepts three optional query filters:
+
+- `kind` — `bundled` or `optional`.
+- `category` — exact-match on the skill's category.
+- `q` — free-text query matched against the skill's id, key, slug, name, description, category, kind, recommended roles, and tags.
+
+Each catalog entry (`CatalogSkill`) carries `id`, `key`, `kind`, `category`, `slug`, `name`, `description`, `trustLevel`, `compatibility`, `defaultInstall`, `recommendedForRoles`, `requires`, `tags`, a `files[]` inventory (each with `path`, `kind`, `sizeBytes`, `sha256`), and a `contentHash` — the byte-exact identity of the shipped skill.
+
+The files route returns one file at a time. By default it reads `SKILL.md`; pass `?path=references/example.md` to read another file in the inventory. Asset files are not previewable.
+
+### Install a catalog skill
+
+```http
+POST /api/companies/{companyId}/skills/install-catalog
+```
+
+```json
+{
+  "catalogSkillId": "<catalog id, key, or unique slug>",
+  "slug": "my-doc-maintenance",
+  "force": false
+}
+```
+
+- `catalogSkillId` (required) — resolves against the catalog by id, key, or a slug that is unique in the catalog.
+- `slug` (optional) — override the slug the skill takes in your company library. Leave it out (or `null`) to keep the catalog slug.
+- `force` (optional) — overwrite an existing row that already occupies the target slug/key.
+
+**Installing does not attach the skill to any agent.** It only adds the skill to the company library, just like an import. Attach it afterwards exactly as you would any other skill — see [Assigning skills to agents](#4-assigning-skills-to-agents).
+
+The response reports an `action` of `created`, `updated`, or `unchanged`, plus the resulting company `skill`, the source `catalogSkill`, and any `warnings`. A fresh install returns `201`; an in-place refresh returns `200`.
+
+### Keep a catalog skill current
+
+A catalog-managed skill exposes the same `GET /skills/{skillId}/update-status` → `POST /skills/{skillId}/install-update` flow as GitHub skills, but the comparison is against the version the app currently ships rather than an upstream commit. When a newer catalog version is available, install it:
+
+```http
+POST /api/companies/{companyId}/skills/{skillId}/install-update
+```
+
+```json
+{ "force": false }
+```
+
+Two kinds of **hold** can stop an update:
+
+- **Soft hold — local modifications.** If the installed bytes no longer match the pinned `originHash`, the update is held so you do not silently lose your edits. Rerun with `{ "force": true }` to discard the local changes and take the new version.
+- **Hard stop — audit findings.** If auditing the skill returns a `fail` verdict (see below), the update is blocked outright. `force` does **not** override a hard stop.
+
+### Audit before you trust
+
+```http
+POST /api/companies/{companyId}/skills/{skillId}/audit
+```
+
+Audit inspects the installed skill's bytes **without executing them** and returns a verdict:
+
+| `verdict` | Meaning |
+|---|---|
+| `pass` | No findings. |
+| `warning` | Soft findings only (for example, the skill ships a script, references a network command, or its bytes drifted from `originHash`). |
+| `fail` | At least one hard-stop finding (for example, a remote-fetch-and-execute pattern, a secret-exfiltration pattern, oversized or non-text files, or a missing/invalid `SKILL.md`). |
+
+The result also includes `codes` (the deduplicated finding codes), `installedHash`, `originHash`, and a `scanVersion`. A `fail` verdict is what hard-blocks `install-update`. Audit is only supported for local-path and catalog-managed skills.
+
+### Reset to the pinned origin
+
+```http
+POST /api/companies/{companyId}/skills/{skillId}/reset
+```
+
+```json
+{ "force": false }
+```
+
+Reset restores a catalog-managed skill to the byte-exact origin it was installed from — useful when a skill was edited locally and you want the shipped version back. Reset is only supported for catalog-managed skills.
+
+For the equivalent `paperclipai skills` CLI commands (browse, install, audit, update, reset), see [Control-plane commands](./cli/control-plane-commands.md) and the [CLI command reference](./cli/commands.md).
+
+---
+
+## 4. Assigning skills to agents
 
 A skill must be installed at the company level before it can be attached to an agent. There are two ways to make the attachment.
 
@@ -244,7 +350,7 @@ Returns the same snapshot shape without changing anything. For adapters without 
 
 ---
 
-## 4. Scoping rules
+## 5. Scoping rules
 
 **Company-scoped, not org-scoped.** Skills live at the company level. Every agent inside the same company can be assigned any installed skill. There is no per-team or per-role scoping built in — granularity is controlled by which keys end up in each agent's `desiredSkills`.
 
@@ -270,7 +376,7 @@ Adapters declare which materialisation strategy they need via `requiresMateriali
 
 ---
 
-## 5. Skill vs. plugin vs. adapter
+## 6. Skill vs. plugin vs. adapter
 
 These three extension points are easy to confuse. They sit at different layers:
 
@@ -288,7 +394,7 @@ Rule of thumb: **a skill is something a smart human could follow if you handed t
 
 ---
 
-## 6. Naming collisions and resolution
+## 7. Naming collisions and resolution
 
 ### Canonical key
 
@@ -336,7 +442,7 @@ Slugs are normalised through `normalizeAgentUrlKey`: lowercase, hyphen-separated
 
 ---
 
-## 7. Versioning semantics
+## 8. Versioning semantics
 
 Behaviour depends on the source:
 
@@ -348,7 +454,7 @@ Behaviour depends on the source:
 | `local_path` (managed) | Live | None — files refresh on read | Stored under `<paperclipInstanceRoot>/skills/{companyId}/`. Edited via `PATCH /skills/{id}/files`. |
 | `local_path` (project scan) | Live | Re-run the scan endpoint | Skills whose `SKILL.md` disappears are pruned automatically (`pruneMissingLocalPathSkills`). |
 | `paperclip_bundled` | Pinned to the Paperclip release | Upgrade Paperclip itself | Re-imported on every list call; cannot be edited. |
-| `catalog` | No | None | Used by inline catalog packages; refresh by re-importing. |
+| `catalog` | Pinned to the shipped catalog version (`metadata.originHash`) | `GET /skills/{id}/update-status` → `POST /skills/{id}/install-update`; `POST /skills/{id}/reset` to restore the origin | App-shipped catalog skills. Updates compare against the version the app ships. See [App-shipped catalog](#3-app-shipped-catalog). |
 
 ### `update-status` response
 
@@ -371,7 +477,7 @@ For non-GitHub sources, `supported: false` is returned with a reason. Calling `i
 
 ---
 
-## 8. Troubleshooting: why a skill isn't loading
+## 9. Troubleshooting: why a skill isn't loading
 
 Walk down this list in order. The first match is usually the problem.
 

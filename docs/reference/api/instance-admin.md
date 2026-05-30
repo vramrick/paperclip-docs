@@ -39,6 +39,28 @@ Instance-admin only.
 
 ---
 
+## Claim first instance admin
+
+```
+POST /api/bootstrap/claim
+```
+
+On a brand-new private instance that requires login, this lets the first person to sign in promote themselves to `instance_admin` — no manual database seeding. The first caller to claim wins; everyone after them is locked out.
+
+**Availability.** This route only exists when the instance runs with `deploymentMode` set to `authenticated` **and** `deploymentExposure` set to `private`. On any other configuration it returns `404` with `Browser first-admin claim is not available`.
+
+**Authentication.** The caller must be a signed-in browser session (a board actor whose session source is the browser). Other callers — agents, CLI tokens, unauthenticated requests — get `401` with `Sign in from a browser session before claiming first admin`.
+
+**Behaviour.** If no `instance_admin` exists yet, the signed-in user is promoted to `instance_admin`. The claim is atomic — the table is locked so exactly one user can win. If the instance has already been claimed, the route returns `409` with `Someone else has already claimed this instance`.
+
+The request takes no body. On success the response is:
+
+```json
+{ "claimed": true, "userId": "<the promoted user's id>" }
+```
+
+---
+
 ## LLM agent-configuration reflection
 
 These endpoints exist so agents can introspect what server-side adapters and icons are available to them.
