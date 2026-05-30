@@ -32,6 +32,7 @@ import { constants as fsConstants } from "node:fs";
 import {
   BASE_URL,
   PARENT_REPO,
+  REPO_ROOT,
   scratchHome,
   instanceEnv,
 } from "./config.mjs";
@@ -193,7 +194,7 @@ async function main() {
       const syncProc = spawn(
         process.execPath,
         ["scripts/screenshots/sync-registry.mjs"],
-        { cwd: process.env.REPO_ROOT || process.cwd(), stdio: "inherit" },
+        { cwd: REPO_ROOT, stdio: "inherit" },
       );
       syncProc.on("close", (code) => {
         code === 0 ? resolve() : reject(new Error(`sync-registry exited ${code}`));
