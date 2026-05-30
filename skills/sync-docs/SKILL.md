@@ -265,7 +265,20 @@ Read `docs/user-guides/screenshots/registry.json`. For each entry:
 - Compare its `captured_sha` against the current parent ref.
 - If any of the entry's `depends_on` parent paths changed in the window → mark stale.
 
-Output stale entries to `SCREENSHOTS_PENDING.md` (committed) and to the PR/commit body. Do NOT attempt to capture — capture is a manual step for now (see [`maintenance/maintenance.md`](../../maintenance/maintenance.md) → Screenshots).
+Output stale entries to `SCREENSHOTS_PENDING.md` (committed) and to the PR/commit body.
+
+Capture is now automatable via the screenshot pipeline:
+
+- **Normal refresh** (recaptures only stale entries, or everything if no filter is applied):
+  ```sh
+  npm run screenshots:refresh
+  ```
+- **Full overhaul** (recaptures every screenshot — use after a major UI/UX redesign):
+  ```sh
+  npm run screenshots:refresh:all
+  ```
+
+Both commands spin up an isolated `local_trusted` / `loopback` Paperclip instance, seed it with demo data, capture light + dark variants at 1440×900 @2x, and stamp `captured_sha` / `captured_against` in `registry.json`. The output PNGs land in a PR for human review — they are **never auto-pushed**. See [`scripts/screenshots/README.md`](../../scripts/screenshots/README.md) for prerequisites and full details.
 
 ### Phase 7 — Verify & commit
 
@@ -334,7 +347,7 @@ The release PR merges `nightly` → `main`. If there are open nightly-draft PRs,
 - Auto-merge PRs. Even auto-merge tier means "auto-commit to nightly branch," not "auto-merge to main."
 - Generate docs from code by template/codegen. Every doc edit goes through subagent rewriting in our voice.
 - Copy text from the parent's own docs.
-- Capture screenshots. Only flags staleness.
+- Push screenshots or any other output. `npm run screenshots:refresh` captures and stamps `registry.json`, but the resulting PNGs go to a PR for human review — the skill itself never pushes.
 - Modify `site/content.json` without a corresponding new doc page (no orphan nav entries).
 - Delete pages without explicit confirmation, even if a watcher detects a removed surface.
 
