@@ -33,6 +33,17 @@ const ID_TOKENS = [
   "routineId",
   "issueId",
   "workspaceId",
+  // Extended coverage tokens (written by seed.mjs; see scripts/screenshots/seed.mjs)
+  "emptyPrefix", // a second, empty company's prefix — for empty-state shots
+  "httpAgentId", // an agent created with the http adapter
+  "budgetHalfAgentId", // agent seeded to ~50% budget utilisation
+  "budgetWarnAgentId", // agent seeded to ~80% (warning)
+  "budgetMaxAgentId", // agent seeded to 100% and paused
+  "skillId", // a company skill id
+  "hireApprovalId", // a pending hire_agent approval
+  "strategyApprovalId", // a pending approve_ceo_strategy approval
+  "boardApprovalId", // a pending request_board_approval
+  "approvedApprovalId", // an already-approved approval
 ];
 
 /**
@@ -445,10 +456,210 @@ export const CAPTURE_TARGETS = [
     themes: ["light", "dark"],
   },
 
+  // ════════════════════════════════════════════════════════════════════════
+  //  Extended coverage (added to refresh the rest of the documented shots).
+  //  `steps` run after the page settles; `clip` captures a single element.
+  //  Every step is best-effort — see capture.mjs runSteps().
+  // ════════════════════════════════════════════════════════════════════════
+
+  // ── Dashboard ───────────────────────────────────────────────────────────────
+  { name: "dashboard/dashboard-overview", route: "/{prefix}/dashboard", dependsOn: ["ui/src/pages/Dashboard.tsx"] },
+  {
+    name: "dashboard/agent-status-panel",
+    route: "/{prefix}/dashboard",
+    dependsOn: ["ui/src/pages/Dashboard.tsx"],
+    clip: { css: 'xpath=(//*[contains(text(),"Active agents") or contains(text(),"Agents Enabled")]/ancestor::div[contains(@class,"rounded")])[1]' },
+  },
+  {
+    name: "dashboard/activity-feed",
+    route: "/{prefix}/dashboard",
+    dependsOn: ["ui/src/pages/Dashboard.tsx"],
+    clip: { css: 'xpath=//h3[contains(.,"Recent Activity")]/ancestor::div[contains(@class,"rounded")][1]' },
+  },
+  {
+    name: "dashboard/task-breakdown-panel",
+    route: "/{prefix}/dashboard",
+    dependsOn: ["ui/src/pages/Dashboard.tsx"],
+    clip: { css: 'xpath=//h3[contains(.,"Recent Tasks")]/ancestor::div[contains(@class,"rounded")][1]' },
+  },
+
+  // ── Tasks / inbox ─────────────────────────────────────────────────────────
+  { name: "tasks/inbox-view", route: "/{prefix}/inbox/mine", dependsOn: ["ui/src/pages/Inbox.tsx"] },
+  { name: "tasks/inbox-newly-created-tasks", route: "/{prefix}/inbox/recent", dependsOn: ["ui/src/pages/Inbox.tsx"] },
+  { name: "tasks/task-detail-with-comments", route: "/{prefix}/issues/{issueId}", dependsOn: ["ui/src/pages/IssueDetail.tsx"] },
+
+  // ── Issues ──────────────────────────────────────────────────────────────────
+  { name: "issues/my-issues", route: "/{prefix}/inbox/mine", dependsOn: ["ui/src/pages/Inbox.tsx"] },
+  {
+    name: "issues/detail-sidebar",
+    route: "/{prefix}/issues/{issueId}",
+    dependsOn: ["ui/src/pages/IssueDetail.tsx"],
+    steps: [{ click: { title: "Show properties" } }, { waitMs: 600 }],
+  },
+
+  // ── Activity ────────────────────────────────────────────────────────────────
+  { name: "activity/activity-log-full", route: "/{prefix}/activity", dependsOn: ["ui/src/pages/Activity.tsx"] },
+  {
+    name: "activity/activity-filters",
+    route: "/{prefix}/activity",
+    dependsOn: ["ui/src/pages/Activity.tsx"],
+    steps: [{ click: { role: "combobox" } }, { waitMs: 500 }],
+  },
+  {
+    name: "activity/activity-filtered-by-agent",
+    route: "/{prefix}/activity",
+    dependsOn: ["ui/src/pages/Activity.tsx"],
+    steps: [{ click: { role: "combobox" } }, { waitMs: 400 }, { click: { role: "option", name: "Agent" } }, { waitMs: 600 }],
+  },
+
+  // ── Org ─────────────────────────────────────────────────────────────────────
+  { name: "org/org-chart-view", route: "/{prefix}/org", dependsOn: ["ui/src/pages/OrgChart.tsx"] },
+  { name: "org/org-chart-small-team", route: "/{prefix}/org", dependsOn: ["ui/src/pages/OrgChart.tsx"] },
+  { name: "org/skills-list", route: "/{prefix}/skills", dependsOn: ["ui/src/pages/CompanySkills.tsx"] },
+  { name: "org/execution-workspaces-list", route: "/{prefix}/workspaces", dependsOn: ["ui/src/pages/Workspaces.tsx"] },
+  {
+    name: "org/reassign",
+    route: "/{prefix}/agents/{agentId}/configuration",
+    dependsOn: ["ui/src/components/AgentConfigForm.tsx"],
+    steps: [{ click: { role: "button", name: /Reports to/i } }, { waitMs: 600 }],
+  },
+
+  // ── Routines ──────────────────────────────────────────────────────────────
+  {
+    name: "routines/run-history",
+    route: "/{prefix}/routines/{routineId}",
+    dependsOn: ["ui/src/pages/RoutineDetail.tsx"],
+    steps: [{ click: { role: "tab", name: "Runs" } }, { waitMs: 700 }],
+  },
+  {
+    name: "routines/cron-picker",
+    route: "/{prefix}/routines/{routineId}",
+    dependsOn: ["ui/src/pages/RoutineDetail.tsx", "ui/src/components/ScheduleEditor.tsx"],
+    steps: [{ click: { role: "combobox" } }, { waitMs: 500 }],
+  },
+
+  // ── Skills ──────────────────────────────────────────────────────────────────
+  {
+    name: "skills/assign-to-agent",
+    route: "/{prefix}/skills/{skillId}",
+    dependsOn: ["ui/src/pages/CompanySkills.tsx"],
+    steps: [{ click: { role: "button", name: "Attach to agents" } }, { waitMs: 600 }],
+  },
+
+  // ── Workspaces ──────────────────────────────────────────────────────────────
+  { name: "workspaces/list", route: "/{prefix}/workspaces", dependsOn: ["ui/src/pages/Workspaces.tsx"] },
+
+  // ── Settings ────────────────────────────────────────────────────────────────
+  { name: "settings/instance-adapters", route: "/instance/settings/adapters", dependsOn: ["ui/src/pages/AdapterManager.tsx"] },
+
+  // ── Costs ─────────────────────────────────────────────────────────────────
+  { name: "costs/costs-dashboard-overview", route: "/{prefix}/costs", dependsOn: ["ui/src/pages/Costs.tsx"] },
+  {
+    name: "costs/agent-budget-field",
+    route: "/{prefix}/agents/{agentId}/budget",
+    dependsOn: ["ui/src/pages/AgentDetail.tsx", "ui/src/components/BudgetPolicyCard.tsx"],
+  },
+  {
+    name: "costs/company-budget-field",
+    route: "/{prefix}/costs",
+    dependsOn: ["ui/src/pages/Costs.tsx", "ui/src/components/BudgetPolicyCard.tsx"],
+    steps: [{ click: { role: "tab", name: "Budgets" } }, { waitMs: 600 }],
+  },
+  {
+    name: "costs/per-run-cost-detail",
+    route: "/{prefix}/costs",
+    dependsOn: ["ui/src/pages/Costs.tsx"],
+    steps: [{ click: { text: "Bob" } }, { waitMs: 600 }],
+  },
+  // Budget-utilisation bar states — dedicated agents seeded to set % (see seed.mjs).
+  { name: "costs/agent-budget-bar", route: "/{prefix}/agents/{budgetHalfAgentId}/budget", dependsOn: ["ui/src/components/BudgetPolicyCard.tsx"] },
+  { name: "costs/agent-budget-50pct", route: "/{prefix}/agents/{budgetHalfAgentId}/budget", dependsOn: ["ui/src/components/BudgetPolicyCard.tsx"] },
+  { name: "costs/agent-budget-80pct-warning", route: "/{prefix}/agents/{budgetWarnAgentId}/budget", dependsOn: ["ui/src/components/BudgetPolicyCard.tsx"] },
+  { name: "costs/agent-budget-100pct-paused", route: "/{prefix}/agents/{budgetMaxAgentId}/budget", dependsOn: ["ui/src/components/BudgetPolicyCard.tsx"] },
+
+  // ── Agents — new-agent form + config interactions ───────────────────────────
+  { name: "agents/new-agent-name-role", route: "/{prefix}/agents/new", dependsOn: ["ui/src/pages/NewAgent.tsx"] },
+  {
+    name: "agents/new-agent-reports-to-field",
+    route: "/{prefix}/agents/new",
+    dependsOn: ["ui/src/pages/NewAgent.tsx", "ui/src/components/ReportsToPicker.tsx"],
+    steps: [{ click: { role: "button", name: /Reports to/i } }, { waitMs: 500 }],
+  },
+  { name: "agents/budget-and-heartbeat-fields", route: "/{prefix}/agents/new", dependsOn: ["ui/src/components/AgentConfigForm.tsx"] },
+  {
+    name: "agents/adapter-type-dropdown",
+    route: "/{prefix}/agents/new",
+    dependsOn: ["ui/src/components/AgentConfigForm.tsx"],
+    steps: [{ click: { role: "button", name: /Claude/i } }, { waitMs: 500 }],
+  },
+  {
+    name: "agents/claude-local-config-filled",
+    route: "/{prefix}/agents/new",
+    dependsOn: ["ui/src/components/AgentConfigForm.tsx"],
+    steps: [{ fill: { placeholder: "claude" }, value: "claude" }, { waitMs: 400 }],
+  },
+  {
+    name: "agents/codex-local-config",
+    route: "/{prefix}/agents/new",
+    dependsOn: ["ui/src/components/AgentConfigForm.tsx"],
+    steps: [{ click: { role: "button", name: /Claude/i } }, { waitMs: 400 }, { click: { text: "Codex" } }, { waitMs: 600 }],
+  },
+  { name: "agents/http-adapter-config", route: "/{prefix}/agents/{httpAgentId}/configuration", dependsOn: ["ui/src/components/AgentConfigForm.tsx"] },
+  {
+    name: "agents/heartbeat-toggle-enabled",
+    route: "/{prefix}/agents/{agentId}/configuration",
+    dependsOn: ["ui/src/components/AgentConfigForm.tsx"],
+    steps: [{ click: { role: "switch" } }, { waitMs: 500 }],
+  },
+  { name: "agents/heartbeat-toggle-disabled", route: "/{prefix}/agents/{agentId}/configuration", dependsOn: ["ui/src/components/AgentConfigForm.tsx"] },
+  { name: "agents/agent-detail-run-history", route: "/{prefix}/agents/{agentId}/runs", dependsOn: ["ui/src/pages/AgentDetail.tsx"] },
+  { name: "agents/agent-detail-idle", route: "/{prefix}/agents/{agentId}", dependsOn: ["ui/src/pages/AgentDetail.tsx"] },
+  {
+    name: "agents/test-environment-fail",
+    route: "/{prefix}/agents/new",
+    dependsOn: ["ui/src/components/AgentConfigForm.tsx"],
+    steps: [{ click: { role: "button", name: "Test Agent" } }, { waitFor: { text: /Failed|Passed/i } }, { waitMs: 600 }],
+    wait: 1500,
+  },
+  { name: "agents/agents-list-empty", route: "/{emptyPrefix}/agents/all", dependsOn: ["ui/src/pages/Agents.tsx"] },
+
+  // ── Onboarding ──────────────────────────────────────────────────────────────
+  { name: "onboarding/empty-dashboard", route: "/{emptyPrefix}/dashboard", dependsOn: ["ui/src/pages/Dashboard.tsx"] },
+  {
+    name: "onboarding/sidebar-new-company-button",
+    route: "/{prefix}/dashboard",
+    dependsOn: ["ui/src/components/SidebarCompanyMenu.tsx"],
+    steps: [{ click: { role: "button", name: /workspace switcher/i } }, { waitMs: 500 }],
+  },
+  {
+    name: "onboarding/new-company-modal-empty",
+    route: "/{prefix}/dashboard",
+    dependsOn: ["ui/src/components/OnboardingWizard.tsx", "ui/src/components/SidebarCompanyMenu.tsx"],
+    steps: [{ click: { role: "button", name: /workspace switcher/i } }, { waitMs: 400 }, { click: { role: "menuitem", name: /Add company/i } }, { waitMs: 900 }],
+  },
+
+  // ── Approvals (items seeded via REST in seed.mjs) ───────────────────────────
+  { name: "approvals/approvals-list", route: "/{prefix}/approvals/pending", dependsOn: ["ui/src/pages/Approvals.tsx", "ui/src/components/ApprovalCard.tsx"] },
+  { name: "approvals/queue-filters", route: "/{prefix}/approvals/pending", dependsOn: ["ui/src/pages/Approvals.tsx"] },
+  { name: "approvals/approvals-queue-strategy", route: "/{prefix}/approvals/pending", dependsOn: ["ui/src/pages/Approvals.tsx", "ui/src/components/ApprovalPayload.tsx"] },
+  { name: "approvals/approve-reject-buttons", route: "/{prefix}/approvals/{hireApprovalId}", dependsOn: ["ui/src/pages/ApprovalDetail.tsx"] },
+  { name: "approvals/approve-reject-revision-buttons", route: "/{prefix}/approvals/{hireApprovalId}", dependsOn: ["ui/src/pages/ApprovalDetail.tsx"] },
+  { name: "approvals/hire-approval-detail", route: "/{prefix}/approvals/{hireApprovalId}", dependsOn: ["ui/src/components/ApprovalPayload.tsx", "ui/src/pages/ApprovalDetail.tsx"] },
+  { name: "approvals/strategy-approval-detail", route: "/{prefix}/approvals/{strategyApprovalId}", dependsOn: ["ui/src/components/ApprovalPayload.tsx", "ui/src/pages/ApprovalDetail.tsx"] },
+  { name: "approvals/approved-approval", route: "/{prefix}/approvals/{approvedApprovalId}?resolved=approved", dependsOn: ["ui/src/pages/ApprovalDetail.tsx"] },
+
   // ── CLI auth & board claim ─────────────────────────────────────────────────
   // These require dynamic IDs generated at demo time. The tokens are not in
   // seed-ids.json (they are ephemeral CLI interactions) — capture is skipped
   // when the IDs are absent from the seed file.
-  // For now they are excluded from CAPTURE_TARGETS (no automated path).
-  // Add them manually or extend seed.mjs to generate them if needed.
+  //
+  // ── Inherently NOT auto-capturable in an offline instance (left manual) ─────
+  //   agents/test-environment-success  — needs a real adapter CLI binary on PATH
+  //   agents/agent-status-running      — needs a live in-flight run (LLM)
+  //   agents/run-history-in-progress   — needs a live in-flight run (LLM)
+  //   agents/run-transcript-view       — needs a completed real run transcript (LLM)
+  //   approvals/revision-request-input — no such UI element exists in current code
+  //   adapters/health                  — no such route/view exists in current code
+  //   onboarding/goal-field            — wizard step not reliably locatable
+  //   dashboard/dashboard-overview-annotated — hand-annotated, must stay manual
 ];

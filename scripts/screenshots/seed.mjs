@@ -576,7 +576,124 @@ export default async function seed({ baseUrl = BASE_URL } = {}) {
     });
   }
 
-  // ── 14. Persist ids ─────────────────────────────────────────────────────────
+  // ── 14. Extended coverage entities ──────────────────────────────────────────
+  // These back the extra screenshot targets added in routes.mjs. All best-effort.
+
+  // 14a. A second, EMPTY company for empty-state shots (no agents/data).
+  let emptyPrefix = null;
+  await step("create empty company", async () => {
+    const all = asList(await get("/api/companies", baseUrl));
+    let empty = all.find((c) => c.name === "Newco Labs");
+    if (!empty) {
+      empty = await post("/api/companies", { name: "Newco Labs", description: "A brand-new, empty workspace." }, baseUrl);
+      console.log(`[seed] created empty company "Newco Labs" (${empty.id}), prefix=${empty.issuePrefix}`);
+    } else {
+      console.log(`[seed] reusing empty company (prefix=${empty.issuePrefix})`);
+    }
+    emptyPrefix = empty.issuePrefix;
+  });
+
+  // 14b. Budget-utilisation demo agents — seed cost events to 50% / 80% / 100%.
+  // Each gets budgetMonthlyCents=100000 ($1,000); spend is summed from cost events.
+  const budgetAgents = {
+    budgetHalfAgentId: { name: "Budget Demo (50%)", spend: 50_000, pause: false },
+    budgetWarnAgentId: { name: "Budget Demo (80%)", spend: 80_000, pause: false },
+    budgetMaxAgentId: { name: "Budget Demo (100%)", spend: 100_000, pause: true },
+  };
+  const budgetIds = { budgetHalfAgentId: null, budgetWarnAgentId: null, budgetMaxAgentId: null };
+  for (const [token, spec] of Object.entries(budgetAgents)) {
+    await step(`budget agent ${spec.name}`, async () => {
+      const existing = asList(await get(C("/agents"), baseUrl)).find((a) => a.name === spec.name);
+      let agent = existing;
+      if (!agent) {
+        agent = await post(
+          C("/agents"),
+          { name: spec.name, role: "general", adapterType: "process", adapterConfig: {}, budgetMonthlyCents: 100_000, reportsTo: managerAgentId ?? undefined },
+          baseUrl,
+        );
+      }
+      budgetIds[token] = agent.id;
+      if (!companyExisted) {
+        // One cost event sized to the target utilisation (current month).
+        await post(
+          C("/cost-events"),
+          { agentId: agent.id, provider: "anthropic", model: "claude-opus-4-8", costCents: spec.spend, occurredAt: new Date().toISOString(), biller: "Anthropic", billingType: "metered_api", inputTokens: 5000, outputTokens: 2000 },
+          baseUrl,
+        );
+        if (spec.pause) {
+          await api("PATCH", `/api/agents/${agent.id}`, { status: "paused" }, baseUrl);
+        }
+      }
+      console.log(`[seed] budget agent "${spec.name}" → ${agent.id} (${spec.spend / 1000} of $1000)`);
+    });
+  }
+
+  // 14c. An HTTP-adapter agent so the http config form is reachable.
+  let httpAgentId = null;
+  await step("create http-adapter agent", async () => {
+    const existing = asList(await get(C("/agents"), baseUrl)).find((a) => a.name === "Webhook Worker");
+    let agent = existing;
+    if (!agent) {
+      agent = await post(
+        C("/agents"),
+        { name: "Webhook Worker", role: "general", adapterType: "http", adapterConfig: {}, reportsTo: managerAgentId ?? undefined },
+        baseUrl,
+      );
+    }
+    httpAgentId = agent.id;
+    console.log(`[seed] http-adapter agent → ${agent.id}`);
+  });
+
+  // 14d. A company skill id (for the skill-detail / assign-to-agent shots).
+  let skillId = null;
+  await step("resolve a skill id", async () => {
+    const list = asList(await get(C("/skills"), baseUrl));
+    skillId = (list.find((s) => s.slug === "code-review") ?? list[0])?.id ?? null;
+  });
+
+  // 14e. Enable isolated workspaces so /workspaces renders (otherwise the page
+  // redirects to /issues). Endpoint: PATCH /api/instance/settings/experimental.
+  await step("enable isolated workspaces flag", async () => {
+    await api("PATCH", "/api/instance/settings/experimental", { enableIsolatedWorkspaces: true }, baseUrl);
+    console.log("[seed] enabled isolated workspaces");
+  });
+
+  // 14f. Approval items (fresh runs only — no natural key).
+  const approvalIds = { hireApprovalId: null, strategyApprovalId: null, boardApprovalId: null, approvedApprovalId: null };
+  if (!companyExisted) {
+    await step("seed approvals", async () => {
+      const hire = await post(C("/approvals"), {
+        type: "hire_agent",
+        payload: { name: "Aria Chen", role: "engineer", title: "Senior Engineer", icon: "code", adapterType: "claude_local", adapterConfig: {}, budgetMonthlyCents: 150_000, desiredSkills: [], capabilities: "Backend development, API design", agentId: null },
+      }, baseUrl);
+      approvalIds.hireApprovalId = hire?.id ?? null;
+
+      const strat = await post(C("/approvals"), {
+        type: "approve_ceo_strategy",
+        payload: { title: "Q3 Product Roadmap", plan: "Expand into the enterprise segment by shipping SSO and audit logs in Q3.", description: "Strategic pivot toward mid-market and enterprise accounts." },
+      }, baseUrl);
+      approvalIds.strategyApprovalId = strat?.id ?? null;
+
+      const board = await post(C("/approvals"), {
+        type: "request_board_approval",
+        payload: { title: "Vendor contract: cloud reserved instances", summary: "Commit to a 1-year reservation to cut infra cost ~35%.", recommendedAction: "Approve the $12,000 annual commitment" },
+      }, baseUrl);
+      approvalIds.boardApprovalId = board?.id ?? null;
+
+      // One more, then approve it, for the "approved" state.
+      const toApprove = await post(C("/approvals"), {
+        type: "request_board_approval",
+        payload: { title: "Increase log retention to 90 days", summary: "Improves debuggability for incident response." },
+      }, baseUrl);
+      if (toApprove?.id) {
+        await post(`/api/approvals/${toApprove.id}/approve`, {}, baseUrl);
+        approvalIds.approvedApprovalId = toApprove.id;
+      }
+      console.log("[seed] seeded approvals:", JSON.stringify(approvalIds));
+    });
+  }
+
+  // ── 15. Persist ids ─────────────────────────────────────────────────────────
   const ids = {
     companyPrefix,
     companyId,
@@ -587,6 +704,11 @@ export default async function seed({ baseUrl = BASE_URL } = {}) {
     routineId,
     issueId,
     workspaceId,
+    emptyPrefix,
+    httpAgentId,
+    skillId,
+    ...budgetIds,
+    ...approvalIds,
   };
 
   writeFileSync(SEED_IDS_PATH, JSON.stringify(ids, null, 2) + "\n", "utf-8");

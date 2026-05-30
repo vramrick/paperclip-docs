@@ -101,6 +101,58 @@ function themeInitScript(theme) {
 })();`;
 }
 
+// ── Interaction step engine ───────────────────────────────────────────────────
+
+/**
+ * Resolve a selector descriptor to a Playwright Locator.
+ * Supported keys (first match wins): testid, role+name, label, title,
+ * placeholder, text, css. Always `.first()` to avoid strict-mode violations.
+ *
+ * @param {import('@playwright/test').Page} page
+ * @param {object} sel
+ */
+function locate(page, sel) {
+  if (sel.testid) return page.getByTestId(sel.testid).first();
+  if (sel.role) return page.getByRole(sel.role, sel.name ? { name: sel.name } : {}).first();
+  if (sel.label) return page.getByLabel(sel.label).first();
+  if (sel.title) return page.getByTitle(sel.title).first();
+  if (sel.placeholder) return page.getByPlaceholder(sel.placeholder).first();
+  if (sel.text) return page.getByText(sel.text).first();
+  if (sel.css) return page.locator(sel.css).first();
+  throw new Error(`unknown selector: ${JSON.stringify(sel)}`);
+}
+
+/**
+ * Run a target's interaction steps. Every step is best-effort: a failing step
+ * is logged and skipped so we still screenshot whatever state was reached
+ * (a partial capture beats no capture, and surfaces selector drift in the log).
+ *
+ * Step shapes: { click }, { fill, value }, { waitFor }, { waitMs }, { press }.
+ *
+ * @param {import('@playwright/test').Page} page
+ * @param {Array<object>} steps
+ * @param {string} label
+ */
+async function runSteps(page, steps, label) {
+  for (const [i, stepObj] of steps.entries()) {
+    try {
+      if (stepObj.waitMs != null) {
+        await page.waitForTimeout(stepObj.waitMs);
+      } else if (stepObj.waitFor) {
+        await locate(page, stepObj.waitFor).waitFor({ state: "visible", timeout: 8_000 });
+      } else if (stepObj.click) {
+        await locate(page, stepObj.click).click({ timeout: 8_000 });
+      } else if (stepObj.fill) {
+        await locate(page, stepObj.fill).fill(String(stepObj.value ?? ""), { timeout: 8_000 });
+      } else if (stepObj.press) {
+        await page.keyboard.press(stepObj.press);
+      }
+    } catch (err) {
+      console.warn(`capture:   step ${i} of ${label} failed (continuing): ${err.message.split("\n")[0]}`);
+    }
+  }
+}
+
 // ── Core capture function ─────────────────────────────────────────────────────
 
 /**
@@ -208,7 +260,26 @@ export default async function capture(opts = {}) {
       const wait = target.wait ?? 1200;
       await page.waitForTimeout(wait);
 
-      await page.screenshot({ path: outPath });
+      // Optional interaction steps (open a dialog, switch a tab, fill a field…).
+      if (Array.isArray(target.steps) && target.steps.length) {
+        await runSteps(page, target.steps, target.name);
+        await page.waitForTimeout(target.postStepWait ?? 600);
+      }
+
+      // `clip` captures a single element (e.g. one dashboard panel) instead of
+      // the whole page. Falls back to a full-page shot if the element is missing.
+      let clipped = false;
+      if (target.clip) {
+        try {
+          await locate(page, target.clip).screenshot({ path: outPath, timeout: 8_000 });
+          clipped = true;
+        } catch (err) {
+          console.warn(`capture:   clip for ${target.name} failed, full page instead: ${err.message.split("\n")[0]}`);
+        }
+      }
+      if (!clipped) {
+        await page.screenshot({ path: outPath });
+      }
       console.log(`capture: ok [${theme}] ${target.name} → ${file}`);
       stampedFiles.add(file);
 
