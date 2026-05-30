@@ -62,6 +62,25 @@ const patch = (path, body, base) => api("PATCH", path, body, base);
 const asList = (v) => (Array.isArray(v) ? v : (v?.items ?? []));
 
 /**
+ * Benign process-adapter config used for the demo org. The screenshot instance
+ * runs with NO LLM provider configured, and the scheduler heartbeats every
+ * enabled agent. A `process` agent created with an empty adapterConfig has no
+ * command to run, so each heartbeat fails instantly and the agent renders with a
+ * red "error" status ("Ada failed after 1 second", dashboard "N errors") — which
+ * makes the captured UI look broken. Giving every demo agent a command that
+ * always exits 0 turns those heartbeats into clean, completed runs, so agents
+ * render as healthy idle/working with a tidy transcript instead of errors.
+ */
+const DEMO_AGENT_CONFIG = {
+  command: "sh",
+  args: [
+    "-c",
+    "echo 'Reviewing assigned work…'; echo 'Nothing actionable this cycle — standing by.'; echo 'Done.'",
+  ],
+  timeoutSec: 30,
+};
+
+/**
  * Run a labelled step, swallowing and logging errors so the seed continues.
  * Returns the callback's result, or `fallback` (default null) on failure.
  */
@@ -240,7 +259,7 @@ export default async function seed({ baseUrl = BASE_URL } = {}) {
           title: spec.title,
           icon: spec.icon,
           adapterType: "process",
-          adapterConfig: {},
+          adapterConfig: DEMO_AGENT_CONFIG,
           budgetMonthlyCents: spec.budgetMonthlyCents,
           ...(spec.manager ? {} : managerId ? { reportsTo: managerId } : {}),
           ...(spec.desiredSkills.length ? { desiredSkills: spec.desiredSkills } : {}),
@@ -608,7 +627,7 @@ export default async function seed({ baseUrl = BASE_URL } = {}) {
       if (!agent) {
         agent = await post(
           C("/agents"),
-          { name: spec.name, role: "general", adapterType: "process", adapterConfig: {}, budgetMonthlyCents: 100_000, reportsTo: managerAgentId ?? undefined },
+          { name: spec.name, role: "general", adapterType: "process", adapterConfig: DEMO_AGENT_CONFIG, budgetMonthlyCents: 100_000, reportsTo: managerAgentId ?? undefined },
           baseUrl,
         );
       }
