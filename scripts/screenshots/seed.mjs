@@ -693,6 +693,85 @@ export default async function seed({ baseUrl = BASE_URL } = {}) {
     });
   }
 
+  // 14g. Process-adapter "runner" agents — execute a real shell command (no LLM)
+  // so we get genuine run rows, a transcript, a running status, and a passing
+  // environment test. The process adapter runs `command` + `args` directly.
+  let runnerAgentId = null;
+  let runnerRunId = null;
+  let longRunnerAgentId = null;
+
+  await step("create + run a process agent (completed run → transcript)", async () => {
+    const existing = asList(await get(C("/agents"), baseUrl)).find((a) => a.name === "Task Runner");
+    let agent = existing;
+    if (!agent) {
+      agent = await post(
+        C("/agents"),
+        {
+          name: "Task Runner",
+          role: "engineer",
+          title: "Automation",
+          icon: "terminal",
+          adapterType: "process",
+          adapterConfig: {
+            command: "sh",
+            args: ["-c", "echo 'Analyzing repository...'; echo 'Applying changes to src/app.ts'; echo 'Running tests — 42 passed'; echo 'Done.'"],
+            timeoutSec: 30,
+          },
+          reportsTo: managerAgentId ?? undefined,
+        },
+        baseUrl,
+      );
+    }
+    runnerAgentId = agent.id;
+    if (!companyExisted) {
+      const run = await post(`/api/agents/${agent.id}/wakeup`, { source: "on_demand", triggerDetail: "manual" }, baseUrl);
+      runnerRunId = run?.id ?? run?.heartbeatRun?.id ?? run?.run?.id ?? null;
+      console.log(`[seed] Task Runner run → ${runnerRunId}`);
+    } else {
+      // Reuse the most recent completed run if present.
+      const runs = asList(await step("list runner runs", () => get(`/api/agents/${agent.id}/runs`, baseUrl), []));
+      runnerRunId = runs[0]?.id ?? null;
+    }
+  });
+
+  // Give the short run a moment to execute and complete before we capture it.
+  if (runnerRunId && !companyExisted) {
+    await new Promise((r) => setTimeout(r, 4000));
+  }
+
+  await step("create a long-running process agent (running status)", async () => {
+    const existing = asList(await get(C("/agents"), baseUrl)).find((a) => a.name === "Live Task");
+    let agent = existing;
+    if (!agent) {
+      agent = await post(
+        C("/agents"),
+        {
+          name: "Live Task",
+          role: "engineer",
+          title: "Long Job",
+          icon: "cpu",
+          adapterType: "process",
+          adapterConfig: {
+            // Long enough to outlast the full capture phase so the run is still
+            // in-flight (status "running", an in-progress run row) when capture
+            // reaches the run/status targets near the end of the list.
+            command: "sh",
+            args: ["-c", "echo 'Starting long task...'; sleep 3600; echo done"],
+            timeoutSec: 4200,
+          },
+          reportsTo: managerAgentId ?? undefined,
+        },
+        baseUrl,
+      );
+    }
+    longRunnerAgentId = agent.id;
+    // Kick it off LAST so it is still running throughout the capture phase.
+    if (!companyExisted) {
+      await post(`/api/agents/${agent.id}/wakeup`, { source: "on_demand", triggerDetail: "manual" }, baseUrl);
+      console.log("[seed] Live Task wakeup triggered (stays running during capture)");
+    }
+  });
+
   // ── 15. Persist ids ─────────────────────────────────────────────────────────
   const ids = {
     companyPrefix,
@@ -707,6 +786,9 @@ export default async function seed({ baseUrl = BASE_URL } = {}) {
     emptyPrefix,
     httpAgentId,
     skillId,
+    runnerAgentId,
+    runnerRunId,
+    longRunnerAgentId,
     ...budgetIds,
     ...approvalIds,
   };

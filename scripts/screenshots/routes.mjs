@@ -44,6 +44,9 @@ const ID_TOKENS = [
   "strategyApprovalId", // a pending approve_ceo_strategy approval
   "boardApprovalId", // a pending request_board_approval
   "approvedApprovalId", // an already-approved approval
+  "runnerAgentId", // process agent with a completed run (transcript)
+  "runnerRunId", // that run's id
+  "longRunnerAgentId", // process agent left running during capture
 ];
 
 /**
@@ -648,18 +651,49 @@ export const CAPTURE_TARGETS = [
   { name: "approvals/strategy-approval-detail", route: "/{prefix}/approvals/{strategyApprovalId}", dependsOn: ["ui/src/components/ApprovalPayload.tsx", "ui/src/pages/ApprovalDetail.tsx"] },
   { name: "approvals/approved-approval", route: "/{prefix}/approvals/{approvedApprovalId}?resolved=approved", dependsOn: ["ui/src/pages/ApprovalDetail.tsx"] },
 
+  // ── Real process-adapter runs (no LLM — the process adapter runs a shell cmd) ─
+  { name: "agents/run-transcript-view", route: "/{prefix}/agents/{runnerAgentId}/runs/{runnerRunId}", dependsOn: ["ui/src/components/transcript/RunTranscriptView.tsx", "ui/src/pages/AgentDetail.tsx"], wait: 1500 },
+  { name: "agents/run-history-in-progress", route: "/{prefix}/agents/{longRunnerAgentId}/runs", dependsOn: ["ui/src/pages/AgentDetail.tsx"], wait: 1500 },
+  { name: "agents/agent-status-running", route: "/{prefix}/agents/{longRunnerAgentId}", dependsOn: ["ui/src/pages/AgentDetail.tsx"], wait: 1500 },
+  {
+    name: "agents/test-environment-success",
+    route: "/{prefix}/agents/{runnerAgentId}/configuration",
+    dependsOn: ["ui/src/components/AgentConfigForm.tsx"],
+    steps: [{ click: { role: "button", name: "Test" } }, { waitFor: { text: /Passed|pass|healthy|ok/i } }, { waitMs: 800 }],
+    wait: 1500,
+  },
+
+  // ── Approval revision (the detail page's note/comment box) ──────────────────
+  {
+    name: "approvals/revision-request-input",
+    route: "/{prefix}/approvals/{strategyApprovalId}",
+    dependsOn: ["ui/src/pages/ApprovalDetail.tsx"],
+    steps: [{ click: { css: "textarea" } }, { waitMs: 400 }],
+  },
+
+  // ── Adapter "health" — the adapter rows (type · package · N models) ─────────
+  { name: "adapters/health", route: "/instance/settings/adapters", dependsOn: ["ui/src/pages/AdapterManager.tsx"] },
+
+  // ── Onboarding goal field (wizard step 1) ───────────────────────────────────
+  {
+    name: "onboarding/goal-field",
+    route: "/{prefix}/dashboard",
+    dependsOn: ["ui/src/components/OnboardingWizard.tsx"],
+    steps: [
+      { click: { role: "button", name: /workspace switcher/i } },
+      { waitMs: 400 },
+      { click: { role: "menuitem", name: /Add company/i } },
+      { waitMs: 900 },
+      { fill: { placeholder: "Acme Corp" }, value: "Acme Robotics" },
+      { waitMs: 400 },
+    ],
+  },
+
   // ── CLI auth & board claim ─────────────────────────────────────────────────
-  // These require dynamic IDs generated at demo time. The tokens are not in
-  // seed-ids.json (they are ephemeral CLI interactions) — capture is skipped
-  // when the IDs are absent from the seed file.
+  // These require dynamic IDs generated at demo time and are not in seed-ids.json
+  // (ephemeral CLI interactions) — capture is skipped when the IDs are absent.
   //
-  // ── Inherently NOT auto-capturable in an offline instance (left manual) ─────
-  //   agents/test-environment-success  — needs a real adapter CLI binary on PATH
-  //   agents/agent-status-running      — needs a live in-flight run (LLM)
-  //   agents/run-history-in-progress   — needs a live in-flight run (LLM)
-  //   agents/run-transcript-view       — needs a completed real run transcript (LLM)
-  //   approvals/revision-request-input — no such UI element exists in current code
-  //   adapters/health                  — no such route/view exists in current code
-  //   onboarding/goal-field            — wizard step not reliably locatable
-  //   dashboard/dashboard-overview-annotated — hand-annotated, must stay manual
+  // ── Left manual on purpose ──────────────────────────────────────────────────
+  //   dashboard/dashboard-overview-annotated — hand-annotated; the doc page is
+  //     re-pointed to the freshly captured dashboard/dashboard-overview instead.
 ];
