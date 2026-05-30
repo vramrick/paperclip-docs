@@ -53,11 +53,12 @@
       "file": "dark/adapters/health.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/instance/settings/adapters",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/AdapterManager.tsx"
+      ]
     },
     {
       "file": "dark/adapters/install.png",
@@ -118,11 +119,12 @@
       "file": "dark/agents/agent-status-running.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{longRunnerAgentId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/AgentDetail.tsx"
+      ]
     },
     {
       "file": "dark/agents/agents-list-empty.png",
@@ -294,21 +296,24 @@
       "file": "dark/agents/run-history-in-progress.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{longRunnerAgentId}/runs",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/AgentDetail.tsx"
+      ]
     },
     {
       "file": "dark/agents/run-transcript-view.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{runnerAgentId}/runs/{runnerRunId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/transcript/RunTranscriptView.tsx",
+        "ui/src/pages/AgentDetail.tsx"
+      ]
     },
     {
       "file": "dark/agents/runs.png",
@@ -347,11 +352,12 @@
       "file": "dark/agents/test-environment-success.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{runnerAgentId}/configuration",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "dark/approvals/approvals-list.png",
@@ -437,11 +443,12 @@
       "file": "dark/approvals/revision-request-input.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/{strategyApprovalId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/ApprovalDetail.tsx"
+      ]
     },
     {
       "file": "dark/approvals/strategy-approval-detail.png",
@@ -924,11 +931,12 @@
       "file": "dark/onboarding/goal-field.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/OnboardingWizard.tsx"
+      ]
     },
     {
       "file": "dark/onboarding/new-company-modal-empty.png",
@@ -1541,11 +1549,12 @@
       "file": "light/adapters/health.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/instance/settings/adapters",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/AdapterManager.tsx"
+      ]
     },
     {
       "file": "light/adapters/install.png",
@@ -1606,11 +1615,12 @@
       "file": "light/agents/agent-status-running.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{longRunnerAgentId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/AgentDetail.tsx"
+      ]
     },
     {
       "file": "light/agents/agents-list-empty.png",
@@ -1782,21 +1792,24 @@
       "file": "light/agents/run-history-in-progress.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{longRunnerAgentId}/runs",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/AgentDetail.tsx"
+      ]
     },
     {
       "file": "light/agents/run-transcript-view.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{runnerAgentId}/runs/{runnerRunId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/transcript/RunTranscriptView.tsx",
+        "ui/src/pages/AgentDetail.tsx"
+      ]
     },
     {
       "file": "light/agents/runs.png",
@@ -1835,11 +1848,12 @@
       "file": "light/agents/test-environment-success.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/agents/{runnerAgentId}/configuration",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/AgentConfigForm.tsx"
+      ]
     },
     {
       "file": "light/approvals/approvals-list.png",
@@ -1925,11 +1939,12 @@
       "file": "light/approvals/revision-request-input.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/approvals/{strategyApprovalId}",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/ApprovalDetail.tsx"
+      ]
     },
     {
       "file": "light/approvals/strategy-approval-detail.png",
@@ -2412,11 +2427,12 @@
       "file": "light/onboarding/goal-field.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": null,
-      "captured_against": null,
-      "captured_sha": null,
-      "depends_on": [],
-      "_todo": "Fill in `route` (URL path captured) and `depends_on` (parent-repo paths whose changes invalidate this screenshot). Until depends_on is populated, staleness detection is a no-op for this entry."
+      "route": "/ACME/dashboard",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/components/OnboardingWizard.tsx"
+      ]
     },
     {
       "file": "light/onboarding/new-company-modal-empty.png",
