@@ -112,7 +112,7 @@ Every screenshot used in docs should have an entry in `docs/user-guides/screensh
 }
 ```
 
-`depends_on` lists parent-repo paths whose changes likely invalidate this screenshot. The `/sync-docs` skill diffs those paths across each run window and writes any stale entries to `SCREENSHOTS_PENDING.md`. Capture is currently manual — see the [sync workflow](#sync-workflow) below.
+`depends_on` lists parent-repo paths whose changes likely invalidate this screenshot. The `/sync-docs` skill diffs those paths across each run window and writes any stale entries to `SCREENSHOTS_PENDING.md`. Recapture stale (or all) screenshots via the pipeline described in [`scripts/screenshots/README.md`](../scripts/screenshots/README.md).
 
 ## Per-article feedback links
 
@@ -382,7 +382,19 @@ If you spot a typo or broken example on `main` (released docs), fix it on `main`
 
 ### Screenshots in the sync flow
 
-The skill **flags** stale screenshots based on `registry.json` `depends_on` paths but does **not** capture them. When `SCREENSHOTS_PENDING.md` lists stale entries, capture light + dark variants manually and update `captured_against` + `captured_sha` in `registry.json`. Playwright-based automated capture may come later — it requires a reproducible seeded demo state in the parent repo.
+The skill **flags** stale screenshots based on `registry.json` `depends_on` paths and writes them to `SCREENSHOTS_PENDING.md`. Capture is now handled by the built-in screenshot pipeline — see [`scripts/screenshots/README.md`](../scripts/screenshots/README.md) for prerequisites and full details.
+
+Two commands cover the common cases:
+
+```sh
+# Recapture stale (or all) screenshots against a fresh seeded instance
+npm run screenshots:refresh
+
+# Recapture every screenshot after a major UI/UX redesign
+npm run screenshots:refresh:all
+```
+
+Both commands spin up an isolated `local_trusted` Paperclip instance on loopback, seed it with demo data, capture light + dark variants at 1440×900 @2x via Playwright, and stamp `captured_sha` / `captured_against` in `registry.json`. The output PNGs go into a PR for human review — never auto-pushed.
 
 See [Runbook → First-time setup](runbook.md#first-time-setup) for installing the skill locally and seeding `.sync-state.json`. See [Runbook → Helper scripts (full list)](runbook.md#helper-scripts-full-list) for every `sync:*` script with example invocations.
 
