@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.529.0
+---
+
 # Installation
 
 There are three ways to install Paperclip. Choose the one that fits how you work:

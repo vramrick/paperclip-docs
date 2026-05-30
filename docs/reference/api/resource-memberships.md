@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.529.0
+---
+
 # Resource Memberships
 
 Resource memberships are how a signed-in board user curates their own sidebar. Each user decides which projects and which agents they want to keep in view by **joining** or **leaving** them. Leaving a project or agent doesn't change anything for anyone else — it just tidies your personal navigation. By default everything is treated as joined until you choose to leave it.

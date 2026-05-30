@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.529.0
+---
+
 # Projects
 
 A project is the container Paperclip uses to group related work. If goals answer "why are we doing this?" and issues answer "what exactly needs doing?", projects sit in between: they bind a body of work to a concrete place — a repository, a working directory, a budget envelope, a set of execution workspaces — where agents can actually pick up tasks and make progress.

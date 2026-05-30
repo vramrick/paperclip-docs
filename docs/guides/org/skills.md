@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.529.0
+---
+
 # Skills
 
 When you want an agent to follow a specific procedure — a code review checklist, a deployment runbook, a customer response template — you could put those instructions in the agent's main configuration. But if you want multiple agents to use the same procedure, or want to keep agent configurations lean and focused, that's where skills come in.

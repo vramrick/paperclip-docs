@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.529.0
+---
+
 # Skills Reference
 
 This is the reference for company skills: the file shape on disk, the install pipeline, how skills are attached to agents, scoping rules, the canonical key form, versioning, and troubleshooting.

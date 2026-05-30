@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.529.0
+---
+
 # Control-Plane Commands
 
 Use these commands when Paperclip is already running and you want to operate a company from the terminal instead of the UI.

@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.513.0
+paperclip_version: v2026.529.0
 ---
 
 # Plugins
