@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.529.0
+---
+
 # Installation
 
 There are three ways to install Paperclip. Choose the one that fits how you work:
@@ -476,7 +480,7 @@ Common errors:
 
 - **Hosted PostgreSQL** — set `DATABASE_URL=postgres://...` in `~/paperclip.env` before onboarding. Use the pooled connection (port 6543 on Supabase) for the app and the direct connection for migrations. See [Database deployment](../../reference/deploy/database.md).
 - **Object storage** — set `PAPERCLIP_STORAGE_MODE=s3` plus the relevant S3 env vars. See [Storage deployment](../../reference/deploy/storage.md).
-- **Private team server over Tailscale** instead of a public domain — skip Nginx/Certbot and use `PAPERCLIP_DEPLOYMENT_EXPOSURE=private` with `PAPERCLIP_BIND=tailnet`. See [Tailscale private access](../../reference/deploy/tailscale-private-access.md).
+- **Private team server over Tailscale** instead of a public domain — skip Nginx/Certbot and use `PAPERCLIP_DEPLOYMENT_EXPOSURE=private` with `PAPERCLIP_BIND=tailnet`. See [Tailscale private access](../../reference/deploy/tailscale-private-access.md). On a private, authenticated instance you can also skip the CLI invite for the first user: the very first person to sign in from a browser can claim themselves as the instance admin straight from the UI — whoever clicks first wins, and everyone else is locked out of the claim. See [Claim first instance admin](../../reference/api/instance-admin.md#claim-first-instance-admin) for the details.
 - **Docker instead of bare metal** — a production-ready image and Compose file ship in the repo. See [Docker deployment](../../reference/deploy/docker.md).
 
 ---

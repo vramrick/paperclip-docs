@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.529.0
+---
+
 # Workspaces
 
 When an agent picks up a task that involves working with code or files, it needs a place to do that work — a folder with the right code checked out at the right state, ready for the agent to read, edit, and run. That's what an execution workspace is: a snapshot of a project's working directory, tied to a specific task run.
@@ -39,6 +43,20 @@ This is useful when tasks are closely related and need to coordinate on the same
 
 **Project primary workspace**
 The task runs in the project's primary checkout, not an isolated copy. Use this carefully — changes made here affect the shared working copy directly.
+
+---
+
+## How Paperclip keeps reused workspaces consistent
+
+Reusing a workspace is convenient, but it raises a fair question: what happens when two different agents — with two different intended environments — land in the same workspace? Paperclip closes that gap so a reused workspace never quietly drifts.
+
+- **No silent environment reuse.** Each task run has an intended environment, resolved in this order: an environment set explicitly on the issue always wins; otherwise the project's workspace-policy environment applies; otherwise the agent's own default environment; and the instance default is the final fallback. (An agent deliberately pinned to the local default is never promoted off it by a project policy — only an explicit issue-level environment can move it.) When a run reuses a workspace whose environment doesn't match the run's intended one, Paperclip treats that as a conflict to surface rather than silently inheriting whatever the previous occupant left behind.
+- **Dependent issues wait for finalize.** When an issue depends on another, its wake no longer fires before the upstream workspace has finished finalizing. The dependent task only starts once the workspace it relies on is in a consistent, settled state — so it never reads a half-written checkout.
+- **Accepting an interaction waits too.** Accepting a plan or review (`issue.interaction.accept`) now waits for the workspace to finalize before it proceeds, for the same reason.
+
+You don't configure any of this — it's part of how isolated and reused workspaces behave. The practical effect is simply that dependent work and reused workspaces see consistent state, every time.
+
+> **Note:** Execution workspaces are local working copies. Paperclip does not push them to a remote git host on your behalf — finished work is reviewed and merged through Paperclip, not through a `git push` from inside the workspace.
 
 ---
 
