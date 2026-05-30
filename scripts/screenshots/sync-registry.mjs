@@ -73,8 +73,11 @@ async function main() {
     }
 
     updated++;
+    // Route + depends_on are now populated, so the scaffolder's "_todo" note no
+    // longer applies — drop it to keep the registry clean.
+    const { _todo, ...rest } = entry;
     return {
-      ...entry,
+      ...rest,
       route: match.route,
       depends_on: match.depends_on,
     };

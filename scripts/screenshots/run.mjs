@@ -103,10 +103,15 @@ async function main() {
 
   async function cleanup() {
     if (server) {
-      server.kill("SIGTERM");
-      // Give it a moment then force-kill.
+      // `pnpm paperclipai onboard --run` spawns child processes (the actual
+      // server, embedded-postgres). Killing only the pnpm parent leaves those
+      // orphaned and holding the port. We spawn the server `detached` so it
+      // gets its own process group, then signal the whole group via -pid.
+      const pid = server.pid;
+      try { process.kill(-pid, "SIGTERM"); } catch { try { server.kill("SIGTERM"); } catch {} }
+      // Give it a moment then force-kill the group.
       await new Promise((r) => setTimeout(r, 2_000));
-      try { server.kill("SIGKILL"); } catch {}
+      try { process.kill(-pid, "SIGKILL"); } catch { try { server.kill("SIGKILL"); } catch {} }
       server = null;
     }
     if (!keepScratch) {
@@ -125,6 +130,16 @@ async function main() {
   process.on("SIGINT", async () => { await cleanup(); process.exit(130); });
   process.on("SIGTERM", async () => { await cleanup(); process.exit(143); });
 
+  // ── 1b. Start from a clean instance ──────────────────────────────────────
+  // Wipe any leftover scratch home (e.g. from a prior `--keep` run) so onboard
+  // builds a fresh database and the seed runs from scratch — otherwise a reused
+  // company makes the seed skip its one-shot steps (comments, invites, events).
+  try {
+    await rm(home, { recursive: true, force: true });
+  } catch (err) {
+    console.warn("run: could not pre-clean scratch home:", err.message);
+  }
+
   // ── 2. Spawn the onboard server ──────────────────────────────────────────
   console.log("run: starting Paperclip onboard server…");
   console.log("run:   cwd =", PARENT_REPO);
@@ -134,6 +149,8 @@ async function main() {
     cwd: PARENT_REPO,
     env,
     stdio: "pipe",
+    // Own process group so cleanup() can signal the whole tree (see below).
+    detached: true,
   });
 
   server.stdout.on("data", (d) => process.stdout.write(`[server] ${d}`));
