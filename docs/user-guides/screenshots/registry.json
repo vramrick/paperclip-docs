@@ -874,6 +874,17 @@
       ]
     },
     {
+      "file": "dark/issues/inbox-unread.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": "/ACME/inbox/unread",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Inbox.tsx"
+      ]
+    },
+    {
       "file": "dark/issues/inbox.png",
       "theme": "dark",
       "viewport": "1440x900",
@@ -2363,6 +2374,17 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/inbox/requests",
+      "captured_against": "HEAD",
+      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "depends_on": [
+        "ui/src/pages/Inbox.tsx"
+      ]
+    },
+    {
+      "file": "light/issues/inbox-unread.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": "/ACME/inbox/unread",
       "captured_against": "HEAD",
       "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
       "depends_on": [

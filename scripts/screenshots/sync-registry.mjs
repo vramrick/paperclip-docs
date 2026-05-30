@@ -33,6 +33,7 @@ function buildLookup() {
       // Substitute the static prefix token only; leave id tokens as-is.
       const routeTemplate = target.route.replaceAll("{prefix}", COMPANY_PREFIX);
       map.set(fileKey, {
+        theme,
         route: routeTemplate,
         depends_on: target.dependsOn ?? [],
       });
@@ -65,6 +66,8 @@ async function main() {
   let updated = 0;
   let skipped = 0;
 
+  const present = new Set(registry.entries.map((e) => e.file));
+
   registry.entries = registry.entries.map((entry) => {
     const match = lookup.get(entry.file);
     if (!match) {
@@ -83,9 +86,30 @@ async function main() {
     };
   });
 
+  // Self-index: append entries for any CAPTURE_TARGET file that has no registry
+  // entry yet. Without this a newly-added target would be captured but never
+  // tracked for staleness — the /sync-docs skill only flags entries it can see.
+  let added = 0;
+  for (const [file, match] of lookup) {
+    if (present.has(file)) continue;
+    registry.entries.push({
+      file,
+      theme: match.theme,
+      viewport: registry.viewports?.default ?? "1440x900",
+      route: match.route,
+      captured_against: null,
+      captured_sha: null,
+      depends_on: match.depends_on,
+    });
+    added++;
+  }
+
+  // Keep the file deterministic and easy to diff.
+  registry.entries.sort((a, b) => a.file.localeCompare(b.file));
+
   await writeFile(REGISTRY_PATH, JSON.stringify(registry, null, 2) + "\n", "utf8");
   console.log(
-    `sync-registry: updated ${updated} entries, skipped ${skipped} (no matching target).`,
+    `sync-registry: updated ${updated}, added ${added}, skipped ${skipped} (no matching target).`,
   );
 }
 
