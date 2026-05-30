@@ -52,6 +52,27 @@ export const PARENT_REPO = resolve(
 
 // ── Isolation helpers ────────────────────────────────────────────────────────
 
+const PASSTHROUGH_ENV_KEYS = [
+  "PATH",
+  "Path",
+  "SystemRoot",
+  "COMSPEC",
+  "WINDIR",
+  "TMPDIR",
+  "TMP",
+  "TEMP",
+  "LANG",
+  "LC_ALL",
+  "LC_CTYPE",
+  "TERM",
+  "CI",
+  "USER",
+  "LOGNAME",
+  "SHELL",
+  "PNPM_HOME",
+  "COREPACK_HOME",
+];
+
 /**
  * Returns a scratch home directory path under os.tmpdir().
  * Used as PAPERCLIP_HOME so the real ~/.paperclip is never touched.
@@ -68,8 +89,17 @@ export function scratchHome() {
  * @returns {Record<string, string>}
  */
 export function instanceEnv(home) {
-  const env = {
-    ...process.env,
+  const env = {};
+  for (const key of PASSTHROUGH_ENV_KEYS) {
+    if (process.env[key] !== undefined) env[key] = process.env[key];
+  }
+
+  return {
+    ...env,
+    HOME: home,
+    XDG_CONFIG_HOME: resolve(home, ".config"),
+    XDG_CACHE_HOME: resolve(home, ".cache"),
+    XDG_DATA_HOME: resolve(home, ".local", "share"),
     PORT: String(PORT),
     PAPERCLIP_HOME: home,
     PAPERCLIP_INSTANCE_ID: "docs-screenshots",
@@ -77,10 +107,4 @@ export function instanceEnv(home) {
     PAPERCLIP_DEPLOYMENT_MODE: "local_trusted",
     PAPERCLIP_DEPLOYMENT_EXPOSURE: "private",
   };
-
-  // Never forward a real database URL — local_trusted mode uses its own SQLite.
-  delete env.DATABASE_URL;
-  delete env.DATABASE_MIGRATION_URL;
-
-  return env;
 }

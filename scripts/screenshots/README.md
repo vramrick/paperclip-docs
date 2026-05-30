@@ -19,7 +19,7 @@ npm run screenshots:refresh
 
 What happens under the hood:
 
-1. **Isolated instance.** `run.mjs` spawns `pnpm paperclipai onboard --yes --run` inside the parent repo with a throw-away `PAPERCLIP_HOME` under `os.tmpdir()`, `PORT=3197`, `PAPERCLIP_BIND=loopback`, `PAPERCLIP_DEPLOYMENT_MODE=local_trusted`, and `PAPERCLIP_DEPLOYMENT_EXPOSURE=private`. `DATABASE_URL` / `DATABASE_MIGRATION_URL` are unset so the instance uses its own ephemeral database, never your real one.
+1. **Isolated instance.** `run.mjs` spawns `pnpm paperclipai onboard --yes --run` inside the parent repo with a throw-away `HOME` / `PAPERCLIP_HOME` under `os.tmpdir()`, `PORT=3197`, `PAPERCLIP_BIND=loopback`, `PAPERCLIP_DEPLOYMENT_MODE=local_trusted`, and `PAPERCLIP_DEPLOYMENT_EXPOSURE=private`. The child process receives only a small allowlist of runtime environment variables, so real database URLs, provider keys, and GitHub tokens are not forwarded.
 2. **Health check.** Polls `http://127.0.0.1:3197/api/health` until 200 (up to 120 s).
 3. **Seed.** `seed.mjs` creates a minimal demo company ("Acme Robotics") plus a manager agent, a regular agent, a project, a goal, a routine, an issue, and a workspace. The company's `issuePrefix` is auto-derived server-side (first three uppercase letters of the name → `ACM`) and cannot be set via REST, so the real prefix is captured and written to `.seed-ids.json` alongside the entity IDs (gitignored). `routes.mjs` reads `companyPrefix` from there, so routes always resolve to whatever the server assigned. Idempotent — re-running looks up the existing company first.
 4. **Sync registry.** `sync-registry.mjs` merges route and `depends_on` metadata from `CAPTURE_TARGETS` into `registry.json` without overwriting other fields.

@@ -11,6 +11,7 @@ import { join, dirname, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { isPathInside, parseFrontmatter } from "../../site/build-release.mjs";
+import { instanceEnv } from "../screenshots/config.mjs";
 
 const SELF_DIR = dirname(fileURLToPath(import.meta.url));
 const SCRIPTS = {
@@ -964,6 +965,35 @@ test("build-release: path containment rejects sibling docs-prefixed directories"
   assert(isPathInside(parent, resolve("/tmp/repo/docs/guide/page.md")), "normal child path should be inside");
   assert(!isPathInside(parent, resolve("/tmp/repo/docs-evil/page.md")), "docs-evil sibling must not be inside docs");
   assert(!isPathInside(parent, resolve("/tmp/repo/docs/../outside.md")), "parent traversal must not be inside docs");
+});
+
+test("screenshots: instance env does not forward host credentials", () => {
+  const original = {
+    DATABASE_URL: process.env.DATABASE_URL,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    GITHUB_TOKEN: process.env.GITHUB_TOKEN,
+    HOME: process.env.HOME,
+  };
+  try {
+    process.env.DATABASE_URL = "postgres://real-db";
+    process.env.OPENAI_API_KEY = "sk-real-provider-key";
+    process.env.GITHUB_TOKEN = "ghp_real-token";
+    process.env.HOME = "/Users/real-home";
+
+    const home = resolve(tmpdir(), "paperclip-docs-test-home");
+    const env = instanceEnv(home);
+
+    assert(env.HOME === home, `HOME should point at scratch home, got ${env.HOME}`);
+    assert(env.PAPERCLIP_HOME === home, `PAPERCLIP_HOME should point at scratch home, got ${env.PAPERCLIP_HOME}`);
+    assert(!("DATABASE_URL" in env), "DATABASE_URL must not be forwarded");
+    assert(!("OPENAI_API_KEY" in env), "OPENAI_API_KEY must not be forwarded");
+    assert(!("GITHUB_TOKEN" in env), "GITHUB_TOKEN must not be forwarded");
+  } finally {
+    for (const [key, value] of Object.entries(original)) {
+      if (value === undefined) delete process.env[key];
+      else process.env[key] = value;
+    }
+  }
 });
 
 // ----------------------------------------------------------------------------
