@@ -74,7 +74,20 @@
         "docs/how-to/write-a-company-skill.md"
       ],
       "tier": "pr",
-      "detect": "Any file under skills/** in parent — these are canonical skill bundles. New top-level dir under skills/ = candidate new skill bundle (consult scripts/sync/detect-renames.mjs to confirm it's not a rename of an existing bundle before creating a new doc entry); mention in the skills reference. Changes inside an existing bundle = update the tutorial or reference as appropriate. The plugin SDK is a separate concern — see the plugin-sdk watcher."
+      "detect": "Any file under skills/** in parent — these are canonical skill bundles. New top-level dir under skills/ = candidate new skill bundle (consult scripts/sync/detect-renames.mjs to confirm it's not a rename of an existing bundle before creating a new doc entry); mention in the skills reference. Changes inside an existing bundle = update the tutorial or reference as appropriate. The plugin SDK is a separate concern — see the plugin-sdk watcher. The app-shipped skills catalog is a separate concern — see the skills-catalog watcher."
+    },
+    {
+      "name": "skills-catalog",
+      "parent_paths": [
+        "packages/skills-catalog/catalog/**/SKILL.md",
+        "packages/skills-catalog/generated/catalog.json"
+      ],
+      "docs_paths": [
+        "docs/reference/skills.md",
+        "docs/guides/org/skills.md"
+      ],
+      "tier": "pr",
+      "detect": "The app-shipped skills catalog — installable bundled/optional skills, distinct from the server-forced bundled skills under skills/** (covered by the agent-skills watcher). Skill bundles live at packages/skills-catalog/catalog/{bundled,optional}/<category>/<skill>/SKILL.md; packages/skills-catalog/generated/catalog.json is the generated manifest of catalog membership and metadata. A new SKILL.md under catalog/ = candidate new catalog skill — consult scripts/sync/detect-renames.mjs before treating a moved bundle as brand-new. Document new or changed catalog skills in the Skills reference (app-shipped catalog section) and the org Skills guide. catalog.json churn alone (reorder/regen) without a SKILL.md change is usually context-only."
     },
     {
       "name": "schemas",
