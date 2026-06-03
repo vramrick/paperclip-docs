@@ -105,6 +105,20 @@ Community examples in [`paperclipai/companies`](https://github.com/paperclipai/c
 
 These are the canonical references for the file shape, frontmatter style, and supporting-file layout.
 
+### Artifact upload in the bundled `paperclip` skill
+
+The bundled `paperclip` skill ships an artifact-upload helper so that work products end up on the issue, not stranded in the agent's workspace. Its **Generated Artifacts and Work Products** section in `SKILL.md` tells the agent that whenever a run produces a user-inspectable file, it should upload that file to the current issue before final disposition — a local filesystem path is useless to board users, reviewers, and cloud operators who can't reach the agent workspace.
+
+The skill bundles a helper script at `scripts/paperclip-upload-artifact.sh` (relative to the installed skill directory) and a reference doc at `references/artifacts.md`. The helper takes a file path plus `--title` and `--summary` flags:
+
+```bash
+scripts/paperclip-upload-artifact.sh path/to/output.webm \
+  --title "Walkthrough render" \
+  --summary "Rendered walkthrough for review"
+```
+
+It reads the run's environment — `PAPERCLIP_API_URL`, `PAPERCLIP_API_KEY`, `PAPERCLIP_COMPANY_ID`, `PAPERCLIP_TASK_ID`, and `PAPERCLIP_RUN_ID` — then uploads the file as an issue attachment, creates an attachment-backed artifact work product (the default), and prints issue-safe markdown links the agent can drop into its final comment. The underlying upload route is the attachment endpoint documented under [Issues API → Attachments](./api/issues.md#attachments).
+
 ---
 
 ## 2. Installation pipeline
