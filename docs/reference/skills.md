@@ -201,8 +201,10 @@ Catalog skills are split into two **kinds** (`CatalogSkillKind`):
 
 | Kind | Meaning | Examples |
 |---|---|---|
-| `bundled` | Core skills the app considers part of the baseline kit. | `doc-maintenance`, `issue-triage`, `task-planning`, `qa-acceptance`, `github-pr-workflow` |
+| `bundled` | Core skills the app considers part of the baseline kit. | `doc-maintenance`, `issue-triage`, `task-planning`, `qa-acceptance`, `github-pr-workflow`, `wireframe` |
 | `optional` | Extra skills you opt into when you need them. | `agent-browser`, `release-announcement`, `design-critique` |
+
+Each catalog skill also carries a `category` you can filter on. Most of the baseline kit is coding- and process-oriented, but the catalog is not limited to engineering work — for example, the `product`-category **`wireframe`** skill teaches an agent to produce low-fidelity, black-and-white UI wireframes as standalone SVG files (recommended for `designer`, `product`, and `engineer` roles). A bundled skill is not the same as a *required* one: `wireframe` ships in the baseline kit but installs only when you choose it (its `defaultInstall` is `false`), so designers and product folks can pull it in without it being forced on every agent.
 
 Once installed, a catalog skill becomes an ordinary company-skill row, but it is tagged as **catalog-managed**: its `sourceType` is `catalog` and its `metadata.sourceKind` is `catalog`. The catalog kind (`bundled` / `optional`) is carried through on `metadata.catalogKind`, and the byte-exact origin it was pinned to is stored in `metadata.originHash`.
 
@@ -295,7 +297,7 @@ POST /api/companies/{companyId}/skills/{skillId}/reset
 
 Reset restores a catalog-managed skill to the byte-exact origin it was installed from — useful when a skill was edited locally and you want the shipped version back. Reset is only supported for catalog-managed skills.
 
-For the equivalent `paperclipai skills` CLI commands (browse, install, audit, update, reset), see [Control-plane commands](./cli/control-plane-commands.md) and the [CLI command reference](./cli/commands.md).
+For the equivalent `paperclipai skills` CLI commands (browse, install, audit, update, reset), see the [Skills commands](./cli/skills.md) page in the CLI reference.
 
 ---
 

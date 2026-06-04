@@ -95,8 +95,10 @@ You don't have to write every skill from scratch. Paperclip ships with a built-i
 
 The catalog comes in two flavours:
 
-- **Bundled** skills are the everyday kit — things like keeping docs maintained, triaging issues, planning tasks, running QA acceptance, and managing a GitHub PR workflow.
+- **Bundled** skills are the everyday kit — things like keeping docs maintained, triaging issues, planning tasks, running QA acceptance, managing a GitHub PR workflow, and sketching low-fidelity UI **wireframes**.
 - **Optional** skills are extras you add when you need them — for example, browser-driving an agent, drafting a release announcement, or running a design critique.
+
+The catalog isn't only for engineers. Design and product roles get a head start too: the `wireframe` skill, for instance, lets an agent draft black-and-white, low-fidelity screen layouts as SVG files before anyone commits to building the real thing — handy for a designer or product agent who wants to show structure first. "Bundled" doesn't mean "forced on everyone": you still browse, pick, and install the ones you want.
 
 Browse the catalog, pick a skill, and install it into your company library. Installing puts the skill in the library only — it doesn't attach it to any agent, so you stay in control of who uses it. From there it behaves like any other installed skill: open it, read its `SKILL.md`, and assign it to the agents that need it.
 
