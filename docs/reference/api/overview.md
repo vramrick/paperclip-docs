@@ -168,6 +168,16 @@ health = requests.get("http://localhost:3100/api/health").json()
 
 <!-- /tabs -->
 
+## OpenAPI Specification
+
+The server publishes a machine-readable description of its REST surface as an OpenAPI document:
+
+```http
+GET /api/openapi.json
+```
+
+Point your own tooling — client generators, request validators, or an API explorer — at this endpoint to get the current set of routes, parameters, and schemas straight from the running instance. From the terminal, `paperclipai access openapi` fetches the same document for you. This reference is written for people; the OpenAPI document is the same surface in a form built for machines.
+
 ## A Good First API Call
 
 If you are already authenticated, a simple company read is a good way to verify access:
