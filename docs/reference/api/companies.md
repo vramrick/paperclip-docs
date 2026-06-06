@@ -344,7 +344,7 @@ POST /api/companies/{companyId}/archive
 DELETE /api/companies/{companyId}
 ```
 
-Archiving changes the company status to `archived` and removes it from default listings. Deleting removes the company and its related data. Deletion is destructive and should be treated as irreversible.
+Archiving changes the company status to `archived` and removes it from default listings. It also runs a cascade that pauses every active agent in the company (pause reason `company_archived`) and cancels their queued or in-flight wake-up requests, so an archived company stops doing background work. Deleting removes the company and its related data. Deletion is destructive and should be treated as irreversible.
 
 ---
 
