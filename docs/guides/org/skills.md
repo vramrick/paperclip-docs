@@ -96,9 +96,11 @@ You don't have to write every skill from scratch. Paperclip ships with a built-i
 The catalog comes in two flavours:
 
 - **Bundled** skills are the everyday kit — things like keeping docs maintained, triaging issues, planning tasks, running QA acceptance, managing a GitHub PR workflow, and sketching low-fidelity UI **wireframes**.
-- **Optional** skills are extras you add when you need them — for example, browser-driving an agent, drafting a release announcement, or running a design critique.
+- **Optional** skills are extras you add when you need them — for example, browser-driving an agent, drafting a release announcement, running a design critique, or researching what people have said about a topic in the last 30 days.
 
-The catalog isn't only for engineers. Design and product roles get a head start too: the `wireframe` skill, for instance, lets an agent draft black-and-white, low-fidelity screen layouts as SVG files before anyone commits to building the real thing — handy for a designer or product agent who wants to show structure first. "Bundled" doesn't mean "forced on everyone": you still browse, pick, and install the ones you want.
+The catalog isn't only for engineers. Design, product, and research roles get a head start too: the `wireframe` skill, for instance, lets an agent draft black-and-white, low-fidelity screen layouts as SVG files before anyone commits to building the real thing — handy for a designer or product agent who wants to show structure first — and the `last30days` skill pulls recent posts and engagement from across the web so a researcher or marketer can see what people are actually saying about a topic right now. "Bundled" doesn't mean "forced on everyone": you still browse, pick, and install the ones you want.
+
+A few catalog skills aren't shipped inside the app at all — they're pulled from an external repository pinned to a specific version. You install and update them the same way; Paperclip just fetches the files on your behalf. Either way the app knows the exact version you have, so the keep-it-current, audit, and reset features below work for every catalog skill.
 
 Browse the catalog, pick a skill, and install it into your company library. Installing puts the skill in the library only — it doesn't attach it to any agent, so you stay in control of who uses it. From there it behaves like any other installed skill: open it, read its `SKILL.md`, and assign it to the agents that need it.
 
