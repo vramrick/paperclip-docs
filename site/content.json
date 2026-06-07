@@ -55,6 +55,10 @@
           "file": "../docs/guides/day-to-day/issues.md"
         },
         {
+          "title": "Artifacts",
+          "file": "../docs/guides/day-to-day/artifacts.md"
+        },
+        {
           "title": "Blocked Inbox",
           "file": "../docs/guides/day-to-day/blocked-inbox.md"
         },
@@ -89,6 +93,10 @@
         {
           "title": "Skills",
           "file": "../docs/guides/org/skills.md"
+        },
+        {
+          "title": "Team Catalog",
+          "file": "../docs/guides/org/team-catalog.md"
         },
         {
           "title": "Org Structure",
@@ -241,6 +249,10 @@
         {
           "title": "Settings",
           "file": "../docs/administration/settings.md"
+        },
+        {
+          "title": "Trust & Low-Trust Review",
+          "file": "../docs/administration/trust-and-low-trust-review.md"
         },
         {
           "title": "Plugins",
@@ -421,6 +433,10 @@
         {
           "title": "Skills",
           "file": "../docs/reference/cli/skills.md"
+        },
+        {
+          "title": "Teams",
+          "file": "../docs/reference/cli/teams.md"
         },
         {
           "title": "Secrets",
