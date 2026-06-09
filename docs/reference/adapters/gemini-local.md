@@ -17,6 +17,8 @@
 - You only need a command runner or script. Use [Process](./process.md).
 - Gemini CLI is not installed or cannot reach the target working directory.
 
+> **Running in Docker?** The official Paperclip image pre-bundles the Gemini CLI alongside the other local CLIs, so `gemini_local` works in-container without a manual install. The image also sets `GEMINI_SANDBOX=false` for safe in-container use. You still need to supply credentials — see [Docker](../deploy/docker.md).
+
 ---
 
 ## Common Fields
