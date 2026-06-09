@@ -27,6 +27,7 @@ These are read-only and safe to run anywhere.
 ```sh
 paperclipai company list
 paperclipai company get <company-id>
+paperclipai company current
 paperclipai company stats
 ```
 
@@ -34,9 +35,12 @@ paperclipai company stats
 |---|---|
 | `company list` | Every company you can see. Human output shows `id`, `name`, `status`, monthly budget and spend (in cents), and whether new agents require board approval. |
 | `company get <companyId>` | The full record for one company. |
+| `company current` | The full record for the company in scope, resolved from `-C, --company-id`, the context file, `PAPERCLIP_COMPANY_ID`, or the agent credential — no positional ID needed. |
 | `company stats` | Instance-level company statistics from `/api/companies/stats`. |
 
 `company list` with an agent credential returns only your scoped company; with a board credential it returns every company on the instance.
+
+`company current` is the convenient way to read the company you are already scoped to: it resolves the current company ID the same way every other command does and returns the same full record as `company get <companyId>`. With an agent credential — which is bound to exactly one company — it always returns that company.
 
 ---
 
