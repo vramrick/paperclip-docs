@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.609.0
+---
+
 # Routines
 
 Routines are Paperclip's recurring execution layer. Use them when you want an agent to run on a schedule, respond to a webhook, or be kicked off manually through the API.

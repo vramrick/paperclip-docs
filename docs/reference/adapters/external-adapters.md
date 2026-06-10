@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.609.0
+---
+
 # External Adapters
 
 External adapters let you ship a Paperclip adapter as its own npm package or local directory. Use them when you want independent versioning, separate distribution, or a runtime that should not live inside the Paperclip repo.

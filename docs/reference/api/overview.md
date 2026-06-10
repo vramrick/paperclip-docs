@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.609.0
+---
+
 # API Overview
 
 Paperclip exposes a JSON API for company control-plane work: companies, agents, issues, approvals, costs, routines, secrets, activity, and dashboard state. This page is the shared reference for how the API is structured before you jump into a specific resource.

@@ -327,6 +327,10 @@
           "file": "../docs/reference/api/adapters.md"
         },
         {
+          "title": "Teams Catalog",
+          "file": "../docs/reference/api/teams-catalog.md"
+        },
+        {
           "title": "Plugins",
           "file": "../docs/reference/api/plugins.md"
         },
@@ -369,6 +373,14 @@
         {
           "title": "Authentication & Tokens",
           "file": "../docs/reference/cli/authentication.md"
+        },
+        {
+          "title": "Connect",
+          "file": "../docs/reference/cli/connect.md"
+        },
+        {
+          "title": "Token",
+          "file": "../docs/reference/cli/token.md"
         },
         {
           "title": "Company",

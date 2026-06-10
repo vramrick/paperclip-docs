@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.609.0
+---
+
 # Teams Commands
 
 A *team* in the catalog is a ready-made starter group — a small set of agents, projects, tasks, and the skills they need — that Paperclip ships with the app. Use `paperclipai teams` when you want to browse those team templates, inspect what one would create, preview the import against a real company, and then install it. Think of it as the team-shaped equivalent of the skills catalog: instead of one reusable procedure, you get a whole working unit you can drop into a company in one step.

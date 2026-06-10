@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.525.0
+paperclip_version: v2026.609.0
 ---
 
 # Sync a local company to a Paperclip Cloud upstream

@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.609.0
+---
+
 # Docker
 
 Use Docker when you want a self-contained Paperclip instance without installing Node or pnpm on the host machine.

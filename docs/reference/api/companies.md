@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.609.0
+---
+
 # Companies
 
 Companies are the top-level tenant boundary in Paperclip. Every agent, project, issue, approval, cost event, and asset belongs to exactly one company, and the API enforces that boundary on every company-scoped route.

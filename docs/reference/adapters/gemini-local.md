@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.609.0
+---
+
 # Gemini Local
 
 `gemini_local` runs Google's Gemini CLI on the same machine as Paperclip. Use it when you want a local agent with session resume, configurable sandboxing, and Paperclip skills injected into Gemini's skills directory.

@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.609.0
+---
+
 # Team Catalog
 
 Setting up a company from an empty page is a lot of decisions: which agents to hire, who reports to whom, what projects to open, what recurring work to schedule, and which skills each agent needs. The **Team Catalog** skips that blank-page problem. It's a set of ready-made starter teams — small, working groups of agents, projects, tasks, and skills — that you can browse and install into a company in one step.

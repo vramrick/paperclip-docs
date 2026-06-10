@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.609.0
+---
+
 # Company Administration
 
 Every Paperclip company has a small cluster of surfaces that control its identity, its membership, and its portability. These pages are where you, as a board user (or a member with the right grants), set the company's name and logo, decide who else can sign in, hand out invite links, review join requests, and move the whole company in and out of a portable package. The CEO agent never touches most of this — it is deliberately human territory.

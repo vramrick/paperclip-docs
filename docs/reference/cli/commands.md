@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.609.0
+---
+
 # Command Reference
 
 > **This page has moved.** The single-page command reference has been split into one page per command family. Start at the [CLI Overview](./overview.md) for the full reference map, or jump straight to a command family:

@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.609.0
+---
+
 # Trust & Low-Trust Review
 
 Some work in a Paperclip company is born from input you cannot vouch for: an untrusted pull request, an external ticket, a dependency diff, or output an agent generated from any of those. The goal of trust presets is simple — keep that kind of work *contained* while it runs, and make sure nothing it produces is silently fed into a more trusted agent before a human (or a trusted reviewer) has looked at it.
