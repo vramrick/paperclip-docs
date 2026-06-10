@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.529.0
+paperclip_version: v2026.609.0
 ---
 
 # Skills Reference
@@ -105,6 +105,20 @@ Community examples in [`paperclipai/companies`](https://github.com/paperclipai/c
 
 These are the canonical references for the file shape, frontmatter style, and supporting-file layout.
 
+### Artifact upload in the bundled `paperclip` skill
+
+The bundled `paperclip` skill ships an artifact-upload helper so that work products end up on the issue, not stranded in the agent's workspace. Its **Generated Artifacts and Work Products** section in `SKILL.md` tells the agent that whenever a run produces a user-inspectable file, it should upload that file to the current issue before final disposition — a local filesystem path is useless to board users, reviewers, and cloud operators who can't reach the agent workspace.
+
+The skill bundles a helper script at `scripts/paperclip-upload-artifact.sh` (relative to the installed skill directory) and a reference doc at `references/artifacts.md`. The helper takes a file path plus `--title` and `--summary` flags:
+
+```bash
+scripts/paperclip-upload-artifact.sh path/to/output.webm \
+  --title "Walkthrough render" \
+  --summary "Rendered walkthrough for review"
+```
+
+It reads the run's environment — `PAPERCLIP_API_URL`, `PAPERCLIP_API_KEY`, `PAPERCLIP_COMPANY_ID`, `PAPERCLIP_TASK_ID`, and `PAPERCLIP_RUN_ID` — then uploads the file as an issue attachment, creates an attachment-backed artifact work product (the default), and prints issue-safe markdown links the agent can drop into its final comment. The underlying upload route is the attachment endpoint documented under [Issues API → Attachments](./api/issues.md#attachments).
+
 ---
 
 ## 2. Installation pipeline
@@ -187,8 +201,12 @@ Catalog skills are split into two **kinds** (`CatalogSkillKind`):
 
 | Kind | Meaning | Examples |
 |---|---|---|
-| `bundled` | Core skills the app considers part of the baseline kit. | `doc-maintenance`, `issue-triage`, `task-planning`, `qa-acceptance`, `github-pr-workflow` |
-| `optional` | Extra skills you opt into when you need them. | `agent-browser`, `release-announcement`, `design-critique` |
+| `bundled` | Core skills the app considers part of the baseline kit. | `doc-maintenance`, `issue-triage`, `task-planning`, `qa-acceptance`, `github-pr-workflow`, `wireframe` |
+| `optional` | Extra skills you opt into when you need them. | `agent-browser`, `release-announcement`, `design-critique`, `last30days` |
+
+Each catalog skill also carries a `category` you can filter on. Most of the baseline kit is coding- and process-oriented, but the catalog is not limited to engineering work — for example, the `product`-category **`wireframe`** skill teaches an agent to produce low-fidelity, black-and-white UI wireframes as standalone SVG files (recommended for `designer`, `product`, and `engineer` roles), and the `research`-category **`last30days`** skill (recommended for `researcher`, `marketer`, `product-manager`, and `analyst` roles) researches what people have said about a topic across Reddit, X, YouTube, and the rest of the web in the last 30 days. A bundled skill is not the same as a *required* one: `wireframe` ships in the baseline kit but installs only when you choose it (its `defaultInstall` is `false`), so designers and product folks can pull it in without it being forced on every agent.
+
+**Where a catalog skill's bytes come from.** Most catalog skills are shipped inside the app itself. A few are **referenced** instead — they point at an external GitHub repository pinned to a single commit, and the app fetches their files for you. `last30days`, for example, is sourced from `github.com/mvanhorn/last30days-skill` at a pinned commit. You install and manage a referenced skill exactly like any other catalog skill; the only difference is that its `source` field tells you where it originally came from (owner, repo, the `ref`/`commit` it is pinned to, and a browseable `url`). Because the pin is a specific commit, you still get the same byte-exact, version-tracked guarantees as a fully bundled skill.
 
 Once installed, a catalog skill becomes an ordinary company-skill row, but it is tagged as **catalog-managed**: its `sourceType` is `catalog` and its `metadata.sourceKind` is `catalog`. The catalog kind (`bundled` / `optional`) is carried through on `metadata.catalogKind`, and the byte-exact origin it was pinned to is stored in `metadata.originHash`.
 
@@ -210,7 +228,7 @@ The list route accepts three optional query filters:
 - `category` — exact-match on the skill's category.
 - `q` — free-text query matched against the skill's id, key, slug, name, description, category, kind, recommended roles, and tags.
 
-Each catalog entry (`CatalogSkill`) carries `id`, `key`, `kind`, `category`, `slug`, `name`, `description`, `trustLevel`, `compatibility`, `defaultInstall`, `recommendedForRoles`, `requires`, `tags`, a `files[]` inventory (each with `path`, `kind`, `sizeBytes`, `sha256`), and a `contentHash` — the byte-exact identity of the shipped skill.
+Each catalog entry (`CatalogSkill`) carries `id`, `key`, `kind`, `category`, `slug`, `name`, `description`, `trustLevel`, `compatibility`, `defaultInstall`, `recommendedForRoles`, `requires`, `tags`, a `files[]` inventory (each with `path`, `kind`, `sizeBytes`, `sha256`), and a `contentHash` — the byte-exact identity of the shipped skill. Referenced skills (the ones fetched from an external repo) also carry an optional `source` object describing where the bytes came from: `type` (`github`), `hostname`, `owner`, `repo`, the `ref` and `commit` it is pinned to, the `path` inside the repo, and a browseable `url`.
 
 The files route returns one file at a time. By default it reads `SKILL.md`; pass `?path=references/example.md` to read another file in the inventory. Asset files are not previewable.
 
@@ -281,7 +299,7 @@ POST /api/companies/{companyId}/skills/{skillId}/reset
 
 Reset restores a catalog-managed skill to the byte-exact origin it was installed from — useful when a skill was edited locally and you want the shipped version back. Reset is only supported for catalog-managed skills.
 
-For the equivalent `paperclipai skills` CLI commands (browse, install, audit, update, reset), see [Control-plane commands](./cli/control-plane-commands.md) and the [CLI command reference](./cli/commands.md).
+For the equivalent `paperclipai skills` CLI commands (browse, install, audit, update, reset), see the [Skills commands](./cli/skills.md) page in the CLI reference.
 
 ---
 

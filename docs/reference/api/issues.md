@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.529.0
+paperclip_version: v2026.609.0
 ---
 
 # Issues
@@ -17,7 +17,7 @@ Issue APIs are company-aware. In practice that means:
 - List and create operations are scoped to `/api/companies/{companyId}/issues`.
 - Single-issue routes use `/api/issues/{issueId}`.
 - Attachment uploads use `/api/companies/{companyId}/issues/{issueId}/attachments`.
-- Attachment downloads use `/api/attachments/{attachmentId}/content`.
+- Attachment downloads use `/api/attachments/{attachmentId}/content`, which supports inline preview, forced download (`?download=1`), and HTTP Range requests.
 
 On issue-scoped routes, `{issueId}` can be either:
 
@@ -843,7 +843,11 @@ Attachments are file uploads linked to an issue, and optionally to a specific is
 GET /api/issues/{issueId}/attachments
 ```
 
-Return all attachments for an issue. Each item includes a `contentPath` that points to the binary download route.
+Return all attachments for an issue. Each item carries three path fields pointing at the binary content route:
+
+- `contentPath` — `/api/attachments/{attachmentId}/content`. The raw content route.
+- `openPath` — same value as `contentPath`. Use it to open or preview the attachment inline.
+- `downloadPath` — `/api/attachments/{attachmentId}/content?download=1`. Use it to force a download.
 
 ### Upload Attachment
 
@@ -864,7 +868,12 @@ Upload rules:
 - Empty files are rejected.
 - Files larger than the server limit are rejected.
 - `issueCommentId` must belong to the same company and issue.
-- The stored response includes `contentPath` for download.
+- The content type must be in the allowed-uploads set.
+- The stored response includes `contentPath`, `openPath`, and `downloadPath`.
+
+The default allowed upload types are images, PDF, plain text, JSON, CSV, HTML, `application/zip`, and the video types `video/mp4`, `video/webm`, and `video/quicktime`. Video types are also treated as inline-renderable. Override the allowlist with the `PAPERCLIP_ALLOWED_ATTACHMENT_TYPES` environment variable — a comma-separated list of MIME types or wildcard patterns.
+
+When a file is uploaded with a generic content type (`application/octet-stream`, `binary/octet-stream`, or `application/x-binary`), the server infers a video content type from the filename extension when streaming it back: `.mp4`/`.m4v` → `video/mp4`, `.webm` → `video/webm`, and `.mov`/`.qt`/`.quicktime` → `video/quicktime`.
 
 ### Download Attachment Content
 
@@ -874,7 +883,17 @@ GET /api/attachments/{attachmentId}/content
 
 Stream the attachment bytes.
 
-The server sets the response headers for inline display or download depending on content type, and SVG content gets a sandboxed content security policy.
+By default the server sets `Content-Disposition` for inline display when the content type is inline-capable (images, PDF, video, and similar), and otherwise serves it as a download. SVG content gets a sandboxed content security policy.
+
+Query parameters:
+
+- `download=1` — force `Content-Disposition: attachment` so the response is always saved as a download instead of rendered inline.
+
+This route supports HTTP Range requests so large media such as video can stream and seek:
+
+- The response sets `Accept-Ranges: bytes`.
+- A valid `Range: bytes=...` request returns `206 Partial Content` with a `Content-Range` header.
+- An unsatisfiable range returns `416 Range Not Satisfiable` with `Content-Range: bytes */{length}`.
 
 ### Delete Attachment
 

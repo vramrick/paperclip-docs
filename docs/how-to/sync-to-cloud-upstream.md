@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.525.0
+paperclip_version: v2026.609.0
 ---
 
 # Sync a local company to a Paperclip Cloud upstream
@@ -170,6 +170,6 @@ Follow `targetUrl` to land on the run inside the cloud stack and confirm the act
 
 ## See also
 
-- [Cloud commands in the CLI reference](../reference/cli/commands.md#cloud) — every flag for `paperclipai cloud connect` and `paperclipai cloud push`.
+- [Cloud commands in the CLI reference](../reference/cli/cloud.md) — every flag for `paperclipai cloud connect` and `paperclipai cloud push`.
 - [Back up and restore a company](./back-up-and-restore-a-company.md) — the local portability export that the cloud push wraps.
 - [Glossary](../guides/welcome/glossary.md) — definitions for company, agent, routine, monitor.

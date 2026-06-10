@@ -55,6 +55,10 @@
           "file": "../docs/guides/day-to-day/issues.md"
         },
         {
+          "title": "Artifacts",
+          "file": "../docs/guides/day-to-day/artifacts.md"
+        },
+        {
           "title": "Blocked Inbox",
           "file": "../docs/guides/day-to-day/blocked-inbox.md"
         },
@@ -89,6 +93,10 @@
         {
           "title": "Skills",
           "file": "../docs/guides/org/skills.md"
+        },
+        {
+          "title": "Team Catalog",
+          "file": "../docs/guides/org/team-catalog.md"
         },
         {
           "title": "Org Structure",
@@ -243,6 +251,10 @@
           "file": "../docs/administration/settings.md"
         },
         {
+          "title": "Trust & Low-Trust Review",
+          "file": "../docs/administration/trust-and-low-trust-review.md"
+        },
+        {
           "title": "Plugins",
           "file": "../docs/administration/plugins.md"
         },
@@ -315,6 +327,10 @@
           "file": "../docs/reference/api/adapters.md"
         },
         {
+          "title": "Teams Catalog",
+          "file": "../docs/reference/api/teams-catalog.md"
+        },
+        {
           "title": "Plugins",
           "file": "../docs/reference/api/plugins.md"
         },
@@ -328,23 +344,131 @@
       "tier": "Reference",
       "title": "CLI",
       "icon": "terminal",
-      "desc": "Command-line reference for local setup and talking to the control plane.",
+      "desc": "Complete command-line reference: local setup, identity, and every control-plane command family.",
       "pages": [
         {
           "title": "Overview",
           "file": "../docs/reference/cli/overview.md"
         },
         {
+          "title": "Installing the CLI",
+          "file": "../docs/reference/cli/installation.md"
+        },
+        {
+          "title": "Common Options",
+          "file": "../docs/reference/cli/common-options.md"
+        },
+        {
+          "title": "Output & Scripting",
+          "file": "../docs/reference/cli/output-and-scripting.md"
+        },
+        {
           "title": "Setup Commands",
           "file": "../docs/reference/cli/setup-commands.md"
         },
         {
-          "title": "Control-Plane Commands",
-          "file": "../docs/reference/cli/control-plane-commands.md"
+          "title": "Dev Environments",
+          "file": "../docs/reference/cli/dev-environments.md"
         },
         {
-          "title": "Command Reference",
-          "file": "../docs/reference/cli/commands.md"
+          "title": "Authentication & Tokens",
+          "file": "../docs/reference/cli/authentication.md"
+        },
+        {
+          "title": "Connect",
+          "file": "../docs/reference/cli/connect.md"
+        },
+        {
+          "title": "Token",
+          "file": "../docs/reference/cli/token.md"
+        },
+        {
+          "title": "Company",
+          "file": "../docs/reference/cli/company.md"
+        },
+        {
+          "title": "Project",
+          "file": "../docs/reference/cli/project.md"
+        },
+        {
+          "title": "Goal",
+          "file": "../docs/reference/cli/goal.md"
+        },
+        {
+          "title": "Issue",
+          "file": "../docs/reference/cli/issue.md"
+        },
+        {
+          "title": "Agent",
+          "file": "../docs/reference/cli/agent.md"
+        },
+        {
+          "title": "Prompt",
+          "file": "../docs/reference/cli/prompt.md"
+        },
+        {
+          "title": "Run (Heartbeat)",
+          "file": "../docs/reference/cli/run.md"
+        },
+        {
+          "title": "Routine",
+          "file": "../docs/reference/cli/routine.md"
+        },
+        {
+          "title": "Adapter",
+          "file": "../docs/reference/cli/adapter.md"
+        },
+        {
+          "title": "Approval",
+          "file": "../docs/reference/cli/approval.md"
+        },
+        {
+          "title": "Activity",
+          "file": "../docs/reference/cli/activity.md"
+        },
+        {
+          "title": "Dashboard",
+          "file": "../docs/reference/cli/dashboard.md"
+        },
+        {
+          "title": "Cost & Budget",
+          "file": "../docs/reference/cli/cost.md"
+        },
+        {
+          "title": "Workspace",
+          "file": "../docs/reference/cli/workspace.md"
+        },
+        {
+          "title": "Access & Admin",
+          "file": "../docs/reference/cli/access.md"
+        },
+        {
+          "title": "Skills",
+          "file": "../docs/reference/cli/skills.md"
+        },
+        {
+          "title": "Teams",
+          "file": "../docs/reference/cli/teams.md"
+        },
+        {
+          "title": "Secrets",
+          "file": "../docs/reference/cli/secrets.md"
+        },
+        {
+          "title": "Cloud",
+          "file": "../docs/reference/cli/cloud.md"
+        },
+        {
+          "title": "Plugin",
+          "file": "../docs/reference/cli/plugin.md"
+        },
+        {
+          "title": "Asset",
+          "file": "../docs/reference/cli/asset.md"
+        },
+        {
+          "title": "Feedback",
+          "file": "../docs/reference/cli/feedback.md"
         }
       ]
     },

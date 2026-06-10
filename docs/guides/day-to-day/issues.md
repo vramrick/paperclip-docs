@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.529.0
+paperclip_version: v2026.609.0
 ---
 
 # Issues
@@ -318,7 +318,16 @@ The sidebar exposes the following fields, in order:
 Above the tabs, separately from the Properties panel, the detail view also renders:
 
 - An **Issue Workspace card** that summarises the issue's project and its execution workspace binding — the same underlying concept the Workspace / Branch / Folder rows describe, but surfaced as a single card so it is visible even when the sidebar is collapsed.
-- An **Attachments** section. Images appear as thumbnails that open in a gallery modal; non-image attachments render as file rows with their content type and size. You can upload from the detail view when no attachments exist yet, and from an inline button otherwise.
+- An **Attachments** section. Images appear as thumbnails that open in a gallery modal; video attachments play back inline in a built-in player; non-image attachments render as file rows with their content type and size. Each attachment offers two actions: **open** previews it inline (images in the gallery, video in the player), while **download** saves the file to disk. Supported media includes images, PDF, text, CSV, JSON, video (mp4, webm, mov/quicktime), and zip archives. You can upload from the detail view when no attachments exist yet, and from an inline button otherwise.
+
+### Output
+
+When an agent finishes a piece of work, it can hand back the result directly on the issue. The **Output** section surfaces those deliverables — the work products the agent produced — so you can inspect them right on the board without ever opening the agent's workspace.
+
+- **Video deliverables play inline.** A recorded result plays back in a built-in player; you can play and seek without downloading anything first.
+- **File deliverables show as preview cards.** Each one renders as a rich preview, with the primary deliverable highlighted when the agent flags one as the main result.
+
+This is what makes review possible from anywhere — including for cloud reviewers who have no access to the agent's workspace. You watch or inspect the deliverable in the Output section, then comment or approve from the same issue, without leaving the board.
 
 ### Keyed documents
 
