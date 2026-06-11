@@ -19,7 +19,7 @@ Workspaces are an **experimental** feature, so the **Workspaces** screen is hidd
 1. Go to **Instance settings → Experimental**.
 2. Turn on **Enable Isolated Workspaces**.
 
-Once it's on, a **Workspaces** item appears in the sidebar and a **Workspaces** tab shows up on each project. With the setting off, the sidebar item isn't shown and visiting `/workspaces` directly just sends you back to your issues.
+Once it's on, a **Workspaces** item appears in the sidebar, and a **Workspaces** tab appears on any project that has workspace activity. With the setting off, the sidebar item isn't shown and visiting `/workspaces` directly just sends you back to your issues.
 
 > **Note:** This is the single switch that exposes all the workspace UI described in this guide — execution-workspace controls in project configuration, the Workspaces screen, and the per-issue workspace mode picker. If you're not using isolated workspaces, leaving it off keeps that UI out of your way.
 
@@ -29,7 +29,7 @@ The most common surprise is opening **Workspaces** for the first time and findin
 
 - **You don't create workspaces here.** There's no "New workspace" button. Execution workspaces are **provisioned automatically** the first time an agent picks up a task that needs one (see the next section). The Workspaces screen is for *inspecting and managing* what already exists — not for creating anything by hand.
 - **It stays empty until work happens.** If no agent has run an isolated task yet, you'll see **"No workspace activity yet."** That's not a bug — there's genuinely nothing to show. Assign a task to an agent, let it run in an isolated workspace, and the workspace will appear here on its own.
-- **A project only shows up once it has something to show.** A project's primary workspace surfaces when it has a working directory and runtime configuration; isolated execution workspaces surface once a task has run against them. A freshly created project with none of that configured won't list anything yet.
+- **A project only shows up once it has something to show.** A project's primary workspace surfaces as soon as the project has one set; other (non-primary) project workspaces surface once they have runtime services or config; and isolated execution workspaces surface once a task has run against them. A freshly created project with none of that won't list anything yet — and its **Workspaces** tab stays hidden until it does.
 
 So if the screen looks bare, the fix is usually "run a task," not "find the hidden create button" — there isn't one.
 
@@ -140,21 +140,21 @@ You'll want to pay closer attention when:
 There are two places to see your workspaces, and they show the same data from different angles:
 
 - **The Workspaces sidebar item** opens the company-wide view. It's grouped by project, so you see every project that has workspace activity, each with its workspaces underneath. Projects with running services float to the top.
-- **A project's Workspaces tab** (open a project, click **Workspaces**) is the same list scoped to that one project.
+- **A project's Workspaces tab** (open a project, click **Workspaces**) is the same list scoped to that one project. It only appears once that project has workspace activity.
 
-Either way, you'll see the project's primary workspace and any isolated execution workspaces Paperclip has provisioned. Remember the surfacing rules from earlier: a primary workspace appears once it has a working directory and runtime config, and an execution workspace appears once a task has run against it. If a project has neither yet, it simply won't be listed — the company-wide view shows **"No workspace activity yet."** and a project's own tab shows **"No non-default workspace activity yet."**
+Either way, you'll see the project's primary workspace and any isolated execution workspaces Paperclip has provisioned. If nothing has been provisioned yet, the company-wide view shows **"No workspace activity yet."**
 
 ![The company-wide Workspaces screen, grouped by project: the Website project's isolated execution workspace (with a running service and a linked task) above its primary "main" workspace](../../user-guides/screenshots/light/workspaces/list.png)
 
-Each entry shows:
+Each workspace appears as a card showing:
 
-- The workspace **name** (and the issue it was originally provisioned for, if any)
-- The **mode** — isolated, reuse, or project primary
-- Its runtime **services** and whether any are running (a live link is offered when a service exposes a URL)
-- The **status** — active, archived, or cleanup_failed
-- When it was last updated
+- Its **kind** — *Execution workspace* or *Project workspace*
+- The workspace **name**, with its **branch** and **path**
+- Running **services** (for example, `1/1 services`) and a live link when a service exposes a URL
+- For an execution workspace, its **status** (active, idle, in review, archived, or cleanup failed) and a **Close workspace** / **Retry close** control
+- The **linked tasks** that have run against it, and when it was last updated
 
-Click a workspace name to open its detail screen. From there, you can inspect and edit its configuration, control its runtime services, review its operation logs, and see every task that has run against it.
+If a workspace has runtime config, the card also gives you a **Start services** / **Stop services** button right there. Click the workspace name to open its detail screen, where you can inspect and edit its configuration, control its runtime services, review its operation logs, and see every task that has run against it.
 
 The header of the detail screen shows the workspace name with quick start/stop/restart controls for its services on the right. Below the header, the detail screen is split into tabs:
 
@@ -164,7 +164,7 @@ The header of the detail screen shows the workspace name with quick start/stop/r
 4. **Runtime logs** — history of runtime and cleanup operations
 5. **Routines** — routines that use workspace-specific variables, which you can run against this workspace
 
-Installed plugins can add their own tabs after these. The tabs remember your last selection per workspace, so if you always land on Runtime logs for a specific workspace, Paperclip keeps taking you there.
+Installed plugins can add their own tabs alongside these (for example, a workspace-diff plugin contributes a **Changes** tab). The tabs remember your last selection per workspace, so if you always land on Runtime logs for a specific workspace, Paperclip keeps taking you there.
 
 ---
 
