@@ -38,6 +38,7 @@
 
 import { writeFileSync } from "node:fs";
 import { BASE_URL, COMPANY_NAME, SEED_IDS_PATH } from "./config.mjs";
+import { seedExecutionWorkspace } from "./seed-execution-workspace.mjs";
 
 // ── HTTP helpers ────────────────────────────────────────────────────────────
 
@@ -791,6 +792,32 @@ export default async function seed({ baseUrl = BASE_URL } = {}) {
     }
   });
 
+  // ── 14f. Execution workspace (direct DB insert) ─────────────────────────────
+  // Execution workspaces have no public create endpoint — they're provisioned by
+  // a real agent heartbeat. For screenshots we insert a realistic one directly so
+  // the execution-workspace detail tabs render instead of "Loading workspace…".
+  let executionWorkspaceId = null;
+  if (projectId && issueId) {
+    try {
+      const linkedIssueIds = [
+        issueId,
+        issues["Fix flaky integration test"]?.id,
+        issues["Add dark mode to the portal"]?.id,
+      ].filter(Boolean);
+      const result = await seedExecutionWorkspace({
+        companyId,
+        projectId,
+        projectWorkspaceId: workspaceId,
+        sourceIssueId: issueId,
+        linkedIssueIds,
+        issuePrefix: companyPrefix,
+      });
+      executionWorkspaceId = result?.executionWorkspaceId ?? null;
+    } catch (err) {
+      console.warn("[seed] execution workspace seed failed (non-fatal):", err.message);
+    }
+  }
+
   // ── 15. Persist ids ─────────────────────────────────────────────────────────
   const ids = {
     companyPrefix,
@@ -802,6 +829,7 @@ export default async function seed({ baseUrl = BASE_URL } = {}) {
     routineId,
     issueId,
     workspaceId,
+    executionWorkspaceId,
     emptyPrefix,
     httpAgentId,
     skillId,

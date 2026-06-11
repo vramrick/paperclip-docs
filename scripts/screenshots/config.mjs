@@ -22,6 +22,16 @@ export const DEVICE_SCALE = 2;
 export const COMPANY_PREFIX = "ACME";
 export const COMPANY_NAME = "Acme Robotics";
 
+/**
+ * PAPERCLIP_INSTANCE_ID for the throw-away screenshot instance. Shared by
+ * instanceEnv() (passed to the spawned server) and the DB-seeding helper, which
+ * needs it to locate the embedded-postgres data dir under PAPERCLIP_HOME.
+ */
+export const INSTANCE_ID = "docs-screenshots";
+
+/** Default embedded-postgres port (server/src/config.ts → embeddedPostgresPort). */
+export const EMBEDDED_POSTGRES_PORT = 54329;
+
 // ── Paths ────────────────────────────────────────────────────────────────────
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -102,7 +112,7 @@ export function instanceEnv(home) {
     XDG_DATA_HOME: resolve(home, ".local", "share"),
     PORT: String(PORT),
     PAPERCLIP_HOME: home,
-    PAPERCLIP_INSTANCE_ID: "docs-screenshots",
+    PAPERCLIP_INSTANCE_ID: INSTANCE_ID,
     PAPERCLIP_BIND: "loopback",
     PAPERCLIP_DEPLOYMENT_MODE: "local_trusted",
     PAPERCLIP_DEPLOYMENT_EXPOSURE: "private",

@@ -17,7 +17,8 @@
  *   {goalId}       → seed-ids.goalId
  *   {routineId}    → seed-ids.routineId
  *   {issueId}      → seed-ids.issueId
- *   {workspaceId}  → seed-ids.workspaceId
+ *   {workspaceId}  → seed-ids.workspaceId          (project primary workspace)
+ *   {executionWorkspaceId} → seed-ids.executionWorkspaceId (DB-seeded isolated ws)
  */
 
 import { COMPANY_PREFIX } from "./config.mjs";
@@ -33,6 +34,7 @@ const ID_TOKENS = [
   "routineId",
   "issueId",
   "workspaceId",
+  "executionWorkspaceId", // a real execution workspace (DB-seeded) for detail-page shots
   // Extended coverage tokens (written by seed.mjs; see scripts/screenshots/seed.mjs)
   "emptyPrefix", // a second, empty company's prefix — for empty-state shots
   "httpAgentId", // an agent created with the http adapter
@@ -386,21 +388,30 @@ export const CAPTURE_TARGETS = [
   },
 
   // ── Execution workspaces ───────────────────────────────────────────────────
+  // These point at {executionWorkspaceId} (a real execution workspace seeded via
+  // direct DB insert), NOT {workspaceId} (the project's primary workspace). The
+  // detail page can only resolve an execution-workspace id.
   {
     name: "workspaces/configuration",
-    route: "/{prefix}/execution-workspaces/{workspaceId}/configuration",
+    route: "/{prefix}/execution-workspaces/{executionWorkspaceId}/configuration",
+    dependsOn: ["ui/src/pages/ExecutionWorkspaceDetail.tsx"],
+    themes: ["light", "dark"],
+  },
+  {
+    name: "workspaces/services",
+    route: "/{prefix}/execution-workspaces/{executionWorkspaceId}/services",
     dependsOn: ["ui/src/pages/ExecutionWorkspaceDetail.tsx"],
     themes: ["light", "dark"],
   },
   {
     name: "workspaces/runtime-logs",
-    route: "/{prefix}/execution-workspaces/{workspaceId}/runtime-logs",
+    route: "/{prefix}/execution-workspaces/{executionWorkspaceId}/runtime-logs",
     dependsOn: ["ui/src/pages/ExecutionWorkspaceDetail.tsx"],
     themes: ["light", "dark"],
   },
   {
     name: "workspaces/issues",
-    route: "/{prefix}/execution-workspaces/{workspaceId}/issues",
+    route: "/{prefix}/execution-workspaces/{executionWorkspaceId}/issues",
     dependsOn: ["ui/src/pages/ExecutionWorkspaceDetail.tsx"],
     themes: ["light", "dark"],
   },
@@ -519,7 +530,8 @@ export const CAPTURE_TARGETS = [
   { name: "org/org-chart-view", route: "/{prefix}/org", dependsOn: ["ui/src/pages/OrgChart.tsx"] },
   { name: "org/org-chart-small-team", route: "/{prefix}/org", dependsOn: ["ui/src/pages/OrgChart.tsx"] },
   { name: "org/skills-list", route: "/{prefix}/skills", dependsOn: ["ui/src/pages/CompanySkills.tsx"] },
-  { name: "org/execution-workspaces-list", route: "/{prefix}/workspaces", dependsOn: ["ui/src/pages/Workspaces.tsx"] },
+  // Note: the workspaces list lives under workspaces/list (same /{prefix}/workspaces
+  // route). The former org/execution-workspaces-list duplicate was removed.
   {
     name: "org/reassign",
     route: "/{prefix}/agents/{agentId}/configuration",

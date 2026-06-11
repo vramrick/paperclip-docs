@@ -984,17 +984,6 @@
       ]
     },
     {
-      "file": "dark/org/execution-workspaces-list.png",
-      "theme": "dark",
-      "viewport": "1440x900",
-      "route": "/ACME/workspaces",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
-      "depends_on": [
-        "ui/src/pages/Workspaces.tsx"
-      ]
-    },
-    {
       "file": "dark/org/org-chart-add-agent.png",
       "theme": "dark",
       "viewport": "1440x900",
@@ -1472,9 +1461,9 @@
       "file": "dark/workspaces/configuration.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": "/ACME/execution-workspaces/{workspaceId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "route": "/ACME/execution-workspaces/{executionWorkspaceId}/configuration",
+      "captured_against": "master",
+      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
       "depends_on": [
         "ui/src/pages/ExecutionWorkspaceDetail.tsx"
       ]
@@ -1483,9 +1472,9 @@
       "file": "dark/workspaces/issues.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": "/ACME/execution-workspaces/{workspaceId}/issues",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "route": "/ACME/execution-workspaces/{executionWorkspaceId}/issues",
+      "captured_against": "master",
+      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
       "depends_on": [
         "ui/src/pages/ExecutionWorkspaceDetail.tsx"
       ]
@@ -1495,8 +1484,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/workspaces",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
       "depends_on": [
         "ui/src/pages/Workspaces.tsx"
       ]
@@ -1505,9 +1494,20 @@
       "file": "dark/workspaces/runtime-logs.png",
       "theme": "dark",
       "viewport": "1440x900",
-      "route": "/ACME/execution-workspaces/{workspaceId}/runtime-logs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "route": "/ACME/execution-workspaces/{executionWorkspaceId}/runtime-logs",
+      "captured_against": "master",
+      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
+      "depends_on": [
+        "ui/src/pages/ExecutionWorkspaceDetail.tsx"
+      ]
+    },
+    {
+      "file": "dark/workspaces/services.png",
+      "theme": "dark",
+      "viewport": "1440x900",
+      "route": "/ACME/execution-workspaces/{executionWorkspaceId}/services",
+      "captured_against": "master",
+      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
       "depends_on": [
         "ui/src/pages/ExecutionWorkspaceDetail.tsx"
       ]
@@ -2491,17 +2491,6 @@
       ]
     },
     {
-      "file": "light/org/execution-workspaces-list.png",
-      "theme": "light",
-      "viewport": "1440x900",
-      "route": "/ACME/workspaces",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
-      "depends_on": [
-        "ui/src/pages/Workspaces.tsx"
-      ]
-    },
-    {
       "file": "light/org/org-chart-add-agent.png",
       "theme": "light",
       "viewport": "1440x900",
@@ -2979,9 +2968,9 @@
       "file": "light/workspaces/configuration.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": "/ACME/execution-workspaces/{workspaceId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "route": "/ACME/execution-workspaces/{executionWorkspaceId}/configuration",
+      "captured_against": "master",
+      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
       "depends_on": [
         "ui/src/pages/ExecutionWorkspaceDetail.tsx"
       ]
@@ -2990,9 +2979,9 @@
       "file": "light/workspaces/issues.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": "/ACME/execution-workspaces/{workspaceId}/issues",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "route": "/ACME/execution-workspaces/{executionWorkspaceId}/issues",
+      "captured_against": "master",
+      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
       "depends_on": [
         "ui/src/pages/ExecutionWorkspaceDetail.tsx"
       ]
@@ -3002,8 +2991,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/workspaces",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
       "depends_on": [
         "ui/src/pages/Workspaces.tsx"
       ]
@@ -3012,9 +3001,20 @@
       "file": "light/workspaces/runtime-logs.png",
       "theme": "light",
       "viewport": "1440x900",
-      "route": "/ACME/execution-workspaces/{workspaceId}/runtime-logs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "route": "/ACME/execution-workspaces/{executionWorkspaceId}/runtime-logs",
+      "captured_against": "master",
+      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
+      "depends_on": [
+        "ui/src/pages/ExecutionWorkspaceDetail.tsx"
+      ]
+    },
+    {
+      "file": "light/workspaces/services.png",
+      "theme": "light",
+      "viewport": "1440x900",
+      "route": "/ACME/execution-workspaces/{executionWorkspaceId}/services",
+      "captured_against": "master",
+      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
       "depends_on": [
         "ui/src/pages/ExecutionWorkspaceDetail.tsx"
       ]
